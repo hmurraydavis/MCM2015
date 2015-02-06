@@ -1,9 +1,14 @@
 #import the massive district dictionary from Emily's Magick
+numberOfTimeCycles = 4
+
 districts = {}
+dataOut = [] #array to store the data about the system
 
 def supply(districts):
     '''Calculate the effect of vacination supply on:
-        1. innoculation'''
+        1. innoculation
+    Supply is caluclated in # of doses'''
+    supply = 96
         
         
 def innoculation(districts):
@@ -34,5 +39,24 @@ def education(districts):
 def infection(districts): 
     '''Calculates the effect of infection on:
         1. Population'''
+        
+def ProceedOneTimeStep():
+    '''Advances the model by one time step'''
+    global districts
+    global dataOut
     
+    #Call all the model functions!!!
+    supply(districts)
+    innoculation(districts)
+    workers(districts)
+    resistance(districts)
+    education(districts)
+    infection(districts)
+    dataOut.append(districts)
+    print dataOut
+    
+
+if __name__ == '__main__':
+    for _cycle in range(numberOfTimeCycles):
+        ProceedOneTimeStep()
     
