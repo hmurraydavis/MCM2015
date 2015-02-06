@@ -7,43 +7,26 @@ notes = {
 	"education":"awareness of the drug and its effects",
 	"supply": "# of doses available for that district"
 }
-
-
-kai_inf = {
-	'100-90':0,
-	'90-80':0,
-	'80-70':0,
-	'70-60':0,
-	'60-50':0,
-	'40-30':0,
-	'30-20':0,
-	'20-10':0,
-	'10-0':0,
-}
-
-kai_vac = {
-	'100-90':0,
-	'90-80':0,
-	'80-70':0,
-	'70-60':0,
-	'60-50':0,
-	'40-30':0,
-	'30-20':0,
-	'20-10':0,
-	'10-0':.088,
-}
-
-kailahun = {
-	'abbrev':'kai',
-	'population':358190,	
-	'infected':kai_inf,
-	'vaccinated':kai_vac,
-	'workers':1,
-	'resistance':.25,
-	'education':.1,
-	'supply':4000
-}
-
+kai_inf = { '100-90':0,
+            '90-80':0,
+            '80-70':0,
+            '70-60':0,
+            '60-50':0,
+            '40-30':0,
+            '30-20':0,
+            '20-10':0,
+            '10-0':0,}
+	                
+kai_vac = { '100-90':0,
+            '90-80':0,
+            '80-70':0,
+            '70-60':0,
+            '60-50':0,
+            '40-30':0,
+            '30-20':0,
+            '20-10':0,
+            '10-0':.088}
+            
 ken_inf = {
 	'100-90':0,
 	'90-80':0,
@@ -66,28 +49,6 @@ ken_vac = {
 	'30-20':0,
 	'20-10':0,
 	'10-0':.07,
-}
-
-kenema = {
-	'abbrev':'ken',
-	'population':497948,
-	'infected': ken_inf,
-	'vaccinated':ken_vac,
-	'workers':1,
-	'resistance':.2,
-	'education':.2,
-	'supply':2000
-}
-'''
-kono = {
-	'abbrev':'kon',
-	'population':497948,
-	'infected': kon_inf,
-	'vaccinated':kon_vac,
-	'workers':1,
-	'resistance':.2,
-	'education':.2,
-	'supply':2000
 }
 
 kon_inf = {
@@ -114,17 +75,6 @@ kon_vac = {
 	'10-0':.123,
 }
 
-bombali = {
-	'abbrev':'bom',
-	'population':408390,
-	'infected': bom_inf,
-	'vaccinated':bom_vac,
-	'workers':1,
-	'resistance':.2,
-	'education':.2,
-	'supply':2000
-}
-
 bom_inf = {
 	'100-90':0,
 	'90-80':0,
@@ -147,17 +97,6 @@ bom_vac = {
 	'30-20':0,
 	'20-10':0,
 	'10-0':.1,
-}
-
-kambia = {
-	'abbrev':'kam',
-	'population':497948,
-	'infected': kam_inf,
-	'vaccinated':kam_vac,
-	'workers':1,
-	'resistance':.2,
-	'education':.2,
-	'supply':2000
 }
 
 kam_inf = {
@@ -184,17 +123,6 @@ kam_vac = {
 	'10-0':0,
 }
 
-koinadugu = {
-	'abbrev':'koi',
-	'population':265758,
-	'infected': koi_inf,
-	'vaccinated':koi_vac,
-	'workers':1,
-	'resistance':.2,
-	'education':.2,
-	'supply':2000
-}
-
 koi_inf = {
 	'100-90':2,
 	'90-80':0,
@@ -218,6 +146,79 @@ koi_vac = {
 	'20-10':0,
 	'10-0':.14,
 }
+	                
+	                
+districts = {'kai': {
+	            'abbrev':'kai',
+	            'population':358190,	
+	            'infected':kai_inf,
+	            'vaccinated':kai_vac,
+	            'workers':1,
+	            'resistance':.25,
+	            'education':.1,
+	            'supply':4000
+                },
+                
+            'ken': {
+	                'abbrev':'ken',
+	                'population':497948,
+	                'infected': ken_inf,
+	                'vaccinated':ken_vac,
+	                'workers':1,
+	                'resistance':.2,
+	                'education':.2,
+	                'supply':2000
+                },
+            'kono' : {
+	                'abbrev':'kon',
+	                'population':497948,
+	                'infected': kon_inf,
+	                'vaccinated':kon_vac,
+	                'workers':1,
+	                'resistance':.2,
+	                'education':.2,
+	                'supply':2000
+                },
+                
+            'bombali' : {
+	                'abbrev':'bom',
+	                'population':408390,
+	                'infected': bom_inf,
+	                'vaccinated':bom_vac,
+	                'workers':1,
+	                'resistance':.2,
+	                'education':.2,
+	                'supply':2000
+                },
+                
+            'kambia' : {
+	                'abbrev':'kam',
+	                'population':497948,
+	                'infected': kam_inf,
+	                'vaccinated':kam_vac,
+	                'workers':1,
+	                'resistance':.2,
+	                'education':.2,
+	                'supply':2000
+                },
+                
+            "koinadugu" : {
+	                'abbrev':'koi',
+	                'population':265758,
+	                'infected': koi_inf,
+	                'vaccinated':koi_vac,
+	                'workers':1,
+	                'resistance':.2,
+	                'education':.2,
+	                'supply':2000
+                }
+        }
+'''
+
+
+
+
+
 
 port_loko = {
 	'abbrev':'por',
@@ -499,9 +500,9 @@ weu_vac = {
 	'10-0':0,
 }
 '''
-districts = {
-	'kai':kailahun,
-	'ken':kenema,}
+#districts = {
+#	'kai':kailahun,
+#	'ken':kenema,}
 ''''kon':kono,
 	'bom':bombali,
 	'kam':kambia,
@@ -516,4 +517,7 @@ districts = {
 	'weu':western_urban	
 }
 '''
-global districts
+#global districts
+
+def returnDistricsDictionary():
+    return districts
