@@ -1,4 +1,4 @@
-dict districts = {
+districts = {
 	'kai':kailahun,
 	'ken':kenema,
 	'kon':kono,
@@ -15,7 +15,7 @@ dict districts = {
 	'weu':western_urban	
 }
 
-dict notes{
+notes = {
 	"population":"number of people in the district",
 	"infected":"percent of people with n risk of death that day"
 	"vaccinated":"percent of people at that risk level",
@@ -25,7 +25,7 @@ dict notes{
 	"supply": "# of doses available for that district"
 }
 
-dict kailahun{
+kailahun = {
 	'abbrev':'kai',
 	'population':358190,
 	'infected': kai_inf,
@@ -36,7 +36,7 @@ dict kailahun{
 	'supply':4000
 }
 
-dict kai_inf{
+kai_inf = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -48,7 +48,7 @@ dict kai_inf{
 	'10-0':0,
 }
 
-dict kai_vac{
+kai_vac = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -60,7 +60,7 @@ dict kai_vac{
 	'10-0':0,
 }
 
-dict kenema{
+kenema = {
 	'abbrev':'ken',
 	'population':497948,
 	'infected': ken_inf,
@@ -71,7 +71,7 @@ dict kenema{
 	'supply':2000
 }
 
-dict ken_inf{
+ken_inf = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -83,7 +83,7 @@ dict ken_inf{
 	'10-0':0,
 }
 
-dict ken_vac{
+ken_vac = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -95,7 +95,7 @@ dict ken_vac{
 	'10-0':0,
 }
 
-dict kono{
+kono = {
 	'abbrev':'kon',
 	'population':497948,
 	'infected': kon_inf,
@@ -106,7 +106,7 @@ dict kono{
 	'supply':2000
 }
 
-dict kon_inf{
+kon_inf = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -118,7 +118,7 @@ dict kon_inf{
 	'10-0':0,
 }
 
-dict kon_vac{
+kon_vac = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -130,7 +130,7 @@ dict kon_vac{
 	'10-0':0,
 }
 
-dict bombali{
+bombali = {
 	'abbrev':'bom',
 	'population':408390,
 	'infected': bom_inf,
@@ -141,7 +141,7 @@ dict bombali{
 	'supply':2000
 }
 
-dict bom_inf{
+bom_inf = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -153,7 +153,7 @@ dict bom_inf{
 	'10-0':0,
 }
 
-dict bom_vac{
+bom_vac = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -165,7 +165,7 @@ dict bom_vac{
 	'10-0':0,
 }
 
-dict kambia{
+kambia = {
 	'abbrev':'kam',
 	'population':497948,
 	'infected': kam_inf,
@@ -176,7 +176,7 @@ dict kambia{
 	'supply':2000
 }
 
-dict kam_inf{
+kam_inf = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -188,7 +188,7 @@ dict kam_inf{
 	'10-0':0,
 }
 
-dict kam_vac{
+kam_vac = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -200,7 +200,7 @@ dict kam_vac{
 	'10-0':0,
 }
 
-dict koinadugu{
+koinadugu = {
 	'abbrev':'koi',
 	'population':265758,
 	'infected': koi_inf,
@@ -211,7 +211,7 @@ dict koinadugu{
 	'supply':2000
 }
 
-dict koi_inf{
+koi_inf = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -223,7 +223,7 @@ dict koi_inf{
 	'10-0':0,
 }
 
-dict koi_vac{
+koi_vac = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -235,7 +235,7 @@ dict koi_vac{
 	'10-0':0,
 }
 
-dict port_loko{
+port_loko = {
 	'abbrev':'por',
 	'population':497948,
 	'infected': por_inf,
@@ -246,7 +246,7 @@ dict port_loko{
 	'supply':2000
 }
 
-dict por_inf{
+por_inf = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -258,7 +258,7 @@ dict por_inf{
 	'10-0':0,
 }
 
-dict por_vac{
+por_vac = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -270,7 +270,7 @@ dict por_vac{
 	'10-0':0,
 }
 
-dict tonkolili{
+tonkolili = {
 	'abbrev':'ton',
 	'population':347197,
 	'infected': kam_inf,
@@ -281,7 +281,7 @@ dict tonkolili{
 	'supply':2000
 }
 
-dict ton_inf{
+ton_inf = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -293,7 +293,7 @@ dict ton_inf{
 	'10-0':0,
 }
 
-dict ton_vac{
+ton_vac = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -305,7 +305,7 @@ dict ton_vac{
 	'10-0':0,
 }
 
-dict bo{
+bo = {
 	'abbrev':'bod',
 	'population':463668,
 	'infected': bod_inf,
@@ -316,7 +316,7 @@ dict bo{
 	'supply':2000
 }
 
-dict bod_inf{
+bod_inf = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -328,7 +328,7 @@ dict bod_inf{
 	'10-0':0,
 }
 
-dict bod_vac{
+bod_vac = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -340,7 +340,7 @@ dict bod_vac{
 	'10-0':0,
 }
 
-dict bonthe{
+bonthe = {
 	'abbrev':'bon',
 	'population':139687,
 	'infected': bon_inf,
@@ -351,7 +351,7 @@ dict bonthe{
 	'supply':2000
 }
 
-dict bon_inf{
+bon_inf = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -363,7 +363,7 @@ dict bon_inf{
 	'10-0':0,
 }
 
-dict bon_vac{
+bon_vac = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -375,7 +375,7 @@ dict bon_vac{
 	'10-0':0,
 }
 
-dict moyamba{
+moyamba = {
 	'abbrev':'moy',
 	'population':260190,
 	'infected': moy_inf,
@@ -386,7 +386,7 @@ dict moyamba{
 	'supply':2000
 }
 
-dict moy_inf{
+moy_inf = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -398,7 +398,7 @@ dict moy_inf{
 	'10-0':0,
 }
 
-dict moy_vac{
+moy_vac = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -410,7 +410,7 @@ dict moy_vac{
 	'10-0':0,
 }
 
-dict pujehun{
+pujehun = {
 	'abbrev':'puj',
 	'population':228392,
 	'infected': puj_inf,
@@ -421,7 +421,7 @@ dict pujehun{
 	'supply':2000
 }
 
-dict puj_inf{
+puj_inf = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -433,7 +433,7 @@ dict puj_inf{
 	'10-0':0,
 }
 
-dict puj_vac{
+puj_vac = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -445,7 +445,7 @@ dict puj_vac{
 	'10-0':0,
 }
 
-dict western_rural{
+western_rural = {
 	'abbrev':'wer',
 	'population':174249,
 	'infected': wur_inf,
@@ -456,7 +456,7 @@ dict western_rural{
 	'supply':2000
 }
 
-dict wur_inf{
+wur_inf ={
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -468,7 +468,7 @@ dict wur_inf{
 	'10-0':0,
 }
 
-dict wur_vac{
+wur_vac = { 
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -480,7 +480,7 @@ dict wur_vac{
 	'10-0':0,
 }
 
-dict western_urban{
+western_urban = {
 	'abbrev':'weu',
 	'population':772873,
 	'infected': weu_inf,
@@ -491,7 +491,7 @@ dict western_urban{
 	'supply':2000
 }
 
-dict weu_inf{
+weu_inf = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -503,7 +503,7 @@ dict weu_inf{
 	'10-0':0,
 }
 
-dict weu_vac{
+weu_vac = {
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
