@@ -1,8 +1,13 @@
 #import the massive district dictionary from Emily's Magick
 numberOfTimeCycles = 4
 
+#Global variables used as such:
 districts = {}
 dataOut = [] #array to store the data about the system
+
+#Global variables that aren't really global:
+effect_worker_on_innoculation = 35 #number of people a worker can vacinate in one time step
+effect_resistance_on_innoculation = 20
 
 def supply(districts):
     '''Calculate the effect of vacination supply on:
@@ -21,13 +26,18 @@ def workers(districts):
         1. innoculation
         2. Infection
         3. Education'''
+    for district in districts:
+        innoculation = (effect_worker_on_innoculation*district['workers'])
     
 def resistance(districts):
     '''Calculate the effect of resistance of people to 
     receiving the drug on:
         1. infection
-        2. vacination
+        2. innoculation
         3. Workers (???)'''
+    for _cycle in range(numberOfTimeCycles):
+        for district in districts:
+            innoculation = district['innoculation'] - effect_resistance_on_innoculation #not right!
     
     
 def education(districts):
