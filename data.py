@@ -7,43 +7,26 @@ notes = {
 	"education":"awareness of the drug and its effects",
 	"supply": "# of doses available for that district"
 }
-
-
-kai_inf = {
-	'100-90':0,
-	'90-80':0,
-	'80-70':0,
-	'70-60':0,
-	'60-50':0,
-	'40-30':0,
-	'30-20':0,
-	'20-10':0,
-	'10-0':0,
-}
-
-kai_vac = {
-	'100-90':0,
-	'90-80':0,
-	'80-70':0,
-	'70-60':0,
-	'60-50':0,
-	'40-30':0,
-	'30-20':0,
-	'20-10':0,
-	'10-0':.088,
-}
-
-kailahun = {
-	'abbrev':'kai',
-	'population':358190,	
-	'infected':kai_inf,
-	'vaccinated':kai_vac,
-	'workers':1,
-	'resistance':.25,
-	'education':.1,
-	'supply':4000
-}
-
+kai_inf = { '100-90':0,
+            '90-80':0,
+            '80-70':0,
+            '70-60':0,
+            '60-50':0,
+            '40-30':0,
+            '30-20':0,
+            '20-10':0,
+            '10-0':0,}
+	                
+kai_vac = { '100-90':0,
+            '90-80':0,
+            '80-70':0,
+            '70-60':0,
+            '60-50':0,
+            '40-30':0,
+            '30-20':0,
+            '20-10':0,
+            '10-0':.088}
+            
 ken_inf = {
 	'100-90':0,
 	'90-80':0,
@@ -67,17 +50,30 @@ ken_vac = {
 	'20-10':0,
 	'10-0':.07,
 }
-
-kenema = {
-	'abbrev':'ken',
-	'population':497948,
-	'infected': ken_inf,
-	'vaccinated':ken_vac,
-	'workers':1,
-	'resistance':.2,
-	'education':.2,
-	'supply':2000
-}
+	                
+	                
+districts = {'kai': {
+	            'abbrev':'kai',
+	            'population':358190,	
+	            'infected':kai_inf,
+	            'vaccinated':kai_vac,
+	            'workers':1,
+	            'resistance':.25,
+	            'education':.1,
+	            'supply':4000
+                },
+                
+            'ken': {
+	                'abbrev':'ken',
+	                'population':497948,
+	                'infected': ken_inf,
+	                'vaccinated':ken_vac,
+	                'workers':1,
+	                'resistance':.2,
+	                'education':.2,
+	                'supply':2000
+                },
+        }
 '''
 kono = {
 	'abbrev':'kon',
@@ -499,9 +495,9 @@ weu_vac = {
 	'10-0':0,
 }
 '''
-districts = {
-	'kai':kailahun,
-	'ken':kenema,}
+#districts = {
+#	'kai':kailahun,
+#	'ken':kenema,}
 ''''kon':kono,
 	'bom':bombali,
 	'kam':kambia,
@@ -516,4 +512,7 @@ districts = {
 	'weu':western_urban	
 }
 '''
-global districts
+#global districts
+
+def returnDistricsDictionary():
+    return districts
