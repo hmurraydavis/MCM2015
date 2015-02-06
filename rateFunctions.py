@@ -20,14 +20,22 @@ def innoculation(districts):
     '''Calculate the effect of innoculation on:
         1. # of workers
         2. infection '''
-    
+    for district in districts:
+        '''increase the number of workers'''
+        if (district[workers]< .6* district[population]):
+            if (district[vaccinated["0-10"]] > district[population]*.01){
+                district[workers] = district[workers]+1
+
+        if(district[workers] > .1 *district[population]):
+            district[workers] = district[workers]-1
+
 def workers(districts):
     '''Calculate the effect of the number of workers on: 
         1. innoculation
-        2. Infection
-        3. Education'''
+        2. Education'''
     for district in districts:
         innoculation = (effect_worker_on_innoculation*district['workers'])
+        education = education + workers/4/100
     
 def resistance(districts):
     '''Calculate the effect of resistance of people to 
@@ -42,13 +50,17 @@ def resistance(districts):
     
 def education(districts):
     '''Calculate the effect of education on:
-        1. RESISTANCE to being vacinated (less resistance), and
-        2. VACINATION (increase in # of shots)'''
+        1. RESISTANCE to being vacinated (less resistance)'''
+        for district in districts:
+            district[resistance] = district[resistance]*(1-log(district[education]))
     
     
 def infection(districts): 
     '''Calculates the effect of infection on:
         1. Population'''
+    for district in districts:
+        population = population - district[infection[90-100]]*population
+        district[infection[90-100]] = 0'''assume nobody else dies'''
         
 def ProceedOneTimeStep():
     '''Advances the model by one time step'''
