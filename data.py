@@ -50,41 +50,6 @@ ken_vac = {
 	'20-10':0,
 	'10-0':.07,
 }
-	                
-	                
-districts = {'kai': {
-	            'abbrev':'kai',
-	            'population':358190,	
-	            'infected':kai_inf,
-	            'vaccinated':kai_vac,
-	            'workers':1,
-	            'resistance':.25,
-	            'education':.1,
-	            'supply':4000
-                },
-                
-            'ken': {
-	                'abbrev':'ken',
-	                'population':497948,
-	                'infected': ken_inf,
-	                'vaccinated':ken_vac,
-	                'workers':1,
-	                'resistance':.2,
-	                'education':.2,
-	                'supply':2000
-                },
-        }
-'''
-kono = {
-	'abbrev':'kon',
-	'population':497948,
-	'infected': kon_inf,
-	'vaccinated':kon_vac,
-	'workers':1,
-	'resistance':.2,
-	'education':.2,
-	'supply':2000
-}
 
 kon_inf = {
 	'100-90':0,
@@ -109,6 +74,44 @@ kon_vac = {
 	'20-10':0,
 	'10-0':.123,
 }
+	                
+	                
+districts = {'kai': {
+	            'abbrev':'kai',
+	            'population':358190,	
+	            'infected':kai_inf,
+	            'vaccinated':kai_vac,
+	            'workers':1,
+	            'resistance':.25,
+	            'education':.1,
+	            'supply':4000
+                },
+                
+            'ken': {
+	                'abbrev':'ken',
+	                'population':497948,
+	                'infected': ken_inf,
+	                'vaccinated':ken_vac,
+	                'workers':1,
+	                'resistance':.2,
+	                'education':.2,
+	                'supply':2000
+                },
+            'kono' : {
+	                'abbrev':'kon',
+	                'population':497948,
+	                'infected': kon_inf,
+	                'vaccinated':kon_vac,
+	                'workers':1,
+	                'resistance':.2,
+	                'education':.2,
+	                'supply':2000
+                }
+        }
+'''
+
+
+
 
 bombali = {
 	'abbrev':'bom',
