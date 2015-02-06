@@ -9,26 +9,30 @@ def supply(districts):
 def innoculation(districts):
     '''Calculate the effect of innoculation on:
         1. # of workers
-        2. infection 
-    '''
+        2. infection '''
     
 def workers(districts):
-    '''Calculate any changes in the number of WORKERS for a given 
-    district and modify this value in the dictionary accordingly. '''
+    '''Calculate the effect of the number of workers on: 
+        1. innoculation
+        2. Infection
+        3. Education'''
     
 def resistance(districts):
-    '''Calculate the resistance of people in a given district to 
-    receiving the drug and modify this value in the dictionary'''
+    '''Calculate the effect of resistance of people to 
+    receiving the drug on:
+        1. infection
+        2. vacination
+        3. Workers (???)'''
     
     
 def education(districts):
     '''Calculate the effect of education on:
         1. RESISTANCE to being vacinated (less resistance), and
-        2. VACINATION (increase in # of shots)
-    Also audjusts the value of education for the number of workers
-    in a district (directly related)'''
+        2. VACINATION (increase in # of shots)'''
     
     
 def infection(districts): 
+    '''Calculates the effect of infection on:
+        1. Population'''
     
     
