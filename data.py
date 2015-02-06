@@ -1,23 +1,6 @@
-districts = {
-	'kai':kailahun,
-	'ken':kenema,
-	'kon':kono,
-	'bom':bombali,
-	'kam':kambia,
-	'koi':koinadugu,
-	'por':port_loko,
-	'ton':tonkolili,
-	'bod':bo,
-	'bon':bonthe,
-	'moy':moyamba,
-	'puj':pujehun,
-	'wer':western_rural,
-	'weu':western_urban	
-}
-
 notes = {
 	"population":"number of people in the district",
-	"infected":"percent of people with n risk of death that day"
+	"infected":"percent of people with n risk of death that day",
 	"vaccinated":"percent of people at that risk level",
 	"workers":"# of people actively vaccinating others",
 	"resistance":"probability that someone will refuse vaccination",
@@ -25,16 +8,6 @@ notes = {
 	"supply": "# of doses available for that district"
 }
 
-kailahun = {
-	'abbrev':'kai',
-	'population':358190,
-	'infected': kai_inf,
-	'vaccinated':kai_vac,
-	'workers':1,
-	'resistance':.25,
-	'education':.1,
-	'supply':4000
-}
 
 kai_inf = {
 	'100-90':0,
@@ -57,18 +30,18 @@ kai_vac = {
 	'40-30':0,
 	'30-20':0,
 	'20-10':0,
-	'10-0':0,
+	'10-0':.088,
 }
 
-kenema = {
-	'abbrev':'ken',
-	'population':497948,
-	'infected': ken_inf,
-	'vaccinated':ken_vac,
+kailahun = {
+	'abbrev':'kai',
+	'population':358190,	
+	'infected':kai_inf,
+	'vaccinated':kai_vac,
 	'workers':1,
-	'resistance':.2,
-	'education':.2,
-	'supply':2000
+	'resistance':.25,
+	'education':.1,
+	'supply':4000
 }
 
 ken_inf = {
@@ -92,9 +65,20 @@ ken_vac = {
 	'40-30':0,
 	'30-20':0,
 	'20-10':0,
-	'10-0':0,
+	'10-0':.07,
 }
 
+kenema = {
+	'abbrev':'ken',
+	'population':497948,
+	'infected': ken_inf,
+	'vaccinated':ken_vac,
+	'workers':1,
+	'resistance':.2,
+	'education':.2,
+	'supply':2000
+}
+'''
 kono = {
 	'abbrev':'kon',
 	'population':497948,
@@ -127,7 +111,7 @@ kon_vac = {
 	'40-30':0,
 	'30-20':0,
 	'20-10':0,
-	'10-0':0,
+	'10-0':.123,
 }
 
 bombali = {
@@ -162,7 +146,7 @@ bom_vac = {
 	'40-30':0,
 	'30-20':0,
 	'20-10':0,
-	'10-0':0,
+	'10-0':.1,
 }
 
 kambia = {
@@ -185,7 +169,7 @@ kam_inf = {
 	'40-30':0,
 	'30-20':0,
 	'20-10':0,
-	'10-0':0,
+	'10-0':.2,
 }
 
 kam_vac = {
@@ -212,7 +196,7 @@ koinadugu = {
 }
 
 koi_inf = {
-	'100-90':0,
+	'100-90':2,
 	'90-80':0,
 	'80-70':0,
 	'70-60':0,
@@ -232,7 +216,7 @@ koi_vac = {
 	'40-30':0,
 	'30-20':0,
 	'20-10':0,
-	'10-0':0,
+	'10-0':.14,
 }
 
 port_loko = {
@@ -302,7 +286,7 @@ ton_vac = {
 	'40-30':0,
 	'30-20':0,
 	'20-10':0,
-	'10-0':0,
+	'10-0':.07,
 }
 
 bo = {
@@ -337,7 +321,7 @@ bod_vac = {
 	'40-30':0,
 	'30-20':0,
 	'20-10':0,
-	'10-0':0,
+	'10-0':07,
 }
 
 bonthe = {
@@ -514,5 +498,22 @@ weu_vac = {
 	'20-10':0,
 	'10-0':0,
 }
-
-
+'''
+districts = {
+	'kai':kailahun,
+	'ken':kenema,}
+''''kon':kono,
+	'bom':bombali,
+	'kam':kambia,
+	'koi':koinadugu,
+	'por':port_loko,
+	'ton':tonkolili,
+	'bod':bo,
+	'bon':bonthe,
+	'moy':moyamba,
+	'puj':pujehun,
+	'wer':western_rural,
+	'weu':western_urban	
+}
+'''
+global districts
