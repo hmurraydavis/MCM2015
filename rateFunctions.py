@@ -55,10 +55,10 @@ def inoculation(districts):
             place['workers'] = place['workers']-1
             
         for i in range(len(keys)):
-            for j in range(1,len(keys)):
+            for j in range(len(keys)-1):
                 jinf=place['infected'][keys][j]]
                 ivac=place['vaccinated'][keys[i]]
-                place['infected'][keys[j-1]]=place['infected'][keys[j-1]]+ivac*jinf
+                place['infected'][keys[j+1]]=place['infected'][keys[j-1]]+ivac*jinf
                 jinf=jinf*(1-ivac)
 
 def workers(districts):
