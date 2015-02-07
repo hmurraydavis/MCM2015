@@ -214,8 +214,8 @@ def stateOfTheGraph():
     suceptibility = []
 
     for person in graph():
-        prob_death.append(person['prob_death'])
-        #vaccination.append(person[inocProb])
+        #prob_death.append(person['pDeath'])
+        vaccination.append(person[inocFac][0])
         #suceptibility.append(person[])
 
     plt.bar(prob_death)
