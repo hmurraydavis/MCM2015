@@ -89,17 +89,17 @@ for _i in range(25):
 ####################################
 
 ##DEFINE TUNEABLE VARIABLES:
-supplyVaciene = 300 #doses per day (or time step)
+supplyVaccine = 300 #doses per day (or time step)
 
-def computeVacieneImmunity(personNumber):
-    '''Computes the acquired imunity from receiving a vaciene. 
-    #imunity from vaciene increases by .2 per dose
-    #imunity decreases by 1/3 of the increase from vaciene with each day w/out vaciene'''
+def computeVaccineImmunity(personNumber):
+    '''Computes the acquired imunity from receiving a vaccine. 
+    #immunity from vaccine increases by .2 per dose
+    #immunity decreases by 1/3 of the increase from vaccine with each day w/out vaccine'''
     inocHistory = graph[personNumber]['innocFac']
     inocProb = 0
     for day in inocHistory:
         if (day==0) and (inocProb > 0): 
-            #they didn't get the vaciene and they still have some imunity from previous doses
+            #they didn't get the vaccine and they still have some immunity from previous doses
             inocProb = inocProb - (.2/3.0)
         elif day==1:
             #They got the vaccine and will have more immunity! Yeah!
@@ -108,7 +108,7 @@ def computeVacieneImmunity(personNumber):
 
 def vaccinatePpl():
     '''performs triage on the population by looping through it and 
-    accessing factors untill all of the supplied vaciene is gone'''
+    accessing factors untill all of the supplied vaccine is gone'''
     for person in graph:
         graph[person]
     
