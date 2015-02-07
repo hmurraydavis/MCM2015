@@ -5,7 +5,7 @@ graph = [ {'gender':0, #0 is female, 1 is male
     'demise':'zombie' #state of life-fullness, string, choices: 'dead', 'alive', 'zombie'
     'natImmunity':.30 #Naturally occuring, percent immunity of the person
     'age':20 #integer representing person's age
-    'innocFac':[0,0,1,0,0,1,1,0] #list representing the innoculation of the person, 0==not vaccinated on that day, 1==vaccinated that day, index of array is the day
+    'inocFac':[0,0,1,0,0,1,1,0] #list representing the inoculation of the person, 0==not vaccinated on that day, 1==vaccinated that day, index of array is the day
     'ebola':0 #do they have ebola? 0==no, 1==yes
     'pDeath': .4 #probability of person dying that day
     'n':3 #n value of that person, vame as the index of the person in the array
@@ -28,7 +28,7 @@ for vertex in range(126):
         'ebola':0,
         'demise':'alive',
         'natImmunity':.3,
-        'innocFac':[0],
+        'inocFac':[0],
         'pDeath':0.0}
     
     #set gender of pop to be 6f/4m:
@@ -95,24 +95,24 @@ def computeVacieneImmunity(personNumber):
     '''Computes the acquired imunity from receiving a vaciene. 
     #imunity from vaciene increases by .2 per dose
     #imunity decreases by 1/3 of the increase from vaciene with each day w/out vaciene'''
-    innocHistory = graph[personNumber]['innocFac']
-    innocProb = 0
-    for day in innocHistory:
-        if (day==0) and (innocProb > 0): 
+    inocHistory = graph[personNumber]['innocFac']
+    inocProb = 0
+    for day in inocHistory:
+        if (day==0) and (inocProb > 0): 
             #they didn't get the vaciene and they still have some imunity from previous doses
-            innocProb = innocProb - (.2/3.0)
+            inocProb = inocProb - (.2/3.0)
         elif day==1:
-            #They got the vaciene and will have more immunity! Yeah!
-            innocProb = innocProb + .2
-    return innocProb
+            #They got the vaccine and will have more immunity! Yeah!
+            inocProb = inocProb + .2
+    return inocProb
 
 def vaccinatePpl():
     '''performs triage on the population by looping through it and 
-    accessing fctors untill all of the supplied vaciene is gone'''
+    accessing factors untill all of the supplied vaciene is gone'''
     for person in graph:
         graph[person]
     
-computeVacieneImmunity(5)
+computeVaccineImmunity(5)
         
 
 
