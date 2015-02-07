@@ -59,43 +59,29 @@ sizeClique = 7
 n=1
 for vertex in graph:
     nVtxActl = graph.index(vertex)
+#    nVtxActl = vertex['n']
     if (nVtxActl%7)==0:
         for n in range(1,sizeClique):
+            s1 = []; s2=[]
             if (n-1)>0: #Compute set 1
                 s1 = range(1,n-1)
-            else: s1 = []
             if (n-sizeClique)>0: #Compute set 2
-                s2 = range(n+1,sizeClique)
-            else: s2 = []
-                
+                s2 = range(n+1,sizeClique)                
             setS = s1+s2 #the vertisies it would be connected to
             actualConnectedVerticies = [x+nVtxActl-sizeClique for x in setS]
             writeList = []
             for v in actualConnectedVerticies:
                 writeList.append([v,random.randint(5,9)/10])
         
-#        personRepDict[nVtxActl-sizeClique+n]['inContact']=writeList
+            graph[nVtxActl-sizeClique+n]['inContact']=writeList
 
 
 
-
-
-nAbstractList = range(1,7) 
-listContactNodes = [] 
-neighborNodes = range(1,7)  
-for vertex in range(len(graph)):
-    #Make clicks on the graph!
-    if (vertex%7)==0: #get to the click
-        for node in range(1,7): #do this for all points in the click
-            neighborNodes.remove(node) #but don't loop to yourself
-            for value in neighborNodes:
-                contactNode = [value, random.randint(5,9)/10]
-                listContactNodes.append(contactNode)
-            neighborNodes.append(node)
-#            personRepDict['inContact']=
-        
+#print type(graph[0])
     
 
 #pprint.pprint(graph)
-for vertex in graph:
-    print vertex['inContact']
+for vertex in range(len(graph)):
+    pprint.pprint(graph[vertex]) 
+    print
+#    print graph[0]
