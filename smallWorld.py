@@ -56,12 +56,12 @@ for vertex in range(126):
 
 #'inContact':[[n1,weightn1],[n2,weightn2],[n3,weightn3]]
 sizeClique = 7
-n=1
+n=0
 for vertex in graph:
     nVtxActl = graph.index(vertex)
 #    nVtxActl = vertex['n']
     if (nVtxActl%7)==0:
-        for n in range(1,sizeClique):
+        for n in range(0,sizeClique):
             s1 = []; s2=[]
             if (n-1)>0: #Compute set 1
                 s1 = range(1,n-1)
@@ -82,6 +82,7 @@ for vertex in graph:
 
 #pprint.pprint(graph)
 for vertex in range(len(graph)):
+    print graph[vertex]['n']
     pprint.pprint(graph[vertex]) 
     print
 #    print graph[0]
