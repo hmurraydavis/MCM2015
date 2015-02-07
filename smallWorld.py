@@ -66,11 +66,11 @@ for vertex in graph:
             s1 = []; s2=[]
             s1 = range(0,n-1+1)
             s2 = range(n+1,sizeClique)             
-            setS = s1+s2 #the vertisies it would be connected to
-            actualConnectedVerticies = [x+nVtxActl for x in setS]
-            print 'actualConnectedVerticies: ', actualConnectedVerticies
+            setS = s1+s2 #the vertices it would be connected to
+            actualConnectedVertices = [x+nVtxActl for x in setS]
+            print 'actualConnectedVertices: ', actualConnectedVertices
             writeList = []
-            for v in actualConnectedVerticies:
+            for v in actualConnectedVertices:
                 writeList.append([v,random.randint(5,9)/10])
 #                print 'v: ',v,         
             graph[nVtxActl-sizeClique+n]['inContact']=writeList
