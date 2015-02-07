@@ -71,7 +71,7 @@ for vertex in graph:
             print 'actualConnectedVertices: ', actualConnectedVertices
             writeList = []
             for v in actualConnectedVertices:
-                writeList.append([v,random.randint(5,9)/10])
+                writeList.append([v,random.randint(50.0,90)/100.0])
 #                print 'v: ',v,         
             graph[nVtxActl-sizeClique+n]['inContact']=writeList
 
@@ -82,8 +82,7 @@ for vertex in graph:
 
 #pprint.pprint(graph)
 for vertex in range(len(graph)):
-    h=2
-#    print graph[vertex]['n']
+    print graph[vertex]['inContact']
 #    pprint.pprint(graph[vertex]) 
 #    print
 #    print graph[0]
