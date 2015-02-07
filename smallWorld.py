@@ -1,4 +1,6 @@
-'''graph = [ {'gender':0, #0 is female, 1 is male
+'''Graph is set up as a list of dictionaries of form: 
+
+graph = [ {'gender':0, #0 is female, 1 is male
     'inContact':[[n1,weightn1],[n2,weightn2],[n3,weightn3]], #list of the people they're connected with --> outer list is the connedted verticies, nested list's 0th element is the connected vertex. 1st elemennt is the weight of that edge
     'demise':'zombie' #state of life-fullness, string, choices: 'dead', 'alive', 'zombie'
     'natImmunity':.30 #Naturally occuring, percent immunity of the person
@@ -15,9 +17,12 @@
 import pprint
 import random
 
-graph = []
-cycle=1
+####################################
+#####INITALIZE AND SETUP GRAPH:#####
+####################################
 
+graph = []
+cycle=1 #for gender toggle, don't change
 for vertex in range(126):
     personRepDict = {'n':vertex,
         'ebola':0,
@@ -79,7 +84,13 @@ for _i in range(25):
         graph[parentVertex]['inContact'].append([childVertex,edgeWeight])
 #        print graph[parentVertex]['inContact']
 
+####################################
+#####BEGIN GRAPH THEORY MODEL:######
+####################################
+
+
+
+
 ##for vertex in range(len(graph)):
 ##    print 'Node # is: ', graph[vertex]['n']
-##    print 'Connected to:', graph[vertex]['inContact']
-    
+##    print 'Connected to:', graph[vertex]['inContact'] 
