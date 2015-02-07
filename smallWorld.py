@@ -51,16 +51,12 @@ for vertex in range(126):
         personRepDict['age']=random.randint(0,14)
     
     graph.append(personRepDict)
-    #print type(graph)
 
-
-#'inContact':[[n1,weightn1],[n2,weightn2],[n3,weightn3]]
+#add a vertex's clique pals as edges:
 sizeClique = 7
 n=0
 for vertex in graph:
     nVtxActl = graph.index(vertex)
-    print nVtxActl
-#    nVtxActl = vertex['n']
     if (nVtxActl%7)==0:
         for n in range(0,sizeClique):
             s1 = []; s2=[]
@@ -68,21 +64,14 @@ for vertex in graph:
             s2 = range(n+1,sizeClique)             
             setS = s1+s2 #the vertices it would be connected to
             actualConnectedVertices = [x+nVtxActl for x in setS]
-            print 'actualConnectedVertices: ', actualConnectedVertices
             writeList = []
             for v in actualConnectedVertices:
-                writeList.append([v,random.randint(50.0,90)/100.0])
-#                print 'v: ',v,         
-            graph[nVtxActl-sizeClique+n]['inContact']=writeList
+                writeList.append([v,random.randint(50.0,90)/100.0])      
+            graph[nVtxActl+n]['inContact']=writeList
 
 
 
-#print type(graph[0])
-    
-
-#pprint.pprint(graph)
 for vertex in range(len(graph)):
-    print graph[vertex]['inContact']
-#    pprint.pprint(graph[vertex]) 
-#    print
-#    print graph[0]
+    print 'Node # is: ', graph[vertex]['n']
+    print 'Connected to:', graph[vertex]['inContact']
+    
