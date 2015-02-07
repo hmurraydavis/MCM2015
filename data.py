@@ -7,25 +7,33 @@ notes = {
 	"education":"awareness of the drug and its effects",
 	"supply": "# of doses available for that district"
 }
-kai_inf = { '100-90':0,
-            '90-80':0,
-            '80-70':0,
-            '70-60':0,
-            '60-50':0,
-            '40-30':0,
-            '30-20':0,
-            '20-10':0,
-            '10-0':0,}
+
+################################################################
+####Vacination and Infection Dictionaries for all districts!####
+################################################################
+kai_inf = { 
+    '100-90':0,
+    '90-80':0,
+    '80-70':0,
+    '70-60':0,
+    '60-50':0,
+    '40-30':0,
+    '30-20':0,
+    '20-10':0,
+    '10-0':0,
+}
 	                
-kai_vac = { '100-90':0,
-            '90-80':0,
-            '80-70':0,
-            '70-60':0,
-            '60-50':0,
-            '40-30':0,
-            '30-20':0,
-            '20-10':0,
-            '10-0':.088}
+kai_vac = { 
+    '100-90':0,
+    '90-80':0,
+    '80-70':0,
+    '70-60':0,
+    '60-50':0,
+    '40-30':0,
+    '30-20':0,
+    '20-10':0,
+    '10-0':.088
+}
             
 ken_inf = {
 	'100-90':0,
@@ -489,32 +497,25 @@ districts = {'kai': {'abbrev':'kai',
 	                'supply':2000
                 }
         }
-'''
 
 
-
-
-
-
-
-'''
 #districts = {
 #	'kai':kailahun,
 #	'ken':kenema,}
-''''kon':kono,
-	'bom':bombali,
-	'kam':kambia,
-	'koi':koinadugu,
-	'por':port_loko,
-	'ton':tonkolili,
-	'bod':bo,
-	'bon':bonthe,
-	'moy':moyamba,
-	'puj':pujehun,
-	'wer':western_rural,
-	'weu':western_urban	
-}
-'''
+#''''kon':kono,
+#	'bom':bombali,
+#	'kam':kambia,
+#	'koi':koinadugu,
+#	'por':port_loko,
+#	'ton':tonkolili,
+#	'bod':bo,
+#	'bon':bonthe,
+#	'moy':moyamba,
+#	'puj':pujehun,
+#	'wer':western_rural,
+#	'weu':western_urban	
+#}
+#'''
 #global districts
 
 def returnDistricsDictionary():
