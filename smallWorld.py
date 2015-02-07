@@ -49,8 +49,25 @@ for vertex in range(126):
         personRepDict['age']=random.randint(15,24)
     elif (percentAge<=100) and (percentAge>58):
         personRepDict['age']=random.randint(0,14)
-        
+    
     graph.append(personRepDict)
+    print type(graph)
+
+nAbstractList = range(1,7) 
+listContactNodes = [] 
+neighborNodes = range(1,7)  
+for vertex in range(len(graph)):
+    #Make clicks on the graph!
+    if (vertex%7)==0: #get to the click
+        for node in range(1,7): #do this for all points in the click
+            neighborNodes.remove(node) #but don't loop to yourself
+            for value in neighborNodes:
+                contactNode = [value, random.randint(5,9)/10]
+                listContactNodes.append(contactNode)
+            neighborNodes.append(node)
+#            personRepDict['inContact']=
+        
+    
 
 #pprint.pprint(graph)
 for vertex in graph:
