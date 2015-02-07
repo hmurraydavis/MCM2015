@@ -1,7 +1,8 @@
 import data
+import pprint
 
 #import the massive district dictionary from Emily's Magick
-numberOfTimeCycles = 1
+numberOfTimeCycles = 2
 
 #Global variables used as such:
 districts = data.returnDistricsDictionary()
@@ -36,8 +37,8 @@ def workers(districts):
         1. innoculation
         2. Education'''
     for district in districts:
-        innoculation = (effect_worker_on_innoculation*district['workers'])
-        education = education + workers/4/100
+        innoculation = (effect_worker_on_innoculation*districts[district]['workers'])
+        districts[district]['education'] = districts[district]['education'] + (districts[district]['workers']/4/100)
     
 def resistance(districts):
     '''Calculate the effect of resistance of people to 
@@ -45,9 +46,11 @@ def resistance(districts):
         1. infection
         2. innoculation
         3. Workers (???)'''
-    for _cycle in range(numberOfTimeCycles):
-        for district in districts:
-            innoculation = district['innoculation'] - effect_resistance_on_innoculation #not right!
+    for district in districts:
+        #Effect of human resistance to vacination on innoculation:
+        districts[district]['innoculation'] = districts[district]['innoculation'] - effect_resistance_on_innoculation #not right!
+        
+        #
     
     
 def education(districts):
@@ -72,16 +75,17 @@ def ProceedOneTimeStep():
     #Call all the model functions!!!
     supply(districts)
     innoculation(districts)
-    #workers(districts)
-    #resistance(districts)
+    workers(districts)
+    resistance(districts)
     #education(districts)
     #infection(districts)
-    #dataOut.append(districts)
-    print dataOut
+    dataOut.append(districts)
+    pprint.pprint(dataOut)
     
-    for district in districts:
-        print 'Abreviation is: ', districts[district]['abbrev']
-        print 'Population is: ', districts[district]['population'], '\n'
+    ###Test that the districts data is coming in correctly: 
+#    for district in districts:
+#        print 'Abreviation is: ', districts[district]['abbrev']
+#        print 'Population is: ', districts[district]['population'], '\n'
     
 
 if __name__ == '__main__':
