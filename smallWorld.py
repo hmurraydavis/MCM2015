@@ -51,7 +51,34 @@ for vertex in range(126):
         personRepDict['age']=random.randint(0,14)
     
     graph.append(personRepDict)
-    print type(graph)
+    #print type(graph)
+
+
+#'inContact':[[n1,weightn1],[n2,weightn2],[n3,weightn3]]
+sizeClique = 7
+n=1
+for vertex in graph:
+    nVtxActl = graph.index(vertex)
+    if (nVtxActl%7)==0:
+        for n in range(1,sizeClique):
+            if (n-1)>0: #Compute set 1
+                s1 = range(1,n-1)
+            else: s1 = []
+            if (n-sizeClique)>0: #Compute set 2
+                s2 = range(n+1,sizeClique)
+            else: s2 = []
+                
+            setS = s1+s2 #the vertisies it would be connected to
+            actualConnectedVerticies = [x+nVtxActl-sizeClique for x in setS]
+            writeList = []
+            for v in actualConnectedVerticies:
+                writeList.append([v,random.randint(5,9)/10])
+        
+#        personRepDict[nVtxActl-sizeClique+n]['inContact']=writeList
+
+
+
+
 
 nAbstractList = range(1,7) 
 listContactNodes = [] 
@@ -71,4 +98,4 @@ for vertex in range(len(graph)):
 
 #pprint.pprint(graph)
 for vertex in graph:
-    print vertex['age']
+    print vertex['inContact']
