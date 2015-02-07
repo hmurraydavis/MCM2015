@@ -1,7 +1,7 @@
 notes = {
 	"population":"number of people in the district",
 	"infected":"percent of people with n risk of death that day",
-	"vaccinated":"percent of people at that susceptibility level",
+	"vaccinated":"percent of people at that vaccinated level", #1-susceptibility
 	"workers":"# of people actively vaccinating others",
 	"resistance":"probability that someone will refuse vaccination",
 	"education":"awareness of the drug and its effects",
