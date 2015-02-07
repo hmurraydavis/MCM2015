@@ -13,8 +13,8 @@ districts = data.returnDistricsDictionary()
 dataOut = [] #array to store the data about the system
 
 #Global variables that aren't really global:
-effect_worker_on_innoculation = 35 #number of people a worker can vacinate in one time step
-effect_resistance_on_innoculation = 20
+effect_worker_on_inoculation = 35 #number of people a worker can vacinate in one time step
+effect_resistance_on_inoculation = 20
 MAX_WORKERS_PER_PERSON = .01
 MIN_WORKERS_PER_PERSON = .001
 
@@ -32,22 +32,23 @@ def getNeighbors(district):
     return districts[district]['neighbors']
 
 def supply(districts, doses):
-    '''Calculate the effect of vacination supply on:
-        1. innoculation
-    Supply is caluclated in # of doses'''
+    '''Calculate the effect of vaccination supply on:
+        1. inoculation
+    Supply is calculated in # of doses'''
     for district in districts:
         place = districts[district]
         place['supply'] = place['supply']- place['workers']*DOSES_PER_WORKER_PER_DAY+doses
         
-def innoculation(districts):
-    '''Calculate the effect of innoculation on:
+def inoculation(districts):
+    '''Calculate the effect of inoculation on:
         1. # of workers
         2. infection '''
     for district in districts:
         place = districts[district]
         '''increase the number of workers'''
         if (place['workers']< MAX_WORKERS_PER_PERSON* place['population']):
-            if (place['vaccinated']["10-0"] > place['population']*.01):
+            sumrisk=place['vaccinated']['100-90']+place['vaccinated']['90-80']+place['vaccinated']['80-70']
+            if (sumrisk > .2):
                 place['workers'] = place['workers']+1
 
         if(place['workers'] > MIN_WORKERS_PER_PERSON *place['population']):
@@ -55,27 +56,27 @@ def innoculation(districts):
 
 def workers(districts):
     '''Calculate the effect of the number of workers on: 
-        1. innoculation
+        1. inoculation
         2. Education'''
     for district in districts:
         place = districts[district]
         num_doses = place['workers']*DOSES_PER_WORKER_PER_DAY
-        for i in range(len(keys)-1, 0):
+        for i in range(len(keys)-1):
             if (place['population']*place['vaccinated'][keys[i]] < num_doses):
                 num_doses = num_doses - place['population']*place['vaccinated'][keys[i]]
                 place['vaccinated'][keys[i+1]] = place['vaccinated'][keys[i]]
 
-        place['education'] = place['education'] + (place['workers']/4/100)
+        place['education'] = place['education'] + (place['workers']/400)
     
 def resistance(districts):
     '''Calculate the effect of resistance of people to 
     receiving the drug on:
         1. infection
-        2. innoculation
+        2. inoculation
         3. Workers (???)'''
     for district in districts:
         place = districts[district]
-        #Effect of human resistance to vacination on innoculation:
+        #Effect of human resistance to vacination on inoculation:
         for risk_level in place['vaccinated']:
             place['vaccinated'][risk_level] = place['vaccinated'][risk_level]*(1-place['resistance'])
 
@@ -114,7 +115,7 @@ def ProceedOneTimeStep():
     
     #Call all the model functions!!!
     supply(districts, 100)
-    innoculation(districts)
+    inoculation(districts)
     workers(districts)
     resistance(districts)
     education(districts)
