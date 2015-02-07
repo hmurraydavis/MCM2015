@@ -15,13 +15,28 @@
 import pprint
 
 graph = []
-for vertex in range(125):
-    graph[vertex] = 3
-#    graph[vertex] = {'n':vertex,
-#        'ebola':0}#,
-#        'demise':'alive',
-#        'natImmunity':.3,
-#        'innocFac':[0],
-#        'pDeath':0.0} 
+cycle=1
+for vertex in range(126):
+    personRepDict = {'n':vertex,
+        'ebola':0,
+        'demise':'alive',
+        'natImmunity':.3,
+        'innocFac':[0],
+        'pDeath':0.0}
+    
+    #set gender of pop to be 6f/4m:
+    if cycle<5:
+        personRepDict['gender']=0
+        cycle=cycle+1
+    elif (cycle<7):
+        personRepDict['gender']=1
+        cycle=cycle+1
+    else:
+        personRepDict['gender']=1
+        cycle = 1
+        
+    graph.append(personRepDict)
 
-pprint.pprint(graph)
+#pprint.pprint(graph)
+for vertex in graph:
+    print vertex['gender']
