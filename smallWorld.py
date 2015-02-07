@@ -133,6 +133,33 @@ def computeProbabilityDeath(personNumber):
     
     return neighbor_death/len(person[contact_list])
 
+computeProbabilityDeath(5)
+
+global graphHistory
+
+def updateGraph(graph):
+    vaccinatePpl()
+    for person in graph:
+        computeVaccineImmunity(person)
+        computeSusceptibilityDisease(person)
+        computeProbabilityDeath(person)
+    
+    graphHistory.append(graph)
+
+
+def stateOfTheGraph():
+    illness = []
+    vaccination = []
+    suceptibility = []
+
+    for person in graph():
+        illness.append()
+
+
+def graphProgress(){
+    
+}
+
 
 ##for vertex in range(len(graph)):
 ##    print 'Node # is: ', graph[vertex]['n']

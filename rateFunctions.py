@@ -3,6 +3,7 @@ import pprint
 import math
 import numpy 
 import matplotlib.pyplot as plt
+import matplotlib.lines as lines
 
 #import the massive district dictionary from Emily's Magick
 numberOfTimeCycles = 2
@@ -132,12 +133,23 @@ def plotDatum(parameter, district):
     for day in dataOut:
         to_plot.append(day[district][parameter])
 
+    return plt.plot(to_plot)
+    #plt.show()
 
-    plt.plot(to_plot)
+def plotDistricts(parameter):
+
+    data = []
+    names = []
+    for district in districts:
+        data.append(plotDatum(parameter, district))
+        names.append(district)
+
+    plt.figlegend(data,names,'upper right')
+    plt.title(parameter)
+    plt.xlabel("Days")
+    plt.ylabel(parameter)
     plt.show()
-    print(to_plot)
-
-
+    
 
 
     
