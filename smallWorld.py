@@ -2,7 +2,7 @@
 
 graph = [ {'gender':0, #0 is female, 1 is male
     'inContact':[[n1,weightn1],[n2,weightn2],[n3,weightn3]], #list of the people they're connected with --> outer list is the connedted verticies, nested list's 0th element is the connected vertex. 1st elemennt is the weight of that edge
-    'demise':'zombie' #state of life-fullness, string, choices: 'dead', 'alive', 'zombie'
+    'demise':'zombie' #state of life-fullness, string, choices: 'burried', 'alive', 'zombie'
     'natImmunity':.30 #Naturally occuring, percent immunity of the person
     'age':20 #integer representing person's age
     'inocFac':[0,0,1,0,0,1,1,0] #list representing the inoculation of the person, 0==not vaccinated on that day, 1==vaccinated that day, index of array is the day
@@ -174,9 +174,28 @@ def computeProbabilityDeath(personNumber):
 
 computeProbabilityDeath(5)
 
+
+def vertexDemise(personNumber):
+    '''manage killing people and turning them into zombies:'''
+    #'demise':'zombie' #state of life-fullness, string, choices: 'burried', 'alive', 'zombie'
+    
+    #move people from alive to dead:
+    theirDeathRand = random.randint(0.0,100.0)/100.0
+    pDeath = computeProbabilityDeath(personNumber)
+    demiseState=graph[personNumber]['demise']
+    if (pDeath >= theirDeathRand) and (demiseState=='alive'):
+        #they're alive and it was their bad day to die
+        graph[personNumber]['demise']='dead'
+    if (demiseState=='zombie') and (theirDeathRand<.35):
+        #they have a 35% chance of being burried on a given day
+        graph[personNumber]['demise']='burried'
+
+
 global graphHistory
 
 def updateGraph(graph):
+    '''Calls the sub functions that will update a single vertex in 
+    the graph. '''
     vaccinatePpl()
     for person in graph:
         computeVaccineImmunity(person)
