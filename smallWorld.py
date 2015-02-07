@@ -69,7 +69,7 @@ for vertex in graph:
             if (sizeClique-n)>0: #Compute set 2
                 s2 = range(n+1,sizeClique+1)                
             setS = s1+s2 #the vertisies it would be connected to
-            actualConnectedVerticies = [x+nVtxActl-sizeClique for x in setS]
+            actualConnectedVerticies = [x+nVtxActl for x in setS]
             writeList = []
             for v in actualConnectedVerticies:
                 writeList.append([v,random.randint(5,9)/10])
