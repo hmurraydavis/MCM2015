@@ -1,7 +1,7 @@
 import data
 
 #import the massive district dictionary from Emily's Magick
-numberOfTimeCycles = 4
+numberOfTimeCycles = 1
 
 #Global variables used as such:
 districts = data.returnDistricsDictionary()
@@ -80,6 +80,7 @@ def ProceedOneTimeStep():
     print dataOut
     
     for district in districts:
+        print 'Abreviation is: ', districts[district]['abbrev']
         print 'Population is: ', districts[district]['population'], '\n'
     
 
