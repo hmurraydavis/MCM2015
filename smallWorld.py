@@ -77,8 +77,8 @@ for vertex in graph:
 
 #Add in some random graph edges to connect the cliques:
 for _i in range(25):
-    parentVertex = random.randint(1,126)
-    childVertex = random.randint(1,126)
+    parentVertex = random.randint(1,125)
+    childVertex = random.randint(1,125)
     edgeWeight = random.randint(30.0,50)/100.0
     if not(childVertex==parentVertex):
         graph[parentVertex]['inContact'].append([childVertex,edgeWeight])
@@ -88,7 +88,25 @@ for _i in range(25):
 #####BEGIN GRAPH THEORY MODEL:######
 ####################################
 
+##DEFINE TUNEABLE VARIABLES:
+supplyVaciene = 300 #doses per day (or time step)
 
+def computeVacieneImmunity(personNumber):
+    #imunity from vaciene increases by .2 per dose
+    #imunity decreases by 1/3 of the increase from vaciene with each day w/out vaciene
+    innocHistory = graph[personNumber]['innocFac']
+    innocProb = 0
+    for day in innocHistory:
+        if (day==0) and (innocProb > 0): 
+            #they didn't get the vaciene and they still have some imunity from previous doses
+            innocProb = innocProb - (.2/3.0)
+        elif day==1:
+            #They got the vaciene and will have more immunity! Yeah!
+            innocProb = innocProb + .2
+    return innocProb
+    
+computeVacieneImmunity(5)
+        
 
 
 ##for vertex in range(len(graph)):
