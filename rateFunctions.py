@@ -42,17 +42,24 @@ def supply(districts, doses):
 def inoculation(districts):
     '''Calculate the effect of inoculation on:
         1. # of workers
-        2. infection '''
+        2. infection'''
     for district in districts:
         place = districts[district]
         '''increase the number of workers'''
         if (place['workers']< MAX_WORKERS_PER_PERSON* place['population']):
-            sumrisk=place['vaccinated']['100-90']+place['vaccinated']['90-80']+place['vaccinated']['80-70']
+            sumrisk=place['vaccinated']['10-0']+place['vaccinated']['20-10']+place['vaccinated']['30-20']
             if (sumrisk > .2):
                 place['workers'] = place['workers']+1
 
         if(place['workers'] > MIN_WORKERS_PER_PERSON *place['population']):
             place['workers'] = place['workers']-1
+            
+        for i in range(len(keys)):
+            for j in range(1,len(keys)):
+                jinf=place['infected'][keys][j]]
+                ivac=place['vaccinated'][keys[i]]
+                place['infected'][keys[j-1]]=place['infected'][keys[j-1]]+ivac*jinf
+                jinf=jinf*(1-ivac)
 
 def workers(districts):
     '''Calculate the effect of the number of workers on: 
@@ -66,7 +73,7 @@ def workers(districts):
                 num_doses = num_doses - place['population']*place['vaccinated'][keys[i]]
                 place['vaccinated'][keys[i+1]] = place['vaccinated'][keys[i]]
 
-        place['education'] = place['education'] + (place['workers']/400)
+        place['education'] = place['education'] + (75/place['population'])*place['workers'])
     
 def resistance(districts):
     '''Calculate the effect of resistance of people to 
@@ -92,7 +99,8 @@ def education(districts):
     
 def infection(districts): 
     '''Calculates the effect of infection on:
-        1. Population'''
+        1. Population
+        2. Infection'''
     for district in districts:
         place = districts[district]
         percent_infected = 0
@@ -101,7 +109,7 @@ def infection(districts):
             place['infected'][keys[i]] = place['infected'][keys[i+1]]
             percent_infected = percent_infected + place['infected'][keys[i]]
 
-        place['infected']['20-10'] = place['infected']['10-0'] * (percent_infected)-(place['vaccinated']['100-90'])
+        place['infected']['20-10'] = place['infected']['10-0'] * ((percent_infected)-(place['vaccinated']['100-90']))
         percent_infected = percent_infected + place['infected']['20-10']
 
         place['infected']['10-0'] = 1 - percent_infected
