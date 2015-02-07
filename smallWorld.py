@@ -122,6 +122,18 @@ def computeSuspectabilityDisease(personNumber):
     return suspectability
 
 computeSuspectabilityDisease(5)
+
+def computeProbabilityDeath(personNumber):
+    person = graph[personNumber]
+    if len(person[contact_list]) == 0:
+        return person[pdeath]
+    neighbor_death = 0
+    for contact in person[contact_list]{
+        neighbor_death = neighbor_death + (graph[contact[0]][pdeath]*graph[contact[1]])
+    
+    return neighbor_death/len(person[contact_list])
+
+
 ##for vertex in range(len(graph)):
 ##    print 'Node # is: ', graph[vertex]['n']
 ##    print 'Connected to:', graph[vertex]['inContact'] 
