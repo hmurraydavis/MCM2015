@@ -1,6 +1,8 @@
 import data
 import pprint
 import math
+import numpy 
+import matplotlib.pyplot as plt
 
 #import the massive district dictionary from Emily's Magick
 numberOfTimeCycles = 2
@@ -45,7 +47,7 @@ def innoculation(districts):
         '''increase the number of workers'''
         if (place['workers']< MAX_WORKERS_PER_PERSON* place['population']):
             if (place['vaccinated']["10-0"] > place['population']*.01):
-                place[workers] = place[workers]+1
+                place['workers'] = place['workers']+1
 
         if(place['workers'] > MIN_WORKERS_PER_PERSON *place['population']):
             place['workers'] = place['workers']-1
@@ -56,7 +58,12 @@ def workers(districts):
         2. Education'''
     for district in districts:
         place = districts[district]
-        innoculation = (effect_worker_on_innoculation*place['workers'])
+        num_doses = place['workers']*DOSES_PER_WORKER_PER_DAY
+        for i in range(len(keys)-1, 0):
+            if (place['population']*place['vaccinated'][keys[i]] < num_doses):
+                num_doses = num_doses - place['population']*place['vaccinated'][keys[i]]
+                place['vaccinated'][keys[i+1]] = place['vaccinated'][keys[i]]
+
         place['education'] = place['education'] + (place['workers']/4/100)
     
 def resistance(districts):
@@ -78,7 +85,7 @@ def education(districts):
         1. RESISTANCE to being vacinated (less resistance)'''
     for district in districts:
         place = districts[district]
-        place['resistance'] = place['resistance']*(1-math.log(place['education']))
+        place['resistance'] = place['resistance']*(place['education'])
     
     
 def infection(districts): 
@@ -92,7 +99,7 @@ def infection(districts):
             place['infected'][keys[i]] = place['infected'][keys[i+1]]
             percent_infected = percent_infected + place['infected'][keys[i]]
 
-        place['infected']['20-10'] = place['infected']['10-0'] * (percent_infected)/(place['vaccinated']['100-90'])
+        place['infected']['20-10'] = place['infected']['10-0'] * (percent_infected)-(place['vaccinated']['100-90'])
         percent_infected = percent_infected + place['infected']['20-10']
 
         place['infected']['10-0'] = 1 - percent_infected
@@ -102,6 +109,7 @@ def ProceedOneTimeStep():
     '''Advances the model by one time step'''
     global districts
     global dataOut
+
     
     #Call all the model functions!!!
     supply(districts, 100)
@@ -117,6 +125,21 @@ def ProceedOneTimeStep():
 #    for district in districts:
 #        print 'Abreviation is: ', districts[district]['abbrev']
 #        print 'Population is: ', districts[district]['population'], '\n'
+
+def plotDatum(parameter, district):
+    to_plot = []
+
+    for day in dataOut:
+        to_plot.append(day[district][parameter])
+
+
+    plt.plot(to_plot)
+    plt.show()
+    print(to_plot)
+
+
+
+
     
 
 if __name__ == '__main__':
