@@ -59,14 +59,15 @@ sizeClique = 7
 n=0
 for vertex in graph:
     nVtxActl = graph.index(vertex)
+    print nVtxActl
 #    nVtxActl = vertex['n']
     if (nVtxActl%7)==0:
         for n in range(0,sizeClique):
             s1 = []; s2=[]
             if (n-1)>0: #Compute set 1
-                s1 = range(1,n-1)
-            if (n-sizeClique)>0: #Compute set 2
-                s2 = range(n+1,sizeClique)                
+                s1 = range(1,n-1+1)
+            if (sizeClique-n)>0: #Compute set 2
+                s2 = range(n+1,sizeClique+1)                
             setS = s1+s2 #the vertisies it would be connected to
             actualConnectedVerticies = [x+nVtxActl-sizeClique for x in setS]
             writeList = []
