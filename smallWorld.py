@@ -1,4 +1,6 @@
-'''graph = [ {'gender':0, #0 is female, 1 is male
+'''Graph is set up as a list of dictionaries of form: 
+
+graph = [ {'gender':0, #0 is female, 1 is male
     'inContact':[[n1,weightn1],[n2,weightn2],[n3,weightn3]], #list of the people they're connected with --> outer list is the connedted verticies, nested list's 0th element is the connected vertex. 1st elemennt is the weight of that edge
     'demise':'zombie' #state of life-fullness, string, choices: 'dead', 'alive', 'zombie'
     'natImmunity':.30 #Naturally occuring, percent immunity of the person
@@ -15,9 +17,12 @@
 import pprint
 import random
 
-graph = []
-cycle=1
+####################################
+#####INITALIZE AND SETUP GRAPH:#####
+####################################
 
+graph = []
+cycle=1 #for gender toggle, don't change
 for vertex in range(126):
     personRepDict = {'n':vertex,
         'ebola':0,
@@ -51,51 +56,66 @@ for vertex in range(126):
         personRepDict['age']=random.randint(0,14)
     
     graph.append(personRepDict)
-    #print type(graph)
 
-
-#'inContact':[[n1,weightn1],[n2,weightn2],[n3,weightn3]]
+#add a vertex's clique pals as edges:
 sizeClique = 7
-n=1
+n=0
 for vertex in graph:
     nVtxActl = graph.index(vertex)
     if (nVtxActl%7)==0:
-        for n in range(1,sizeClique):
-            if (n-1)>0: #Compute set 1
-                s1 = range(1,n-1)
-            else: s1 = []
-            if (n-sizeClique)>0: #Compute set 2
-                s2 = range(n+1,sizeClique)
-            else: s2 = []
-                
-            setS = s1+s2 #the vertisies it would be connected to
-            actualConnectedVerticies = [x+nVtxActl-sizeClique for x in setS]
+        for n in range(0,sizeClique):
+            s1 = []; s2=[]
+            s1 = range(0,n-1+1)
+            s2 = range(n+1,sizeClique)             
+            setS = s1+s2 #the vertices it would be connected to
+            actualConnectedVertices = [x+nVtxActl for x in setS]
             writeList = []
-            for v in actualConnectedVerticies:
-                writeList.append([v,random.randint(5,9)/10])
-        
-#        personRepDict[nVtxActl-sizeClique+n]['inContact']=writeList
+            for v in actualConnectedVertices:
+                writeList.append([v,random.randint(50.0,90)/100.0])      
+            graph[nVtxActl+n]['inContact']=writeList
 
 
+#Add in some random graph edges to connect the cliques:
+for _i in range(25):
+    parentVertex = random.randint(1,125)
+    childVertex = random.randint(1,125)
+    edgeWeight = random.randint(30.0,50)/100.0
+    if not(childVertex==parentVertex):
+        graph[parentVertex]['inContact'].append([childVertex,edgeWeight])
+#        print graph[parentVertex]['inContact']
 
+####################################
+#####BEGIN GRAPH THEORY MODEL:######
+####################################
 
+##DEFINE TUNEABLE VARIABLES:
+supplyVaciene = 300 #doses per day (or time step)
 
-nAbstractList = range(1,7) 
-listContactNodes = [] 
-neighborNodes = range(1,7)  
-for vertex in range(len(graph)):
-    #Make clicks on the graph!
-    if (vertex%7)==0: #get to the click
-        for node in range(1,7): #do this for all points in the click
-            neighborNodes.remove(node) #but don't loop to yourself
-            for value in neighborNodes:
-                contactNode = [value, random.randint(5,9)/10]
-                listContactNodes.append(contactNode)
-            neighborNodes.append(node)
-#            personRepDict['inContact']=
-        
+def computeVacieneImmunity(personNumber):
+    '''Computes the acquired imunity from receiving a vaciene. 
+    #imunity from vaciene increases by .2 per dose
+    #imunity decreases by 1/3 of the increase from vaciene with each day w/out vaciene'''
+    innocHistory = graph[personNumber]['innocFac']
+    innocProb = 0
+    for day in innocHistory:
+        if (day==0) and (innocProb > 0): 
+            #they didn't get the vaciene and they still have some imunity from previous doses
+            innocProb = innocProb - (.2/3.0)
+        elif day==1:
+            #They got the vaciene and will have more immunity! Yeah!
+            innocProb = innocProb + .2
+    return innocProb
+
+def vaccinatePpl():
+    '''performs triage on the population by looping through it and 
+    accessing fctors untill all of the supplied vaciene is gone'''
+    for person in graph:
+        graph[person]
     
+computeVacieneImmunity(5)
+        
 
-#pprint.pprint(graph)
-for vertex in graph:
-    print vertex['inContact']
+
+##for vertex in range(len(graph)):
+##    print 'Node # is: ', graph[vertex]['n']
+##    print 'Connected to:', graph[vertex]['inContact'] 
