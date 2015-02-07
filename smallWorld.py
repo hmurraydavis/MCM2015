@@ -64,16 +64,15 @@ for vertex in graph:
     if (nVtxActl%7)==0:
         for n in range(0,sizeClique):
             s1 = []; s2=[]
-            if (n-1)>0: #Compute set 1
-                s1 = range(1,n-1+1)
-            if (sizeClique-n)>0: #Compute set 2
-                s2 = range(n+1,sizeClique+1)                
+            s1 = range(0,n-1+1)
+            s2 = range(n+1,sizeClique)             
             setS = s1+s2 #the vertisies it would be connected to
             actualConnectedVerticies = [x+nVtxActl for x in setS]
+            print 'actualConnectedVerticies: ', actualConnectedVerticies
             writeList = []
             for v in actualConnectedVerticies:
                 writeList.append([v,random.randint(5,9)/10])
-        
+#                print 'v: ',v,         
             graph[nVtxActl-sizeClique+n]['inContact']=writeList
 
 
@@ -83,7 +82,8 @@ for vertex in graph:
 
 #pprint.pprint(graph)
 for vertex in range(len(graph)):
-    print graph[vertex]['n']
-    pprint.pprint(graph[vertex]) 
-    print
+    h=2
+#    print graph[vertex]['n']
+#    pprint.pprint(graph[vertex]) 
+#    print
 #    print graph[0]
