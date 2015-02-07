@@ -70,8 +70,16 @@ for vertex in graph:
             graph[nVtxActl+n]['inContact']=writeList
 
 
+#Add in some random graph edges to connect the cliques:
+for _i in range(25):
+    parentVertex = random.randint(1,126)
+    childVertex = random.randint(1,126)
+    edgeWeight = random.randint(30.0,50)/100.0
+    if not(childVertex==parentVertex):
+        graph[parentVertex]['inContact'].append([childVertex,edgeWeight])
+#        print graph[parentVertex]['inContact']
 
-for vertex in range(len(graph)):
-    print 'Node # is: ', graph[vertex]['n']
-    print 'Connected to:', graph[vertex]['inContact']
+##for vertex in range(len(graph)):
+##    print 'Node # is: ', graph[vertex]['n']
+##    print 'Connected to:', graph[vertex]['inContact']
     
