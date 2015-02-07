@@ -34,6 +34,11 @@ kai_vac = {
     '20-10':0,
     '10-0':.088
 }
+
+kai_neigh = {
+	'kon':1,
+	'ken':1
+}
             
 ken_inf = {
 	'100-90':0,
@@ -58,6 +63,14 @@ ken_vac = {
 	'20-10':0,
 	'10-0':.07,}
 
+ken_neigh = {
+	'kai':1,
+	'kon':1,
+	'ton':1,
+	'bod':1,
+	'puj':1
+}
+
 kon_inf = {
 	'100-90':0,
 	'90-80':0,
@@ -80,6 +93,13 @@ kon_vac = {
 	'30-20':0,
 	'20-10':0,
 	'10-0':.123,
+}
+
+kon_neigh = {
+	'kai':1,
+	'ken':1,
+	'ton':1,
+	'koi':1
 }
 
 bom_inf = {
@@ -106,6 +126,13 @@ bom_vac = {
 	'10-0':.1,
 }
 
+bom_neigh = {
+	'kam':1,
+	'por':1,
+	'ton':1,
+	'koi':1
+}
+
 kam_inf = {
 	'100-90':0,
 	'90-80':0,
@@ -128,6 +155,11 @@ kam_vac = {
 	'30-20':0,
 	'20-10':0,
 	'10-0':0,
+}
+
+kam_neigh = {
+	'por':1,
+	'bom':1
 }
 
 koi_inf = {
@@ -154,6 +186,12 @@ koi_vac = {
 	'10-0':.14,
 }
 
+koi_neigh = {
+	'bom':1,
+	'ton':1,
+	'kon':1
+}
+
 por_inf = {
 	'100-90':0,
 	'90-80':0,
@@ -176,6 +214,14 @@ por_vac = {
 	'30-20':0,
 	'20-10':0,
 	'10-0':0,
+}
+
+por_neigh = {
+	'kam':1,
+	'bom':1,
+	'ton':1,
+	'moy':1,
+	'wur':1
 }
 
 ton_inf = {
@@ -202,6 +248,17 @@ ton_vac = {
 	'10-0':.07,
 }
 
+ton_neigh = {
+	'por':1,
+	'bom':1,
+	'koi':1,
+	'kon':1,
+	'ken':1,
+	'bod':1,
+	'moy':1,
+	'por':1	
+}
+
 bod_inf = {
 	'100-90':0,
 	'90-80':0,
@@ -226,6 +283,14 @@ bod_vac = {
 	'10-0':07,
 }
 
+bod_neigh = {
+	'ton':1,
+	'ken':1,
+	'puj':1,
+	'bon':1,
+	'moy':1
+}
+
 bon_inf = {
 	'100-90':0,
 	'90-80':0,
@@ -248,6 +313,12 @@ bon_vac = {
 	'30-20':0,
 	'20-10':0,
 	'10-0':0,
+}
+
+bon_neigh = {
+	'moy':1,
+	'bod':1,
+	'puj':1
 }
 
 moy_inf = {
@@ -356,7 +427,8 @@ districts = {'kai': {'abbrev':'kai',
 	            'workers':1,
 	            'resistance':.25,
 	            'education':.1,
-	            'supply':4000
+	            'supply':4000,
+	            'neighbors':kai_neigh,
                 },
                 
             'ken': {'abbrev':'ken',
@@ -366,7 +438,9 @@ districts = {'kai': {'abbrev':'kai',
 	                'workers':1,
 	                'resistance':.2,
 	                'education':.2,
-	                'supply':2000},
+	                'supply':2000,
+	                'neighbors':ken_neigh
+	                },
 	                
             'kono' : {'abbrev':'kon',
 	                'population':497948,
@@ -375,7 +449,8 @@ districts = {'kai': {'abbrev':'kai',
 	                'workers':1,
 	                'resistance':.2,
 	                'education':.2,
-	                'supply':2000
+	                'supply':2000,
+	                'neighbors':kon_neigh
                 },
                 
             'bombali' : {
@@ -386,7 +461,8 @@ districts = {'kai': {'abbrev':'kai',
 	                'workers':1,
 	                'resistance':.2,
 	                'education':.2,
-	                'supply':2000
+	                'supply':2000,
+	                'neighbors':bom_neigh
                 },
                 
             'kambia' : {
@@ -397,7 +473,8 @@ districts = {'kai': {'abbrev':'kai',
 	                'workers':1,
 	                'resistance':.2,
 	                'education':.2,
-	                'supply':2000
+	                'supply':2000,
+	                'neighbors':kam_neigh
                 },
                 
             "koinadugu" : {
@@ -408,7 +485,8 @@ districts = {'kai': {'abbrev':'kai',
 	                'workers':1,
 	                'resistance':.2,
 	                'education':.2,
-	                'supply':2000
+	                'supply':2000,
+	                'neighbors':koi_neigh
                 },
                 
             'port_loko' : {
@@ -419,7 +497,8 @@ districts = {'kai': {'abbrev':'kai',
 	                'workers':1,
 	                'resistance':.2,
 	                'education':.2,
-	                'supply':2000
+	                'supply':2000,
+	                'neighbors':por_neigh,
                 },
                 
             'tonkolili' : {
@@ -430,7 +509,8 @@ districts = {'kai': {'abbrev':'kai',
 	                'workers':1,
 	                'resistance':.2,
 	                'education':.2,
-	                'supply':2000
+	                'supply':2000,
+	                'neighbors':ton_neigh
                 },
                 
                 'bo' : {
@@ -441,7 +521,8 @@ districts = {'kai': {'abbrev':'kai',
 	                'workers':1,
 	                'resistance':.2,
 	                'education':.2,
-	                'supply':2000
+	                'supply':2000,
+	                'neighbors':bod_neigh
                 },
 
                 'bonthe' : {
@@ -452,7 +533,8 @@ districts = {'kai': {'abbrev':'kai',
 	                'workers':1,
 	                'resistance':.2,
 	                'education':.2,
-	                'supply':2000
+	                'supply':2000,
+	                'neighbors':bon_neigh
                 },
 
                 'moyamba' : {
@@ -463,7 +545,9 @@ districts = {'kai': {'abbrev':'kai',
 	                'workers':1,
 	                'resistance':.2,
 	                'education':.2,
-	                'supply':2000
+	                'supply':2000,
+	                'neighbors':moy_neigh
+
                 },
 
                 'pujehun' : {
@@ -474,7 +558,8 @@ districts = {'kai': {'abbrev':'kai',
 	                'workers':1,
 	                'resistance':.2,
 	                'education':.2,
-	                'supply':2000
+	                'supply':2000,
+	                'neighbors':puj_neigh
                 },
 
                 'western_rural' : {
@@ -485,7 +570,8 @@ districts = {'kai': {'abbrev':'kai',
 	                'workers':1,
 	                'resistance':.2,
 	                'education':.2,
-	                'supply':2000
+	                'supply':2000,
+	                'neighbors':wer_neigh
                 },
 
                 'western_urban' : {
@@ -496,29 +582,10 @@ districts = {'kai': {'abbrev':'kai',
 	                'workers':1,
 	                'resistance':.2,
 	                'education':.2,
-	                'supply':2000
+	                'supply':2000,
+	                'neighbors':weu_neigh
                 }
         }
-
-
-#districts = {
-#	'kai':kailahun,
-#	'ken':kenema,}
-#''''kon':kono,
-#	'bom':bombali,
-#	'kam':kambia,
-#	'koi':koinadugu,
-#	'por':port_loko,
-#	'ton':tonkolili,
-#	'bod':bo,
-#	'bon':bonthe,
-#	'moy':moyamba,
-#	'puj':pujehun,
-#	'wer':western_rural,
-#	'weu':western_urban	
-#}
-#'''
-#global districts
 
 def returnDistricsDictionary():
     return districts
