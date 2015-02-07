@@ -95,7 +95,7 @@ def computeVaccineImmunity(personNumber):
     '''Computes the acquired imunity from receiving a vaccine. 
     #immunity from vaccine increases by .2 per dose
     #immunity decreases by 1/3 of the increase from vaccine with each day w/out vaccine'''
-    inocHistory = graph[personNumber]['innocFac']
+    inocHistory = graph[personNumber]['inocFac']
     inocProb = 0
     for day in inocHistory:
         if (day==0) and (inocProb > 0): 
