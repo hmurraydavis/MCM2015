@@ -221,7 +221,7 @@ por_neigh = {
 	'bom':1,
 	'ton':1,
 	'moy':1,
-	'wur':1
+	'wer':1
 }
 
 ton_inf = {
@@ -345,6 +345,14 @@ moy_vac = {
 	'10-0':0,
 }
 
+moy_neigh = {
+	'wer':1,
+	'por':1,
+	'ton':1,
+	'bod':1,
+	'bon':1
+}
+
 puj_inf = {
 	'100-90':0,
 	'90-80':0,
@@ -369,7 +377,13 @@ puj_vac = {
 	'10-0':0,
 }
 
-wur_inf ={
+puj_neigh = {
+	'bon':1,
+	'bod':1,
+	'ken':1
+}
+
+wer_inf ={
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -381,7 +395,7 @@ wur_inf ={
 	'10-0':0,
 }
 
-wur_vac = { 
+wer_vac = { 
 	'100-90':0,
 	'90-80':0,
 	'80-70':0,
@@ -391,6 +405,12 @@ wur_vac = {
 	'30-20':0,
 	'20-10':0,
 	'10-0':0,
+}
+
+wer_neigh = {
+	'por':1,
+	'moy':1,
+	'weu':1
 }
 
 weu_inf = {
@@ -415,6 +435,10 @@ weu_vac = {
 	'30-20':0,
 	'20-10':0,
 	'10-0':0,
+}
+
+weu_neigh = {
+	'wer':1
 }
 	                
 #########################################
@@ -565,8 +589,8 @@ districts = {'kai': {'abbrev':'kai',
                 'western_rural' : {
 	                'abbrev':'wer',
 	                'population':174249,
-	                'infected': wur_inf,
-	                'vaccinated': wur_vac,
+	                'infected': wer_inf,
+	                'vaccinated': wer_vac,
 	                'workers':1,
 	                'resistance':.2,
 	                'education':.2,
