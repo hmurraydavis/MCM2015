@@ -13,9 +13,11 @@
 ]'''
 
 import pprint
+import random
 
 graph = []
 cycle=1
+
 for vertex in range(126):
     personRepDict = {'n':vertex,
         'ebola':0,
@@ -35,8 +37,21 @@ for vertex in range(126):
         personRepDict['gender']=1
         cycle = 1
         
+    #Set ages of the population!!!
+    percentAge=random.randint(0,100)
+    if (percentAge<=4):
+        personRepDict['age']=random.randint(65,80)
+    elif (percentAge<=8) and (percentAge>4):
+        personRepDict['age']=random.randint(55,64)
+    elif (percentAge<=39) and (percentAge>8):
+        personRepDict['age']=random.randint(25,54)
+    elif (percentAge<=58) and (percentAge>39):
+        personRepDict['age']=random.randint(15,24)
+    elif (percentAge<=100) and (percentAge>58):
+        personRepDict['age']=random.randint(0,14)
+        
     graph.append(personRepDict)
 
 #pprint.pprint(graph)
 for vertex in graph:
-    print vertex['gender']
+    print vertex['age']
