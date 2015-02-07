@@ -92,8 +92,9 @@ for _i in range(25):
 supplyVaciene = 300 #doses per day (or time step)
 
 def computeVacieneImmunity(personNumber):
+    '''Computes the acquired imunity from receiving a vaciene. 
     #imunity from vaciene increases by .2 per dose
-    #imunity decreases by 1/3 of the increase from vaciene with each day w/out vaciene
+    #imunity decreases by 1/3 of the increase from vaciene with each day w/out vaciene'''
     innocHistory = graph[personNumber]['innocFac']
     innocProb = 0
     for day in innocHistory:
@@ -104,6 +105,12 @@ def computeVacieneImmunity(personNumber):
             #They got the vaciene and will have more immunity! Yeah!
             innocProb = innocProb + .2
     return innocProb
+
+def vaccinatePpl():
+    '''performs triage on the population by looping through it and 
+    accessing fctors untill all of the supplied vaciene is gone'''
+    for person in graph:
+        graph[person]
     
 computeVacieneImmunity(5)
         
