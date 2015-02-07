@@ -367,6 +367,7 @@ districts = {'kai': {'abbrev':'kai',
 	                'resistance':.2,
 	                'education':.2,
 	                'supply':2000},
+	                
             'kono' : {'abbrev':'kon',
 	                'population':497948,
 	                'infected': kon_inf,
@@ -409,6 +410,7 @@ districts = {'kai': {'abbrev':'kai',
 	                'education':.2,
 	                'supply':2000
                 },
+                
             'port_loko' : {
 	                'abbrev':'por',
 	                'population':497948,
