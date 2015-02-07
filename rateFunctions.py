@@ -1,5 +1,6 @@
 import data
 import pprint
+import math
 
 #import the massive district dictionary from Emily's Magick
 numberOfTimeCycles = 2
@@ -11,6 +12,10 @@ dataOut = [] #array to store the data about the system
 #Global variables that aren't really global:
 effect_worker_on_innoculation = 35 #number of people a worker can vacinate in one time step
 effect_resistance_on_innoculation = 20
+MAX_WORKERS_PER_PERSON = .01
+MIN_WORKERS_PER_PERSON = .001
+
+DOSES_PER_WORKER_PER_DAY = 50
 
 keys = ('100-90','90-80','80-70', '70-60','60-50','50-40','40-30','30-20','20-10','10-0')
 
@@ -23,12 +28,13 @@ def getVaccinated(district):
 def getNeighbors(district):
     return districts[district]['neighbors']
 
-def supply(districts):
+def supply(districts, doses):
     '''Calculate the effect of vacination supply on:
         1. innoculation
     Supply is caluclated in # of doses'''
-    supply = 96
-        
+    for district in districts:
+        place = districts[district]
+        place['supply'] = place['supply']- place['workers']*DOSES_PER_WORKER_PER_DAY+doses
         
 def innoculation(districts):
     '''Calculate the effect of innoculation on:
@@ -62,17 +68,17 @@ def resistance(districts):
     for district in districts:
         place = districts[district]
         #Effect of human resistance to vacination on innoculation:
-        place['innoculation'] = place['innoculation'] - effect_resistance_on_innoculation #not right!
-        
+        for risk_level in place['vaccinated']:
+            place['vaccinated'][risk_level] = place['vaccinated'][risk_level]*(1-place['resistance'])
+
         #
-    
     
 def education(districts):
     '''Calculate the effect of education on:
         1. RESISTANCE to being vacinated (less resistance)'''
     for district in districts:
-        place = district[districts]
-        place['resistance'] = place['resistance']*(1-log(place['education']))
+        place = districts[district]
+        place['resistance'] = place['resistance']*(1-math.log(place['education']))
     
     
 def infection(districts): 
@@ -80,21 +86,30 @@ def infection(districts):
         1. Population'''
     for district in districts:
         place = districts[district]
-        population = population - place['infection']['100-90']*population
-        place['infection']['90-100'] = 0 #'''assume nobody else dies'''
-        
+        percent_infected = 0
+        place['population'] = place['population']- place['infected']['100-90']*place['population']
+        for i in range(0,len(keys)-2):
+            place['infected'][keys[i]] = place['infected'][keys[i+1]]
+            percent_infected = percent_infected + place['infected'][keys[i]]
+
+        place['infected']['20-10'] = place['infected']['10-0'] * (percent_infected)/(place['vaccinated']['100-90'])
+        percent_infected = percent_infected + place['infected']['20-10']
+
+        place['infected']['10-0'] = 1 - percent_infected
+
+    
 def ProceedOneTimeStep():
     '''Advances the model by one time step'''
     global districts
     global dataOut
     
     #Call all the model functions!!!
-    supply(districts)
+    supply(districts, 100)
     innoculation(districts)
     workers(districts)
     resistance(districts)
-    #education(districts)
-    #infection(districts)
+    education(districts)
+    infection(districts)
     dataOut.append(districts)
     pprint.pprint(dataOut)
     
