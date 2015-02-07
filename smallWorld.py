@@ -187,31 +187,34 @@ def vertexDemise(personNumber):
         #they have a 35% chance of being burried on a given day
         graph[personNumber]['demise']='burried'
         for person in graph:
-            for edges in graph[person]['inContact']
-                if graph[person]['inContact'][0] == personNumber
+            for edges in graph[person]['inContact']:
+                if graph[person]['inContact'][0] == personNumber:
                     graph[person]['inContact'][1] = 0
     elif (demiseState=='zombie'):
         #increase risk of death for a zombie's connections the longer they aren't burried
         for person in graph:
-            for edges in graph[person]['inContact']
-                if graph[person]['inContact'][0] == personNumber
+            for edges in graph[person]['inContact']:
+                if graph[person]['inContact'][0] == personNumber:
                     graph[person]['inContact'][1] = graph[person]['inContact'][1]+.05
+
+vertexDemise(5)
 
 def contactEbola(personNumber):
     '''Compute the risk of a person contacting Ebola and if they do, 
     change their Ebola state to true'''
     ebolaRisk = 0
     numConnectionsWEbola = 0 # # of their connections w/ ebola
-    randEbolaNum = random.randint(0.0,100,0)/100.0
+    randEbolaNum = random.randint(1.0,100.0)/100.0
     for connection in graph[personNumber]['inContact']:
         #Sum the probability of them getting ebola
         if graph[connection[0]]['ebola']==1:
             ebolaRisk = ebolaRisk + graph[connection][1]
             numConnectionsWEbola = numConnectionsWEbola+1
-    if (randEbolaNum<=(ebolaRisk/numConnectionsWEbola)):
-        #set node's' ebola boolean high if generated probability was high enough.
+    if (numConnectionsWEbola>0) and (randEbolaNum<=(ebolaRisk/numConnectionsWEbola)):
+        #set node's ebola boolean high if generated probability was high enough.
         graph[personNumber]['ebola']=1
-            
+
+contactEbola(5)            
 global graphHistory
 global graphStats
 
