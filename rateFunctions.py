@@ -1,8 +1,10 @@
+import data
+
 #import the massive district dictionary from Emily's Magick
 numberOfTimeCycles = 4
 
 #Global variables used as such:
-districts = {}
+districts = data.returnDistricsDictionary()
 dataOut = [] #array to store the data about the system
 
 #Global variables that aren't really global:
@@ -22,12 +24,12 @@ def innoculation(districts):
         2. infection '''
     for district in districts:
         '''increase the number of workers'''
-        if (district[workers]< .6* district[population]):
-            if (district[vaccinated["0-10"]] > district[population]*.01){
+        if (districts[district]['workers']< .6* districts[district]['population']):
+            if (districts[district]['vaccinated']["10-0"] > districts[district]['population']*.01):
                 district[workers] = district[workers]+1
 
-        if(district[workers] > .1 *district[population]):
-            district[workers] = district[workers]-1
+        if(districts[district]['workers'] > .1 *districts[district]['population']):
+            districts[district]['workers'] = districts[district]['workers']-1
 
 def workers(districts):
     '''Calculate the effect of the number of workers on: 
@@ -51,8 +53,8 @@ def resistance(districts):
 def education(districts):
     '''Calculate the effect of education on:
         1. RESISTANCE to being vacinated (less resistance)'''
-        for district in districts:
-            district[resistance] = district[resistance]*(1-log(district[education]))
+    for district in districts:
+        district[resistance] = district[resistance]*(1-log(district[education]))
     
     
 def infection(districts): 
@@ -60,7 +62,7 @@ def infection(districts):
         1. Population'''
     for district in districts:
         population = population - district[infection[90-100]]*population
-        district[infection[90-100]] = 0'''assume nobody else dies'''
+        districts[district]['infection']['90-100'] = 0 #'''assume nobody else dies'''
         
 def ProceedOneTimeStep():
     '''Advances the model by one time step'''
@@ -70,12 +72,15 @@ def ProceedOneTimeStep():
     #Call all the model functions!!!
     supply(districts)
     innoculation(districts)
-    workers(districts)
-    resistance(districts)
-    education(districts)
-    infection(districts)
-    dataOut.append(districts)
+    #workers(districts)
+    #resistance(districts)
+    #education(districts)
+    #infection(districts)
+    #dataOut.append(districts)
     print dataOut
+    
+    for district in districts:
+        print 'Population is: ', districts[district]['population'], '\n'
     
 
 if __name__ == '__main__':
