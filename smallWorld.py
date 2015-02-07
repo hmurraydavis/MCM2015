@@ -109,19 +109,58 @@ def computeVaccineImmunity(personNumber):
 def vaccinatePpl():
     '''performs triage on the population by looping through it and 
     accessing factors untill all of the supplied vaccine is gone'''
+def vaccinatePpl():
+    sup = supplyVaccine
+    ill = []
+    two0_inoc = []
+    one0_inoc = []
+    1_inoc = []
     for person in graph:
-        graph[person]
+        if graph[person][pdeath]<0.4:
+            if graph[person][ebola]==1:
+                ill.append(graph[person])
+            elif graph[person][inocFac][-1]==0:
+                if graph[person][inocFac][-2]==0:
+                    two0_inoc.append(graph[person])
+                else:
+                    one0_inoc.append(graph[person])
+            else: 
+                1_inoc.append(graph[person])
+    for person in ill:
+        if sup>0:
+            graph[person][inocFac].append(1)
+            sup=sup-1
+        else:
+            break
+    for person in two0_inoc:
+        if sup>0:
+            graph[person][inocFac].append(1)
+            sup=sup-1
+        else:
+            break
+    for person in one0_inoc:
+        if sup>0:
+            graph[person][inocFac].append(1)
+            sup=sup-1
+        else:
+            break
+    for person in 1_inoc:
+        if sup>0:
+            graph[person][inocFac].append(1)
+            sup=sup-1
+        else:
+            break
     
 computeVaccineImmunity(5)
         
-def computeSuspectabilityDisease(personNumber):
+def computeSusceptabilityDisease(personNumber):
     natImmunity = graph[personNumber]['natImmunity']
-    innocFac = computeVacieneImmunity(personNumber)
+    inocFac = computeVaccineImmunity(personNumber)
     
-    suspectability = (1-natImmunity)*(1-innocFac)
-    return suspectability
+    susceptability = (1-natImmunity)*(1-inocFac)
+    return susceptability
 
-computeSuspectabilityDisease(5)
+computeSusceptabilityDisease(5)
 
 def computeProbabilityDeath(personNumber):
     person = graph[personNumber]
