@@ -107,25 +107,22 @@ def computeVaccineImmunity(personNumber):
     return inocProb
 
 def vaccinatePpl():
-    '''performs triage on the population by looping through it and 
-    accessing factors untill all of the supplied vaccine is gone'''
-def vaccinatePpl():
     sup = supplyVaccine
     ill = []
     two0_inoc = []
     one0_inoc = []
-    1_inoc = []
+    yest_inoc = []
     for person in graph:
         if graph[person][pdeath]<0.4:
             if graph[person][ebola]==1:
                 ill.append(graph[person])
             elif graph[person][inocFac][-1]==0:
-                if graph[person][inocFac][-2]==0:
+                if len(graph[person]['inocFac']) > 2 and inocFacgraph[person][inocFac][-2]==0:
                     two0_inoc.append(graph[person])
                 else:
                     one0_inoc.append(graph[person])
             else: 
-                1_inoc.append(graph[person])
+                yest_inoc.append(graph[person])
     for person in ill:
         if sup>0:
             graph[person][inocFac].append(1)
@@ -144,7 +141,7 @@ def vaccinatePpl():
             sup=sup-1
         else:
             break
-    for person in 1_inoc:
+    for person in yest_inoc:
         if sup>0:
             graph[person][inocFac].append(1)
             sup=sup-1
@@ -164,40 +161,52 @@ computeSusceptabilityDisease(5)
 
 def computeProbabilityDeath(personNumber):
     person = graph[personNumber]
-    if len(person[contact_list]) == 0:
-        return person[pdeath]
+    if len(person['inContact']) == 0:
+        return person['pDeath']
     neighbor_death = 0
-    for contact in person[contact_list]{
-        neighbor_death = neighbor_death + (graph[contact[0]][pdeath]*graph[contact[1]])
+    for contact in person['inContact']:
+        neighbor_death = neighbor_death + (graph[(contact[0])]['pDeath']*contact[1])
     
-    return neighbor_death/len(person[contact_list])
+    return neighbor_death/len(person['inContact'])
 
 computeProbabilityDeath(5)
 
 global graphHistory
+global graphStats
 
 def updateGraph(graph):
     vaccinatePpl()
+
+    personStats = []
+
     for person in graph:
-        computeVaccineImmunity(person)
-        computeSusceptibilityDisease(person)
-        computeProbabilityDeath(person)
+        personStats.append(computeVaccineImmunity(person))
+        personStats.append(computeSusceptibilityDisease(person))
+        person['pDeath'] = computeProbabilityDeath(person)
+        personStats.append(person['pDeath'])
     
     graphHistory.append(graph)
+    graphStats.append(personStats)
 
 
 def stateOfTheGraph():
-    illness = []
+    prob_death = []
     vaccination = []
     suceptibility = []
 
     for person in graph():
-        illness.append()
+        prob_death.append(person['prob_death'])
+        #vaccination.append(person[inocProb])
+        #suceptibility.append(person[])
+
+    plt.bar(prob_death)
+    plt.bar(vaccination)
+    plt.bar(suceptibility)
 
 
-def graphProgress(){
-    
-}
+def graphProgress():
+    print hi
+
 
 
 ##for vertex in range(len(graph)):
