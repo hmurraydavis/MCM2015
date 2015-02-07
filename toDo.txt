@@ -1,0 +1,6 @@
+-affect of gender to suceptibility
+-affect of age to suceptibility
+-integration of data between comunity graph model and district graph model
+-sophistocated vaciene distrabution model for district graph model
+-unify the infection and vacination statistics
+
