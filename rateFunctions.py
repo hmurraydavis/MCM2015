@@ -11,6 +11,15 @@ dataOut = [] #array to store the data about the system
 effect_worker_on_innoculation = 35 #number of people a worker can vacinate in one time step
 effect_resistance_on_innoculation = 20
 
+def getInfected(district):
+    return districts[district]['infected']
+
+def getVaccinated(district):
+    return districts[district]['vaccinated']
+
+def getNeighbors(district):
+    return districts[district]['neighbors']
+
 def supply(districts):
     '''Calculate the effect of vacination supply on:
         1. innoculation
