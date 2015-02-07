@@ -114,8 +114,14 @@ def vaccinatePpl():
     
 computeVacieneImmunity(5)
         
+def computeSuspectabilityDisease(personNumber):
+    natImmunity = graph[personNumber]['natImmunity']
+    innocFac = computeVacieneImmunity(personNumber)
+    
+    suspectability = (1-natImmunity)*(1-innocFac)
+    return suspectability
 
-
+computeSuspectabilityDisease(5)
 ##for vertex in range(len(graph)):
 ##    print 'Node # is: ', graph[vertex]['n']
 ##    print 'Connected to:', graph[vertex]['inContact'] 
