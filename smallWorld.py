@@ -19,12 +19,20 @@ import random
 import matplotlib.pyplot as plt
 
 ####################################
+#####Variable Variables:############
+####################################
+peopleInModel = 126
+sizeClique = 7
+femalesPerClique = 4
+initialEbolaInfection = 25 #number of people who initialilly have ebola
+
+####################################
 #####INITALIZE AND SETUP GRAPH:#####
 ####################################
 
 graph = []
 cycle=1 #for gender toggle, don't change
-for vertex in range(126):
+for vertex in range(peopleInModel):
     personRepDict = {'n':vertex,
         'ebola':0,
         'demise':'alive',
@@ -32,11 +40,11 @@ for vertex in range(126):
         'inocFac':[0],
         'pDeath':0.0}
     
-    #set gender of pop to be 6f/4m:
-    if cycle<5:
+    #set gender distrabution:
+    if cycle<femalesPerClique+1:
         personRepDict['gender']=0
         cycle=cycle+1
-    elif (cycle<7):
+    elif (cycle<sizeClique):
         personRepDict['gender']=1
         cycle=cycle+1
     else:
@@ -59,7 +67,6 @@ for vertex in range(126):
     graph.append(personRepDict)
 
 #add a vertex's clique pals as edges:
-sizeClique = 7
 n=0
 for vertex in graph:
     nVtxActl = graph.index(vertex)
@@ -78,8 +85,8 @@ for vertex in graph:
 
 #Add in some random graph edges to connect the cliques:
 for _i in range(25):
-    parentVertex = random.randint(1,125)
-    childVertex = random.randint(1,125)
+    parentVertex = random.randint(1,peopleInModel)
+    childVertex = random.randint(1,peopleInModel)
     edgeWeight = random.randint(30.0,50)/100.0
     if not(childVertex==parentVertex):
         graph[parentVertex]['inContact'].append([childVertex,edgeWeight])
