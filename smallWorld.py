@@ -18,10 +18,6 @@ import pprint
 import random
 import matplotlib.pyplot as plt
 
-#global global variables
-graph = []
-
-
 ####################################
 #####Variable Variables:############
 ####################################
@@ -29,7 +25,7 @@ peopleInModel = 126
 sizeClique = 7
 femalesPerClique = 4
 initialEbolaInfection = 25 #number of people who initialilly have ebola
-probBurialThatDay = .1 #probability of a zombie being burried that day, less than 1
+probBurialThatDay = .35 #probability of a zombie being burried that day, less than 1
 supplyVaccine = 300 #doses per day (or time step)
 numConnStrtEbola = 5 #number of people in the vilage who start with ebola
 lowFamilyEdgeWeight = 50.0 #1-100%
@@ -43,69 +39,68 @@ daysToRunModel = 100
 ####################################
 #####INITALIZE AND SETUP GRAPH:#####
 ####################################
-def initializeGraph():
-    global graph 
-    graph= []
-    cycle=1 #for gender toggle, don't change
-    for vertex in range(peopleInModel):
-        personRepDict = {'n':vertex,
-            'ebola':0,
-            'demise':'alive',
-            'natImmunity':natImmunityInit,
-            'inocFac':[0],
-            'pDeath':0.0}
+
+graph = []
+cycle=1 #for gender toggle, don't change
+for vertex in range(peopleInModel):
+    personRepDict = {'n':vertex,
+        'ebola':0,
+        'demise':'alive',
+        'natImmunity':natImmunityInit,
+        'inocFac':[0],
+        'pDeath':0.0}
+    
+    #set gender distrabution:
+    if cycle<femalesPerClique+1:
+        personRepDict['gender']=0
+        cycle=cycle+1
+    elif (cycle<sizeClique):
+        personRepDict['gender']=1
+        cycle=cycle+1
+    else:
+        personRepDict['gender']=1
+        cycle = 1
         
-        #set gender distrabution:
-        if cycle<femalesPerClique+1:
-            personRepDict['gender']=0
-            cycle=cycle+1
-        elif (cycle<sizeClique):
-            personRepDict['gender']=1
-            cycle=cycle+1
-        else:
-            personRepDict['gender']=1
-            cycle = 1
-            
-        #Set ages of the population!!!
-        percentAge=random.randint(0,100)
-        if (percentAge<=4):
-            personRepDict['age']=random.randint(65,80)
-        elif (percentAge<=8) and (percentAge>4):
-            personRepDict['age']=random.randint(55,64)
-        elif (percentAge<=39) and (percentAge>8):
-            personRepDict['age']=random.randint(25,54)
-        elif (percentAge<=58) and (percentAge>39):
-            personRepDict['age']=random.randint(15,24)
-        elif (percentAge<=100) and (percentAge>58):
-            personRepDict['age']=random.randint(0,14)
-        
-        graph.append(personRepDict)
+    #Set ages of the population!!!
+    percentAge=random.randint(0,100)
+    if (percentAge<=4):
+        personRepDict['age']=random.randint(65,80)
+    elif (percentAge<=8) and (percentAge>4):
+        personRepDict['age']=random.randint(55,64)
+    elif (percentAge<=39) and (percentAge>8):
+        personRepDict['age']=random.randint(25,54)
+    elif (percentAge<=58) and (percentAge>39):
+        personRepDict['age']=random.randint(15,24)
+    elif (percentAge<=100) and (percentAge>58):
+        personRepDict['age']=random.randint(0,14)
+    
+    graph.append(personRepDict)
 
-    #add a vertex's clique pals (family) as edges:
-    n=0
-    for vertex in graph:
-        nVtxActl = graph.index(vertex)
-        if (nVtxActl%7)==0:
-            for n in range(0,sizeClique):
-                s1 = []; s2=[]
-                s1 = range(0,n)
-                s2 = range(n+1,sizeClique)             
-                setS = s1+s2 #the vertices it would be connected to
-                actualConnectedVertices = [x+nVtxActl for x in setS]
-                writeList = []
-                for v in actualConnectedVertices:
-                    writeList.append([v,random.randint(lowFamilyEdgeWeight,highFamilyEdgeWeight)/100.0])      
-                graph[nVtxActl+n]['inContact']=writeList
+#add a vertex's clique pals (family) as edges:
+n=0
+for vertex in graph:
+    nVtxActl = graph.index(vertex)
+    if (nVtxActl%7)==0:
+        for n in range(0,sizeClique):
+            s1 = []; s2=[]
+            s1 = range(0,n)
+            s2 = range(n+1,sizeClique)             
+            setS = s1+s2 #the vertices it would be connected to
+            actualConnectedVertices = [x+nVtxActl for x in setS]
+            writeList = []
+            for v in actualConnectedVertices:
+                writeList.append([v,random.randint(lowFamilyEdgeWeight,highFamilyEdgeWeight)/100.0])      
+            graph[nVtxActl+n]['inContact']=writeList
 
 
-    #Add in some random graph edges to connect the cliques:
-    for _i in range(numRandomEdges):
-        parentVertex = random.randint(1,peopleInModel-1)
-        childVertex = random.randint(1,peopleInModel-1)
-        edgeWeight = random.randint(lowWeightRandomEdges,highWeightRandomEdges)/100.0
-        if not(childVertex==parentVertex):
-            graph[parentVertex]['inContact'].append([childVertex,edgeWeight])
-    #        print graph[parentVertex]['inContact']
+#Add in some random graph edges to connect the cliques:
+for _i in range(numRandomEdges):
+    parentVertex = random.randint(1,peopleInModel-1)
+    childVertex = random.randint(1,peopleInModel-1)
+    edgeWeight = random.randint(lowWeightRandomEdges,highWeightRandomEdges)/100.0
+    if not(childVertex==parentVertex):
+        graph[parentVertex]['inContact'].append([childVertex,edgeWeight])
+#        print graph[parentVertex]['inContact']
 
 ####################################
 #####BEGIN GRAPH THEORY MODEL:######
@@ -224,7 +219,7 @@ def vertexDemise(personNumber):
         for personNum,personRepDict in enumerate(graph):
             for edges in graph[personNum]['inContact']:
                 if graph[personNum]['inContact'][0] == personNum:
-                    graph[personNum]['inContact'][1] = graph[personNum]['inContact'][1]+.5
+                    graph[personNum]['inContact'][1] = graph[personNum]['inContact'][1]+.05
     
 
 def contactEbola(personNumber):
@@ -302,16 +297,7 @@ def updateGraph():
     plt.title ('Population Changes over '+ str(daysToRunModel) + ' Days')
 
     plt.show()
-    plt.clf()
 
-def verryVariable():
-    global probBurialThatDay
-    numTimesRunEachCase = 2
-    runThroughList = [.1,.2,.3,.4,.5,.6]
-    for value in runThroughList:
-        probBurialThatDay=value
-        for trial in range(numTimesRunEachCase):
-            initializeGraph()
-            updateGraph()
 
-verryVariable()
+updateGraph()
+
