@@ -94,7 +94,9 @@ supplyVaccine = 300 #doses per day (or time step)
 def computeVaccineImmunity(personNumber):
     '''Computes the acquired imunity from receiving a vaccine. 
     #immunity from vaccine increases by .2 per dose
-    #immunity decreases by 1/3 of the increase from vaccine with each day w/out vaccine'''
+    #immunity decreases by 1/3 of the increase from vaccine with each day w/out vaccine
+    
+    Never needs to be called itself. Called by computeSusceptabilityDisease()'''
     inocHistory = graph[personNumber]['inocFac']
     inocProb = 0
     for day in inocHistory:
@@ -107,13 +109,18 @@ def computeVaccineImmunity(personNumber):
     return inocProb
 
 def vaccinatePpl():
+    '''Performs triage on the population and administers vaciene to 
+    those at greatest risk before others. 
+    
+    Called in updateGraph()'''
     sup = supplyVaccine
     ill = []
     two0_inoc = []
     one0_inoc = []
     yest_inoc = []
-    for person in graph:
-        if graph[person][pdeath]<0.4:
+    for person,_perDict in enumerate(graph):
+        print 'person is: ', person
+        if graph[person]['pdeath']<0.4:
             if graph[person][ebola]==1:
                 ill.append(graph[person])
             elif graph[person][inocFac][-1]==0:
@@ -147,30 +154,31 @@ def vaccinatePpl():
             sup=sup-1
         else:
             break
-    
-computeVaccineImmunity(5)
         
 def computeSusceptabilityDisease(personNumber):
+    '''Computes the succeptability of an indivigual to Ebola.
+    Never needs to be called itself (though can be). Called by:
+        computeProbabilityDeath()'''
     natImmunity = graph[personNumber]['natImmunity']
     inocFac = computeVaccineImmunity(personNumber)
     
     susceptability = (1-natImmunity)*(1-inocFac)
     return susceptability
 
-computeSusceptabilityDisease(5)
-
 def computeProbabilityDeath(personNumber):
+    '''Compute a given person's probability of death
+    
+    called by vertexDemise() to determine if the vertex turns zombie'''
+    
     person = graph[personNumber]
     if len(person['inContact']) == 0:
         return person['pDeath']
     neighbor_death = 0
+    suceptibility = computeSusceptabilityDisease(personNumber)
     for contact in person['inContact']:
         neighbor_death = neighbor_death + (graph[(contact[0])]['pDeath']*contact[1])
     
-    return neighbor_death/len(person['inContact'])
-
-computeProbabilityDeath(5)
-
+    return suceptibility*neighbor_death/len(person['inContact'])
 
 def vertexDemise(personNumber):
     '''manage killing people and turning them into zombies:'''
@@ -197,8 +205,6 @@ def vertexDemise(personNumber):
                 if graph[person]['inContact'][0] == personNumber:
                     graph[person]['inContact'][1] = graph[person]['inContact'][1]+.05
 
-vertexDemise(5)
-
 def contactEbola(personNumber):
     '''Compute the risk of a person contacting Ebola and if they do, 
     change their Ebola state to true'''
@@ -208,39 +214,51 @@ def contactEbola(personNumber):
     for connection in graph[personNumber]['inContact']:
         #Sum the probability of them getting ebola
         if graph[connection[0]]['ebola']==1:
-            ebolaRisk = ebolaRisk + graph[connection][1]
+            ebolaRisk = ebolaRisk + connection[1]
             numConnectionsWEbola = numConnectionsWEbola+1
     if (numConnectionsWEbola>0) and (randEbolaNum<=(ebolaRisk/numConnectionsWEbola)):
         #set node's ebola boolean high if generated probability was high enough.
         graph[personNumber]['ebola']=1
-
-contactEbola(5)            
+        ebolaRisk = ebolaRisk/numConnectionsWEbola
+        print 'ebla rsk: ', ebolaRisk
+          
 global graphHistory
 global graphStats
 
-def updateGraph(graph):
-    '''Calls the sub functions that will update a single vertex in 
-    the graph. '''
-    vaccinatePpl()
-
-    personStats = []
-
-    for person in graph:
-        personStats.append(computeVaccineImmunity(person))
-        personStats.append(computeSusceptibilityDisease(person))
-        person['pDeath'] = computeProbabilityDeath(person)
-        personStats.append(person['pDeath'])
+def updateGraph():
+    '''Calls the sub functions that will update vertecies in 
+    the graph. Does these for all verticies in graph with each time 
+    step. Stores data from these iterations in data structures for 
+    plotting'''
     
-    graphHistory.append(graph)
-    graphStats.append(personStats)
+    #start a few people with ebola for testing purposes, TODO: remove:
+    for person in range(5):
+        graph[random.randint(1,120)]['ebola']=1
+    
+#    vaccinatePpl() #vacinate the graph against ebola with available vaciene
+    for personNum, personRepDict in enumerate(graph):
+        contactEbola(personNum)
+
+#    personStats = []
+
+#    for person in graph:
+#        personStats.append(computeVaccineImmunity(person))
+#        personStats.append(computeSusceptibilityDisease(person))
+#        person['pDeath'] = computeProbabilityDeath(person)
+#        personStats.append(person['pDeath'])
+    
+#    graphHistory.append(graph)
+#    graphStats.append(personStats)
 
 
 def stateOfTheGraph():
+    '''Grabs each person's probability of death, 
+    innoculazation imunity, and their succeptability '''
     prob_death = []
     vaccination = []
     suceptibility = []
 
-    for person in graph():
+    for person in graph:
         prob_death.append(person['prob_death'])
         #vaccination.append(person[inocProb])
         #suceptibility.append(person[])
@@ -250,9 +268,10 @@ def stateOfTheGraph():
     plt.bar(suceptibility)
 
 
-def graphProgress():
-    print hi
-
+def graphPlot():
+    '''Grabs graph stats and plots them over time '''
+    print 'hi!!!!'
+updateGraph()
 
 
 ##for vertex in range(len(graph)):
