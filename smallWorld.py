@@ -190,20 +190,21 @@ def vertexDemise(personNumber):
     demiseState=graph[personNumber]['demise']
     if (pDeath >= theirDeathRand) and (demiseState=='alive'):
         #they're alive and it was their bad day to die
-        graph[personNumber]['demise']='dead'
+        graph[personNumber]['demise']='zombie'
     if (demiseState=='zombie') and (theirDeathRand<.35):
         #they have a 35% chance of being burried on a given day
         graph[personNumber]['demise']='burried'
-        for person in graph:
-            for edges in graph[person]['inContact']:
-                if graph[person]['inContact'][0] == personNumber:
-                    graph[person]['inContact'][1] = 0
+        for personNum,personRepDict in enumerate(graph):
+            for edges in graph[personNum]['inContact']:
+                if graph[personNum]['inContact'][0] == personNumber:
+                    graph[personNum]['inContact'][1] = 0
     elif (demiseState=='zombie'):
         #increase risk of death for a zombie's connections the longer they aren't burried
-        for person in graph:
-            for edges in graph[person]['inContact']:
-                if graph[person]['inContact'][0] == personNumber:
-                    graph[person]['inContact'][1] = graph[person]['inContact'][1]+.05
+        for personNum,personRepDict in enumerate(graph):
+            for edges in graph[personNum]['inContact']:
+                if graph[personNum]['inContact'][0] == personNum:
+                    graph[personNum]['inContact'][1] = graph[personNum]['inContact'][1]+.05
+    
 
 def contactEbola(personNumber):
     '''Compute the risk of a person contacting Ebola and if they do, 
@@ -231,14 +232,19 @@ def updateGraph():
     the graph. Does these for all verticies in graph with each time 
     step. Stores data from these iterations in data structures for 
     plotting'''
-    
+    daysToRunModel = 20
     #start a few people with ebola for testing purposes, TODO: remove:
     for person in range(5):
         graph[random.randint(1,120)]['ebola']=1
     
 #    vaccinatePpl() #vacinate the graph against ebola with available vaciene
+    for day in range(daysToRunModel):
+        for personNum, personRepDict in enumerate(graph):
+            contactEbola(personNum)
+            vertexDemise(personNum)
+        
     for personNum, personRepDict in enumerate(graph):
-        contactEbola(personNum)
+        print 'demise state: ', graph[personNum]['demise']
 
 #    personStats = []
 
