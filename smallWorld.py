@@ -21,11 +21,11 @@ import matplotlib.pyplot as plt
 ####################################
 #####Variable Variables:############
 ####################################
-peopleInModel = 700
+peopleInModel = 301
 sizeClique = 7
 femalesPerClique = 4
 probBurialThatDay = .35 #probability of a zombie being buried that day, less than 1
-supplyVaccine = 20 #doses per day (or time step)
+supplyVaccine = 20 #doses per day (or time step) **varry
 numConnStrtEbola = 50 #number of people in the vilage who start with ebola
 lowFamilyEdgeWeight = 50.0 #1-100%
 highFamilyEdgeWeight = 90.0 #1-100%
@@ -283,7 +283,7 @@ def updateGraph():
         buried.append(demiseWTime[day][0])
         zombies.append(demiseWTime[day][1])
         alive.append(demiseWTime[day][2])
-    
+    makePoincarePlotAlive(alive)
 #    plt.plot(buried, color='b', linewidth=2.0, label = 'Bodies Buried')
 #    
 #    plt.plot(zombies, color='r', linewidth=2.0, label = 'Unburied Bodies')
@@ -296,7 +296,7 @@ def updateGraph():
 #    plt.title ('Population Changes over '+ str(daysToRunModel) + ' Days')
 
 #    plt.show()
-    makePoincarePlotAlive(alive)
+    
 def makePoincarePlotAlive(alive) :
     #poincare plot:
     x=[]; y=[]
@@ -305,9 +305,12 @@ def makePoincarePlotAlive(alive) :
             x.append(alive[key])
             y.append(alive[key+1])
     print x[-1]
-    plt.plot(x,y,'ro')
-    ln=range(400,700)
-    plt.plot(ln,ln)
+    plt.plot(x,y, 'ro', markersize=7)
+    ln=range(100,peopleInModel+3)
+    plt.plot(ln,ln, linewidth=3.0)
+    plt.ylabel('People at (t+1)', fontsize=20)
+    plt.xlabel('People at (t)', fontsize=20)
+    plt.title('Population Poincare Plot', fontsize=30)
     plt.show()
     return x,y
 
