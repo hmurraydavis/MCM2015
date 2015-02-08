@@ -85,8 +85,8 @@ for vertex in graph:
 
 #Add in some random graph edges to connect the cliques:
 for _i in range(25):
-    parentVertex = random.randint(1,peopleInModel)
-    childVertex = random.randint(1,peopleInModel)
+    parentVertex = random.randint(1,peopleInModel-1)
+    childVertex = random.randint(1,peopleInModel-1)
     edgeWeight = random.randint(30.0,50)/100.0
     if not(childVertex==parentVertex):
         graph[parentVertex]['inContact'].append([childVertex,edgeWeight])
@@ -279,16 +279,17 @@ def updateGraph():
         zombies.append(demiseWTime[day][1])
         alive.append(demiseWTime[day][2])
     
-    plt.plot(burried, color='b', linewidth=2.0)
-    plt.ylabel('# people burried')
-    plt.show()
+    plt.plot(burried, color='b', linewidth=2.0, label = 'Bodies Buried')
     
-    plt.plot(zombies, color='r', linewidth=2.0)
-    plt.ylabel('# zombie bodies')
-    plt.show()
+    plt.plot(zombies, color='r', linewidth=2.0, label = 'Unburied Bodies')
     
-    plt.plot(alive, color='g', linewidth=2.0)
-    plt.ylabel('# people alive')
+    plt.plot(alive, color='g', linewidth=2.0, label='People Alive')
+
+    plt.legend()
+    plt.xlabel('Days')
+    plt.ylabel('People')
+    plt.title ('Population Changes over '+ str(daysToRunModel) + ' Days')
+
     plt.show()
     
     
