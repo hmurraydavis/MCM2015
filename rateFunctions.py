@@ -20,7 +20,7 @@ MIN_WORKERS_PER_PERSON = .001
 
 DOSES_PER_WORKER_PER_DAY = 50
 
-keys = ('100-90','90-80','80-70', '70-60','60-50','50-40','40-30','30-20','20-10','10-0')
+keys=('10-0','20-10','30-20','40-30','50-40','60-50','70-60','80-70','90-80','100-90')
 
 def getInfected(district):
     return districts[district]['infected']
@@ -45,7 +45,8 @@ def inoculation(districts):
         2. infection'''
     for district in districts:
         place = districts[district]
-        '''increase the number of workers'''
+
+        #'''increase the number of workers'''
         if (place['workers']< MAX_WORKERS_PER_PERSON* place['population']):
             sumrisk=place['vaccinated']['10-0']+place['vaccinated']['20-10']+place['vaccinated']['30-20']
             if (sumrisk > .2):
@@ -53,10 +54,10 @@ def inoculation(districts):
 
         if(place['workers'] > MIN_WORKERS_PER_PERSON *place['population']):
             place['workers'] = place['workers']-1
-            
+          
         for i in range(len(keys)):
             for j in range(1,len(keys)):
-                jinf=place['infected'][keys][j]]
+                jinf=place['infected'][keys[j]]
                 ivac=place['vaccinated'][keys[i]]
                 place['infected'][keys[j-1]]=place['infected'][keys[j-1]]+ivac*jinf
                 jinf=jinf*(1-ivac)
@@ -73,7 +74,7 @@ def workers(districts):
                 num_doses = num_doses - place['population']*place['vaccinated'][keys[i]]
                 place['vaccinated'][keys[i+1]] = place['vaccinated'][keys[i]]
 
-        place['education'] = place['education'] + (75/place['population'])*place['workers'])
+        place['education'] = place['education'] + (75/place['population'])*place['workers']
     
 def resistance(districts):
     '''Calculate the effect of resistance of people to 
@@ -87,7 +88,6 @@ def resistance(districts):
         for risk_level in place['vaccinated']:
             place['vaccinated'][risk_level] = place['vaccinated'][risk_level]*(1-place['resistance'])
 
-        #
     
 def education(districts):
     '''Calculate the effect of education on:
@@ -129,12 +129,8 @@ def ProceedOneTimeStep():
     education(districts)
     infection(districts)
     dataOut.append(districts)
-    pprint.pprint(dataOut)
-    
-    ###Test that the districts data is coming in correctly: 
-#    for district in districts:
-#        print 'Abreviation is: ', districts[district]['abbrev']
-#        print 'Population is: ', districts[district]['population'], '\n'
+#    pprint.pprint(dataOut)
+
 
 def plotDatum(parameter, district):
     to_plot = []
