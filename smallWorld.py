@@ -25,6 +25,9 @@ peopleInModel = 126
 sizeClique = 7
 femalesPerClique = 4
 initialEbolaInfection = 25 #number of people who initialilly have ebola
+probBurialThatDay = .35 #probability of a zombie being burried that day, less than 1
+supplyVaccine = 300 #doses per day (or time step)
+numConnStrtEbola = 5 #number of people in the vilage who start with ebola
 
 ####################################
 #####INITALIZE AND SETUP GRAPH:#####
@@ -85,8 +88,8 @@ for vertex in graph:
 
 #Add in some random graph edges to connect the cliques:
 for _i in range(25):
-    parentVertex = random.randint(1,peopleInModel)
-    childVertex = random.randint(1,peopleInModel)
+    parentVertex = random.randint(1,peopleInModel-1)
+    childVertex = random.randint(1,peopleInModel-1)
     edgeWeight = random.randint(30.0,50)/100.0
     if not(childVertex==parentVertex):
         graph[parentVertex]['inContact'].append([childVertex,edgeWeight])
@@ -95,9 +98,6 @@ for _i in range(25):
 ####################################
 #####BEGIN GRAPH THEORY MODEL:######
 ####################################
-
-##DEFINE TUNEABLE VARIABLES:
-supplyVaccine = 300 #doses per day (or time step)
 
 def computeVaccineImmunity(personNumber):
     '''Computes the acquired imunity from receiving a vaccine. 
@@ -200,7 +200,7 @@ def vertexDemise(personNumber):
     if (pDeath > theirDeathRand) and (demiseState=='alive'):
         #they're alive and it was their bad day to die
         graph[personNumber]['demise']='zombie'
-    if (demiseState=='zombie') and (theirDeathRand<.35):
+    if (demiseState=='zombie') and (theirDeathRand<probBurialThatDay):
         #they have a 35% chance of being burried on a given day
         graph[personNumber]['demise']='burried'
         for personNum,personRepDict in enumerate(graph):
@@ -260,7 +260,7 @@ def updateGraph():
     plotting'''
     daysToRunModel = 400
     #start a few people with ebola for testing purposes, TODO: remove:
-    for person in range(5):
+    for person in range(numConnStrtEbola):
         unluckyPerson = random.randint(1,120)
         graph[unluckyPerson]['ebola']=1
         graph[unluckyPerson]['pDeath']=.3
