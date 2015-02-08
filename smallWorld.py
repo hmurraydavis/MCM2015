@@ -25,14 +25,14 @@ peopleInModel = 700
 sizeClique = 7
 femalesPerClique = 4
 probBurialThatDay = .35 #probability of a zombie being buried that day, less than 1
-supplyVaccine = 20 #doses per day (or time step) **varry
+supplyVaccine = 230 #doses per day (or time step) **varry
 numConnStrtEbola = 50 #number of people in the vilage who start with ebola
 lowFamilyEdgeWeight = 50.0 #1-100%
 highFamilyEdgeWeight = 90.0 #1-100%
 lowWeightRandomEdges = 30.0 #1-100%
 highWeightRandomEdges = 50.0 #1-100
 natImmunityInit = .1
-numRandomEdges = 100
+numRandomEdges = 60
 daysToRunModel = 400
 
 ####################################
@@ -323,18 +323,18 @@ def makePoincarePlotAlive(alive) :
     plt.show()
     return x,y
     
-def iterateThroughValues():
+def iterateThroughValuesVacSplyOnPop():
     global supplyVaccine
     global buried
     global alive
     global zombies
     global demiseWTime
     
-    numberTimesTryEachIteration = 10
+    numberTimesTryEachIteration = 200
     dataStore = []
-    step = 25
-    numValuesToTry = 20
-    supplyVaccineList = [x*step for x in range(2, numValuesToTry)]
+    step = 20
+    numValuesToTry = 40
+    supplyVaccineList = [x*step for x in range(numValuesToTry)]
     for value in supplyVaccineList:
         supplyVaccine=value
         dataStoreTrial=[0]*numberTimesTryEachIteration
@@ -352,14 +352,56 @@ def iterateThroughValues():
         dataStore.append(dataStoreTrial/numberTimesTryEachIteration)
         print 'DS-1: ',dataStore[-1]
     print dataStore
-    
+    x=supplyVaccineList; y=dataStore
     plt.plot(supplyVaccineList,dataStore,'go')
+    m,b = numpy.polyfit(x, y, 1) 
+    plt.plot(x, m*x+b, 'k',linewidth=3.0) 
     plt.ylabel('Average Living at Model End (People)', fontsize=20)
     plt.xlabel('Vaccine Supply (Doses)', fontsize=20)
     plt.title('Effect of Vaccine Supply on Population ', fontsize=30)
-    plt.show()
+    plt.savefig('VacSplyEffectOnPop3.png')
+#    plt.show()
+
+def iterateThroughValuesnumConnStrtEbola():
+    global numConnStrtEbola
+    global buried
+    global alive
+    global zombies
+    global demiseWTime
+    
+    numberTimesTryEachIteration = 200
+    dataStore = []
+    step = 7
+    numValuesToTry = 60
+    numConnStrtEbolaList = [x*step for x in range(numValuesToTry)]
+    for value in numConnStrtEbolaList:
+        numConnStrtEbola=value
+        dataStoreTrial=[0]*numberTimesTryEachIteration
+        for i in range(numberTimesTryEachIteration):
+            initializeGraph() 
+            updateGraph()
+            demiseWTime=grabModelDataRT()
+            B,Z,A = processBZAdata(demiseWTime)
+            dataStoreTrial[i]=A[-1]
+#            print len(B)
+#            makeBZAplot(B,Z,A)
+            buried[:]=[]; alive[:]=[]; zombies[:]=[]
+            demiseWTime[:]=[]
+        dataStoreTrial=sum(dataStoreTrial)
+        dataStore.append(dataStoreTrial/numberTimesTryEachIteration)
+        print 'DS-1: ',dataStore[-1]
+    print dataStore
+    x=numConnStrtEbolaList; y=dataStore
+    plt.plot(numConnStrtEbolaList,dataStore,'bo')
+    m,b = numpy.polyfit(x, y, 1) 
+    plt.plot(x, m*x+b, 'm',linewidth=3.0) 
+    plt.ylabel('Average Living at Model End (People)', fontsize=20)
+    plt.xlabel('Initial Infection (People)', fontsize=20)
+    plt.title('Effect of Initial Infection on Outcome ', fontsize=30)
+    plt.savefig('ConnStrtEblaEffectOnPop3.png')
         
 
 if __name__=='__main__':
-    iterateThroughValues() 
+    iterateThroughValuesVacSplyOnPop()
+    iterateThroughValuesnumConnStrtEbola()
 
