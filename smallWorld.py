@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 ####################################
 #####Variable Variables:############
 ####################################
-peopleInModel = 70
+peopleInModel = 700
 sizeClique = 7
 femalesPerClique = 4
 probBurialThatDay = .35 #probability of a zombie being buried that day, less than 1
@@ -33,7 +33,7 @@ lowWeightRandomEdges = 30.0 #1-100%
 highWeightRandomEdges = 50.0 #1-100
 natImmunityInit = .1
 numRandomEdges = 100
-daysToRunModel = 10
+daysToRunModel = 400
 
 ####################################
 #####Not-Variable Variables:#####
@@ -295,8 +295,8 @@ def processBZAdata(demiseWTime):
     
 def makeBZAplot(buried, zombies, alive):
     plt.plot(buried, color='k', linewidth=3.0, label = 'Bodies Buried')
-    print 'vals plotted initially: ', buried[0], ' ', buried[3], ' ',  buried[8]
-    print buried
+#    print 'vals plotted initially: ', buried[0], ' ', buried[3], ' ',  buried[8]
+#    print buried
     plt.plot(zombies, color='r', linewidth=3.0, label = 'Unburied Bodies')
     plt.plot(alive, color='g', linewidth=3.0, label='People Alive')
     plt.legend()
@@ -329,23 +329,35 @@ def iterateThroughValues():
     global alive
     global zombies
     global demiseWTime
+    
     numberTimesTryEachIteration = 10
-    f = 10
-    a = 10
-    b = peopleInModel
-    supplyVaccineList = [x * f for x in range(a, b)]
+    dataStore = []
+    step = 25
+    numValuesToTry = 20
+    supplyVaccineList = [x*step for x in range(2, numValuesToTry)]
     for value in supplyVaccineList:
         supplyVaccine=value
-        for _i in range(numberTimesTryEachIteration):
+        dataStoreTrial=[0]*numberTimesTryEachIteration
+        for i in range(numberTimesTryEachIteration):
             initializeGraph() 
             updateGraph()
             demiseWTime=grabModelDataRT()
             B,Z,A = processBZAdata(demiseWTime)
-            print len(B)
-            makeBZAplot(B,Z,A)
+            dataStoreTrial[i]=A[-1]
+#            print len(B)
+#            makeBZAplot(B,Z,A)
             buried[:]=[]; alive[:]=[]; zombies[:]=[]
             demiseWTime[:]=[]
-            
+        dataStoreTrial=sum(dataStoreTrial)
+        dataStore.append(dataStoreTrial/numberTimesTryEachIteration)
+        print 'DS-1: ',dataStore[-1]
+    print dataStore
+    
+    plt.plot(supplyVaccineList,dataStore,'go')
+    plt.ylabel('Average Living at Model End (People)', fontsize=20)
+    plt.xlabel('Vaccine Supply (Doses)', fontsize=20)
+    plt.title('Effect of Vaccine Supply on Population ', fontsize=30)
+    plt.show()
         
 
 if __name__=='__main__':
