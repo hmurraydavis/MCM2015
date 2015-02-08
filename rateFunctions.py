@@ -131,30 +131,36 @@ def ProceedOneTimeStep():
     dataOut.append(districts)
 #    pprint.pprint(dataOut)
 
+def plotData():
+    '''Plots the infection and vaccination rates for all districts over the time the model has been running'''
 
-def plotDatum(parameter, district):
-    to_plot = []
+    toPlot = ('kai', 'western_urban','koinadugu')
+    for district in toPlot:
 
-    for day in dataOut:
-        to_plot.append(day[district][parameter])
+        vaccination_list = []
+        infection_list = []
+        risk = 0
+        pDeath = 0
 
-    return plt.plot(to_plot)
-    #plt.show()
+        for day in dataOut:
 
-def plotDistricts(parameter):
+            for i in range(0, len(keys)-1):
+                risk = risk + (1-i/10)*districts[district]['vaccinated'][keys[i]]
+                pDeath = pDeath + i/10*districts[district]['infected'][keys[i]]
+            
+            vaccination_list.append(risk)
+            infection_list.append(pDeath)
 
-    data = []
-    names = []
-    for district in districts:
-        data.append(plotDatum(parameter, district))
-        names.append(district)
+        plt.plot(vaccination_list, label = 'Infection risk in ' + district)
+        plt.plot(infection_list, label = 'Infection rate in ' + district)
 
-    plt.figlegend(data,names,'upper right')
-    plt.title(parameter)
-    plt.xlabel("Days")
-    plt.ylabel(parameter)
+    plt.legend()
+    plt.xlabel('Days')
+    plt.ylabel('% of district population')
     plt.show()
-    
+
+
+
 
 
     
