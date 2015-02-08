@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 ####################################
 #####Variable Variables:############
 ####################################
-peopleInModel = 700
+peopleInModel = 70
 sizeClique = 7
 femalesPerClique = 4
 probBurialThatDay = .35 #probability of a zombie being buried that day, less than 1
@@ -33,18 +33,20 @@ lowWeightRandomEdges = 30.0 #1-100%
 highWeightRandomEdges = 50.0 #1-100
 natImmunityInit = .1
 numRandomEdges = 100
-daysToRunModel = 600
+daysToRunModel = 10
 
 ####################################
 #####Not-Variable Variables:#####
 ####################################
 graph = []
 demiseWTime = []
+buried=[]; alive=[]; zombies=[]
 
 ####################################
 #####INITALIZE AND SETUP GRAPH:#####
 ####################################
 def initializeGraph():
+    graph[:]=[]
     cycle=1 #for gender toggle, don't change
     for vertex in range(peopleInModel):
         personRepDict = {'n':vertex,
@@ -247,7 +249,9 @@ def contactEbola(personNumber):
 def grabModelDataRT():
     '''grabs the model data during run time and stores it in a useful 
     way for plotting.
-    Buried. Alive. Zombie.'''
+    Buried. Alive. Zombie.
+    returns demiseWTime, a list of lists that should be unpacked with 
+    processBZAdata()'''
 
     buriedCurrent = 0; zombieCurrent = 0; aliveCurrent = 0
     for person in graph:
@@ -258,6 +262,7 @@ def grabModelDataRT():
         elif person['demise']=='zombie':
             zombieCurrent=zombieCurrent+1
     demiseWTime.append([buriedCurrent,zombieCurrent,aliveCurrent])
+    return demiseWTime
         
 
 def updateGraph():
@@ -278,17 +283,20 @@ def updateGraph():
             contactEbola(personNum)
             vertexDemise(personNum)
             
-    buried=[]; zombies=[]; alive=[] 
-#    pprint.pprint(demiseWTime)     
+def processBZAdata(demiseWTime):   
+    '''Extract the three data streems (burried, zombie or alive) into their 
+    seprate type lists. Finally plots these by calling makeBZAplot()'''     
+    buried=[]; zombies=[]; alive=[]   
     for day, _data in enumerate(demiseWTime):
         buried.append(demiseWTime[day][0])
         zombies.append(demiseWTime[day][1])
         alive.append(demiseWTime[day][2])
-    makePoincarePlotAlive(alive)
-    makeBZAplot(buried,zombies,alive)
+    return (buried,zombies,alive)
     
 def makeBZAplot(buried, zombies, alive):
     plt.plot(buried, color='k', linewidth=3.0, label = 'Bodies Buried')
+    print 'vals plotted initially: ', buried[0], ' ', buried[3], ' ',  buried[8]
+    print buried
     plt.plot(zombies, color='r', linewidth=3.0, label = 'Unburied Bodies')
     plt.plot(alive, color='g', linewidth=3.0, label='People Alive')
     plt.legend()
@@ -296,6 +304,7 @@ def makeBZAplot(buried, zombies, alive):
     plt.ylabel('Number of People', fontsize=20)
     plt.title ('Population Changes over '+ str(daysToRunModel) + ' Days',fontsize=30)
     plt.show()
+    plt.clf()
     
 def makePoincarePlotAlive(alive) :
     #poincare plot:
@@ -313,8 +322,32 @@ def makePoincarePlotAlive(alive) :
     plt.title('Population Poincare Plot', fontsize=30)
     plt.show()
     return x,y
+    
+def iterateThroughValues():
+    global supplyVaccine
+    global buried
+    global alive
+    global zombies
+    global demiseWTime
+    numberTimesTryEachIteration = 10
+    f = 10
+    a = 10
+    b = peopleInModel
+    supplyVaccineList = [x * f for x in range(a, b)]
+    for value in supplyVaccineList:
+        supplyVaccine=value
+        for _i in range(numberTimesTryEachIteration):
+            initializeGraph() 
+            updateGraph()
+            demiseWTime=grabModelDataRT()
+            B,Z,A = processBZAdata(demiseWTime)
+            print len(B)
+            makeBZAplot(B,Z,A)
+            buried[:]=[]; alive[:]=[]; zombies[:]=[]
+            demiseWTime[:]=[]
+            
+        
 
 if __name__=='__main__':
-    initializeGraph()
-    updateGraph()
+    iterateThroughValues() 
 
