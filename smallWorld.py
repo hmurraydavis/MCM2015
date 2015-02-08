@@ -189,7 +189,8 @@ def vertexDemise(personNumber):
     theirDeathRand = random.randint(0.0,100.0)/100.0
     pDeath = computeProbabilityDeath(personNumber)
     demiseState=graph[personNumber]['demise']
-    if (pDeath >= theirDeathRand) and (demiseState=='alive'):
+#    print 'death rand: ', theirDeathRand, 'pDeath: ', pDeath
+    if (pDeath > theirDeathRand) and (demiseState=='alive'):
         #they're alive and it was their bad day to die
         graph[personNumber]['demise']='zombie'
     if (demiseState=='zombie') and (theirDeathRand<.35):
@@ -250,10 +251,12 @@ def updateGraph():
     the graph. Does these for all verticies in graph with each time 
     step. Stores data from these iterations in data structures for 
     plotting'''
-    daysToRunModel = 100
+    daysToRunModel = 400
     #start a few people with ebola for testing purposes, TODO: remove:
-#    for person in range(0):
-#        graph[random.randint(1,120)]['ebola']=1
+    for person in range(5):
+        unluckyPerson = random.randint(1,120)
+        graph[unluckyPerson]['ebola']=1
+        graph[unluckyPerson]['pDeath']=.3
     
 #    vaccinatePpl() #vacinate the graph against ebola with available vaciene
     for day in range(daysToRunModel):
@@ -263,28 +266,28 @@ def updateGraph():
             vertexDemise(personNum)
             
     burried=[]; zombies=[]; alive=[] 
-    pprint.pprint(demiseWTime)     
+#    pprint.pprint(demiseWTime)     
     for day, _data in enumerate(demiseWTime):
         burried.append(demiseWTime[day][0])
         zombies.append(demiseWTime[day][1])
         alive.append(demiseWTime[day][2])
     
-#    plt.plot(burried, color='b', linewidth=2.0)
-#    plt.ylabel('# people burried')
-#    plt.show()
-#    
-#    plt.plot(zombies, color='r', linewidth=2.0)
-#    plt.ylabel('# zombie bodies')
-#    plt.show()
-#    
-#    plt.plot(alive, color='g', linewidth=2.0)
-#    plt.ylabel('# people alive')
-#    plt.show()
+    plt.plot(burried, color='b', linewidth=2.0)
+    plt.ylabel('# people burried')
+    plt.show()
+    
+    plt.plot(zombies, color='r', linewidth=2.0)
+    plt.ylabel('# zombie bodies')
+    plt.show()
+    
+    plt.plot(alive, color='g', linewidth=2.0)
+    plt.ylabel('# people alive')
+    plt.show()
     
     
         
-    for personNum, personRepDict in enumerate(graph):
-        print 'demise state: ', graph[personNum]['demise']
+#    for personNum, personRepDict in enumerate(graph):
+#        print 'demise state: ', graph[personNum]['demise']
 
 #    personStats = []
 
