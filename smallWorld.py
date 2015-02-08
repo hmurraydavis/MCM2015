@@ -1,8 +1,8 @@
 '''Graph is set up as a list of dictionaries of form: 
 
 graph = [ {'gender':0, #0 is female, 1 is male
-    'inContact':[[n1,weightn1],[n2,weightn2],[n3,weightn3]], #list of the people they're connected with --> outer list is the connedted verticies, nested list's 0th element is the connected vertex. 1st elemennt is the weight of that edge
-    'demise':'zombie' #state of life-fullness, string, choices: 'burried', 'alive', 'zombie'
+    'inContact':[[n1,weightn1],[n2,weightn2],[n3,weightn3]], #list of the people they're connected with --> outer list is the connected verticies, nested list's 0th element is the connected vertex. 1st element is the weight of that edge
+    'demise':'zombie' #state of life-fullness, string, choices: 'buried', 'alive', 'zombie'
     'natImmunity':.30 #Naturally occuring, percent immunity of the person
     'age':20 #integer representing person's age
     'inocFac':[0,0,1,0,0,1,1,0] #list representing the inoculation of the person, 0==not vaccinated on that day, 1==vaccinated that day, index of array is the day
@@ -21,20 +21,19 @@ import matplotlib.pyplot as plt
 ####################################
 #####Variable Variables:############
 ####################################
-peopleInModel = 126
+peopleInModel = 301
 sizeClique = 7
 femalesPerClique = 4
-initialEbolaInfection = 25 #number of people who initialilly have ebola
-probBurialThatDay = .35 #probability of a zombie being burried that day, less than 1
-supplyVaccine = 300 #doses per day (or time step)
-numConnStrtEbola = 5 #number of people in the vilage who start with ebola
+probBurialThatDay = .35 #probability of a zombie being buried that day, less than 1
+supplyVaccine = 20 #doses per day (or time step) **varry
+numConnStrtEbola = 50 #number of people in the vilage who start with ebola
 lowFamilyEdgeWeight = 50.0 #1-100%
 highFamilyEdgeWeight = 90.0 #1-100%
 lowWeightRandomEdges = 30.0 #1-100%
 highWeightRandomEdges = 50.0 #1-100
 natImmunityInit = .1
-numRandomEdges = 5
-daysToRunModel = 100
+numRandomEdges = 100
+daysToRunModel = 600
 
 ####################################
 #####INITALIZE AND SETUP GRAPH:#####
@@ -117,10 +116,10 @@ def computeVaccineImmunity(personNumber):
     for day in inocHistory:
         if (day==0) and (inocProb > 0): 
             #they didn't get the vaccine and they still have some immunity from previous doses
-            inocProb = inocProb - (.2/3.0)
+            inocProb = inocProb - (.17/3.0)
         elif day==1:
             #They got the vaccine and will have more immunity! Yeah!
-            inocProb = inocProb + .2
+            inocProb = inocProb + .17
     return inocProb
 
 def vaccinatePpl():
@@ -197,7 +196,7 @@ def computeProbabilityDeath(personNumber):
 
 def vertexDemise(personNumber):
     '''manage killing people and turning them into zombies:'''
-    #'demise':'zombie' #state of life-fullness, string, choices: 'burried', 'alive', 'zombie'
+    #'demise':'zombie' #state of life-fullness, string, choices: 'buried', 'alive', 'zombie'
     
     #move people from alive to dead:
     theirDeathRand = random.randint(0.0,100.0)/100.0
@@ -208,14 +207,14 @@ def vertexDemise(personNumber):
         #they're alive and it was their bad day to die
         graph[personNumber]['demise']='zombie'
     if (demiseState=='zombie') and (theirDeathRand<probBurialThatDay):
-        #they have a 35% chance of being burried on a given day
-        graph[personNumber]['demise']='burried'
+        #they have a 35% chance of being buried on a given day
+        graph[personNumber]['demise']='buried'
         for personNum,personRepDict in enumerate(graph):
             for edges in graph[personNum]['inContact']:
                 if graph[personNum]['inContact'][0] == personNumber:
                     graph[personNum]['inContact'][1] = 0
     elif (demiseState=='zombie'):
-        #increase risk of death for a zombie's connections the longer they aren't burried
+        #increase risk of death for a zombie's connections the longer they aren't buried
         for personNum,personRepDict in enumerate(graph):
             for edges in graph[personNum]['inContact']:
                 if graph[personNum]['inContact'][0] == personNum:
@@ -247,17 +246,17 @@ demiseWTime = []
 def grabModelDataRT():
     '''grabs the model data during run time and stores it in a useful 
     way for plotting.
-    Burried. Alive. Zombie.'''
+    Buried. Alive. Zombie.'''
 
-    burriedCurrent = 0; zombieCurrent = 0; aliveCurrent = 0
+    buriedCurrent = 0; zombieCurrent = 0; aliveCurrent = 0
     for person in graph:
-        if person['demise']=='burried':
-            burriedCurrent=burriedCurrent+1
+        if person['demise']=='buried':
+            buriedCurrent=buriedCurrent+1
         elif person['demise']=='alive':
             aliveCurrent=aliveCurrent+1
         elif person['demise']=='zombie':
             zombieCurrent=zombieCurrent+1
-    demiseWTime.append([burriedCurrent,zombieCurrent,aliveCurrent])
+    demiseWTime.append([buriedCurrent,zombieCurrent,aliveCurrent])
         
 
 def updateGraph():
@@ -267,9 +266,9 @@ def updateGraph():
     plotting'''
     #start a few people with ebola for testing purposes
     for person in range(numConnStrtEbola):
-        unluckyPerson = random.randint(1,120)
+        unluckyPerson = random.randint(0,peopleInModel-1)
         graph[unluckyPerson]['ebola']=1
-        graph[unluckyPerson]['pDeath']=.3
+        graph[unluckyPerson]['pDeath']=.1*random.randint(3,9)
     
 #    vaccinatePpl() #vacinate the graph against ebola with available vaciene
     for day in range(daysToRunModel):
@@ -278,25 +277,42 @@ def updateGraph():
             contactEbola(personNum)
             vertexDemise(personNum)
             
-    burried=[]; zombies=[]; alive=[] 
+    buried=[]; zombies=[]; alive=[] 
 #    pprint.pprint(demiseWTime)     
     for day, _data in enumerate(demiseWTime):
-        burried.append(demiseWTime[day][0])
+        buried.append(demiseWTime[day][0])
         zombies.append(demiseWTime[day][1])
         alive.append(demiseWTime[day][2])
-    
-    plt.plot(burried, color='b', linewidth=2.0, label = 'Bodies Buried')
-    
-    plt.plot(zombies, color='r', linewidth=2.0, label = 'Unburied Bodies')
-    
-    plt.plot(alive, color='g', linewidth=2.0, label='People Alive')
+    makePoincarePlotAlive(alive)
+#    plt.plot(buried, color='b', linewidth=2.0, label = 'Bodies Buried')
+#    
+#    plt.plot(zombies, color='r', linewidth=2.0, label = 'Unburied Bodies')
+#    
+#    plt.plot(alive, color='g', linewidth=2.0, label='People Alive')
 
-    plt.legend()
-    plt.xlabel('Days')
-    plt.ylabel('% of People')
-    plt.title ('Population Changes over '+ str(daysToRunModel) + ' Days')
+#    plt.legend()
+#    plt.xlabel('Days')
+#    plt.ylabel('% of People')
+#    plt.title ('Population Changes over '+ str(daysToRunModel) + ' Days')
 
+#    plt.show()
+    
+def makePoincarePlotAlive(alive) :
+    #poincare plot:
+    x=[]; y=[]
+    for key, value in enumerate(alive):
+        if key < len(alive)-1:
+            x.append(alive[key])
+            y.append(alive[key+1])
+    print x[-1]
+    plt.plot(x,y, 'ro', markersize=7)
+    ln=range(100,peopleInModel+3)
+    plt.plot(ln,ln, linewidth=3.0)
+    plt.ylabel('People at (t+1)', fontsize=20)
+    plt.xlabel('People at (t)', fontsize=20)
+    plt.title('Population Poincare Plot', fontsize=30)
     plt.show()
+    return x,y
 
 
 updateGraph()
