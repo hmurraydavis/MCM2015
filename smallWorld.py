@@ -28,6 +28,12 @@ initialEbolaInfection = 25 #number of people who initialilly have ebola
 probBurialThatDay = .35 #probability of a zombie being burried that day, less than 1
 supplyVaccine = 300 #doses per day (or time step)
 numConnStrtEbola = 5 #number of people in the vilage who start with ebola
+lowFamilyEdgeWeight = 50.0 #1-100%
+highFamilyEdgeWeight = 90.0 #1-100%
+lowWeightRandomEdges = 30.0 #1-100%
+highWeightRandomEdges = 50.0 #1-100
+natImmunityInit = .1
+numRandomEdges = 5
 
 ####################################
 #####INITALIZE AND SETUP GRAPH:#####
@@ -39,7 +45,7 @@ for vertex in range(peopleInModel):
     personRepDict = {'n':vertex,
         'ebola':0,
         'demise':'alive',
-        'natImmunity':.3,
+        'natImmunity':natImmunityInit,
         'inocFac':[0],
         'pDeath':0.0}
     
@@ -69,28 +75,28 @@ for vertex in range(peopleInModel):
     
     graph.append(personRepDict)
 
-#add a vertex's clique pals as edges:
+#add a vertex's clique pals (family) as edges:
 n=0
 for vertex in graph:
     nVtxActl = graph.index(vertex)
     if (nVtxActl%7)==0:
         for n in range(0,sizeClique):
             s1 = []; s2=[]
-            s1 = range(0,n-1+1)
+            s1 = range(0,n)
             s2 = range(n+1,sizeClique)             
             setS = s1+s2 #the vertices it would be connected to
             actualConnectedVertices = [x+nVtxActl for x in setS]
             writeList = []
             for v in actualConnectedVertices:
-                writeList.append([v,random.randint(50.0,90)/100.0])      
+                writeList.append([v,random.randint(lowFamilyEdgeWeight,highFamilyEdgeWeight)/100.0])      
             graph[nVtxActl+n]['inContact']=writeList
 
 
 #Add in some random graph edges to connect the cliques:
-for _i in range(25):
+for _i in range(numRandomEdges):
     parentVertex = random.randint(1,peopleInModel-1)
     childVertex = random.randint(1,peopleInModel-1)
-    edgeWeight = random.randint(30.0,50)/100.0
+    edgeWeight = random.randint(lowWeightRandomEdges,highWeightRandomEdges)/100.0
     if not(childVertex==parentVertex):
         graph[parentVertex]['inContact'].append([childVertex,edgeWeight])
 #        print graph[parentVertex]['inContact']
@@ -259,7 +265,7 @@ def updateGraph():
     step. Stores data from these iterations in data structures for 
     plotting'''
     daysToRunModel = 400
-    #start a few people with ebola for testing purposes, TODO: remove:
+    #start a few people with ebola for testing purposes
     for person in range(numConnStrtEbola):
         unluckyPerson = random.randint(1,120)
         graph[unluckyPerson]['ebola']=1
