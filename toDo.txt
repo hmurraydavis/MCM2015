@@ -1,6 +1,11 @@
+-integration of data between comunity graph model and district graph model
 -affect of gender to suceptibility
 -affect of age to suceptibility
--integration of data between comunity graph model and district graph model
 -sophistocated vaciene distrabution model for district graph model
 -unify the infection and vacination statistics
+-make pDeath decrease with time after someone is burried
 
+-plots for graphs:
+    -plot burried, zombies and alive on same plot
+    -make axis on this plot constant length
+    title/axis/units
