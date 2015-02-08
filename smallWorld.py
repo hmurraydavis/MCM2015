@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 ####################################
 #####Variable Variables:############
 ####################################
-peopleInModel = 301
+peopleInModel = 700
 sizeClique = 7
 femalesPerClique = 4
 probBurialThatDay = .35 #probability of a zombie being buried that day, less than 1
@@ -36,10 +36,14 @@ numRandomEdges = 100
 daysToRunModel = 600
 
 ####################################
+#####Not-Variable Variables:#####
+####################################
+graph = []
+demiseWTime = []
+
+####################################
 #####INITALIZE AND SETUP GRAPH:#####
 ####################################
-
-graph = []
 cycle=1 #for gender toggle, don't change
 for vertex in range(peopleInModel):
     personRepDict = {'n':vertex,
@@ -100,6 +104,7 @@ for _i in range(numRandomEdges):
     if not(childVertex==parentVertex):
         graph[parentVertex]['inContact'].append([childVertex,edgeWeight])
 #        print graph[parentVertex]['inContact']
+
 
 ####################################
 #####BEGIN GRAPH THEORY MODEL:######
@@ -237,11 +242,6 @@ def contactEbola(personNumber):
         graph[personNumber]['ebola']=1
         ebolaRisk = ebolaRisk/numConnectionsWEbola
 #        print 'ebla rsk: ', ebolaRisk
-          
-global graphHistory
-global graphStats
-global personStats
-demiseWTime = []
     
 def grabModelDataRT():
     '''grabs the model data during run time and stores it in a useful 
@@ -284,18 +284,17 @@ def updateGraph():
         zombies.append(demiseWTime[day][1])
         alive.append(demiseWTime[day][2])
     makePoincarePlotAlive(alive)
-#    plt.plot(buried, color='b', linewidth=2.0, label = 'Bodies Buried')
-#    
-#    plt.plot(zombies, color='r', linewidth=2.0, label = 'Unburied Bodies')
-#    
-#    plt.plot(alive, color='g', linewidth=2.0, label='People Alive')
-
-#    plt.legend()
-#    plt.xlabel('Days')
-#    plt.ylabel('% of People')
-#    plt.title ('Population Changes over '+ str(daysToRunModel) + ' Days')
-
-#    plt.show()
+    makeBZAplot(buried,zombies,alive)
+    
+def makeBZAplot(buried, zombies, alive):
+    plt.plot(buried, color='k', linewidth=3.0, label = 'Bodies Buried')
+    plt.plot(zombies, color='r', linewidth=3.0, label = 'Unburied Bodies')
+    plt.plot(alive, color='g', linewidth=3.0, label='People Alive')
+    plt.legend()
+    plt.xlabel('Days',fontsize=20)
+    plt.ylabel('Number of People', fontsize=20)
+    plt.title ('Population Changes over '+ str(daysToRunModel) + ' Days',fontsize=30)
+    plt.show()
     
 def makePoincarePlotAlive(alive) :
     #poincare plot:
