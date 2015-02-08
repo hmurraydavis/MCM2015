@@ -250,10 +250,10 @@ def updateGraph():
     the graph. Does these for all verticies in graph with each time 
     step. Stores data from these iterations in data structures for 
     plotting'''
-    daysToRunModel = 400
+    daysToRunModel = 100
     #start a few people with ebola for testing purposes, TODO: remove:
-    for person in range(5):
-        graph[random.randint(1,120)]['ebola']=1
+#    for person in range(0):
+#        graph[random.randint(1,120)]['ebola']=1
     
 #    vaccinatePpl() #vacinate the graph against ebola with available vaciene
     for day in range(daysToRunModel):
@@ -262,28 +262,29 @@ def updateGraph():
             contactEbola(personNum)
             vertexDemise(personNum)
             
-    burried=[]; zombies=[]; alive=[]      
+    burried=[]; zombies=[]; alive=[] 
+    pprint.pprint(demiseWTime)     
     for day, _data in enumerate(demiseWTime):
         burried.append(demiseWTime[day][0])
         zombies.append(demiseWTime[day][1])
         alive.append(demiseWTime[day][2])
     
-    plt.plot(burried)
-    plt.ylabel('# people burried')
-    plt.show()
-    
-    plt.plot(zombies)
-    plt.ylabel('# zombie bodies')
-    plt.show()
-    
-    plt.plot(alive)
-    plt.ylabel('# people alive')
-    plt.show()
+#    plt.plot(burried, color='b', linewidth=2.0)
+#    plt.ylabel('# people burried')
+#    plt.show()
+#    
+#    plt.plot(zombies, color='r', linewidth=2.0)
+#    plt.ylabel('# zombie bodies')
+#    plt.show()
+#    
+#    plt.plot(alive, color='g', linewidth=2.0)
+#    plt.ylabel('# people alive')
+#    plt.show()
     
     
         
-#    for personNum, personRepDict in enumerate(graph):
-#        print 'demise state: ', graph[personNum]['demise']
+    for personNum, personRepDict in enumerate(graph):
+        print 'demise state: ', graph[personNum]['demise']
 
 #    personStats = []
 
