@@ -34,6 +34,7 @@ lowWeightRandomEdges = 30.0 #1-100%
 highWeightRandomEdges = 50.0 #1-100
 natImmunityInit = .1
 numRandomEdges = 5
+daysToRunModel = 100
 
 ####################################
 #####INITALIZE AND SETUP GRAPH:#####
@@ -264,7 +265,6 @@ def updateGraph():
     the graph. Does these for all verticies in graph with each time 
     step. Stores data from these iterations in data structures for 
     plotting'''
-    daysToRunModel = 400
     #start a few people with ebola for testing purposes
     for person in range(numConnStrtEbola):
         unluckyPerson = random.randint(1,120)
@@ -297,54 +297,7 @@ def updateGraph():
     plt.title ('Population Changes over '+ str(daysToRunModel) + ' Days')
 
     plt.show()
-    
-    
-        
-#    for personNum, personRepDict in enumerate(graph):
-#        print 'demise state: ', graph[personNum]['demise']
-
-#    personStats = []
-
-#    for person in graph:
-#        personStats.append(computeVaccineImmunity(person))
-#        personStats.append(computeSusceptibilityDisease(person))
-#        person['pDeath'] = computeProbabilityDeath(person)
-#        personStats.append(person['pDeath'])
-    
-#    graphHistory.append(graph)
-#    graphStats.append(personStats)
 
 
-def stateOfTheGraph():
-    '''Grabs each person's probability of death, 
-    innoculazation imunity, and their succeptability '''
-    prob_death = []
-    vaccination = []
-    suceptibility = []
-
-    for person in graph:
-        prob_death.append(person['prob_death'])
-        #vaccination.append(person[inocProb])
-        #suceptibility.append(person[])
-
-#    prob_death = personStats
-    #vaccination = []
-    #suceptibility = []
-
-
-
-        
-    plt.bar(prob_death)
-    #plt.bar(vaccination)
-    #plt.bar(suceptibility)
-
-
-def graphPlot():
-    '''Grabs graph stats and plots them over time '''
-    print 'hi!!!!'
 updateGraph()
 
-
-##for vertex in range(len(graph)):
-##    print 'Node # is: ', graph[vertex]['n']
-##    print 'Connected to:', graph[vertex]['inContact'] 
