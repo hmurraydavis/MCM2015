@@ -286,9 +286,9 @@ def updateGraph():
     burried=[]; zombies=[]; alive=[] 
 #    pprint.pprint(demiseWTime)     
     for day, _data in enumerate(demiseWTime):
-        burried.append(demiseWTime[day][0]/peopleInModel)
-        zombies.append(demiseWTime[day][1]/peopleInModel)
-        alive.append(demiseWTime[day][2]/peopleInModel)
+        burried.append(demiseWTime[day][0])
+        zombies.append(demiseWTime[day][1])
+        alive.append(demiseWTime[day][2])
     
     plt.plot(burried, color='b', linewidth=2.0, label = 'Bodies Buried')
     
