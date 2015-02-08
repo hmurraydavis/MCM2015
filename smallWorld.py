@@ -224,6 +224,7 @@ def contactEbola(personNumber):
           
 global graphHistory
 global graphStats
+global personStats
 
 def updateGraph():
     '''Calls the sub functions that will update vertecies in 
@@ -263,9 +264,16 @@ def stateOfTheGraph():
         #vaccination.append(person[inocProb])
         #suceptibility.append(person[])
 
+#    prob_death = personStats
+    #vaccination = []
+    #suceptibility = []
+
+
+
+        
     plt.bar(prob_death)
-    plt.bar(vaccination)
-    plt.bar(suceptibility)
+    #plt.bar(vaccination)
+    #plt.bar(suceptibility)
 
 
 def graphPlot():
