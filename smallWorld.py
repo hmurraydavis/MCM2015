@@ -221,30 +221,50 @@ def contactEbola(personNumber):
         #set node's ebola boolean high if generated probability was high enough.
         graph[personNumber]['ebola']=1
         ebolaRisk = ebolaRisk/numConnectionsWEbola
-        print 'ebla rsk: ', ebolaRisk
+#        print 'ebla rsk: ', ebolaRisk
           
 global graphHistory
 global graphStats
 global personStats
+demiseWTime = []
+    
+def grabModelDataRT():
+    '''grabs the model data during run time and stores it in a useful 
+    way for plotting.
+    Burried. Alive. Zombie.'''
+
+    burriedCurrent = 0; zombieCurrent = 0; aliveCurrent = 0
+    for person in graph:
+        if person['demise']=='burried':
+            burriedCurrent=burriedCurrent+1
+        elif person['demise']=='alive':
+            aliveCurrent=aliveCurrent+1
+        elif person['demise']=='zombie':
+            zombieCurrent=zombieCurrent+1
+    demiseWTime.append([burriedCurrent,zombieCurrent,aliveCurrent])
+        
 
 def updateGraph():
     '''Calls the sub functions that will update vertecies in 
     the graph. Does these for all verticies in graph with each time 
     step. Stores data from these iterations in data structures for 
     plotting'''
-    daysToRunModel = 20
+    daysToRunModel = 100
     #start a few people with ebola for testing purposes, TODO: remove:
     for person in range(5):
         graph[random.randint(1,120)]['ebola']=1
     
 #    vaccinatePpl() #vacinate the graph against ebola with available vaciene
     for day in range(daysToRunModel):
+        grabModelDataRT()
         for personNum, personRepDict in enumerate(graph):
             contactEbola(personNum)
             vertexDemise(personNum)
+            
+    pprint.pprint(demiseWTime)
         
-    for personNum, personRepDict in enumerate(graph):
-        print 'demise state: ', graph[personNum]['demise']
+#    for personNum, personRepDict in enumerate(graph):
+#        print 'demise state: ', graph[personNum]['demise']
 
 #    personStats = []
 
