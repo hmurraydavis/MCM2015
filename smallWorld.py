@@ -279,16 +279,17 @@ def updateGraph():
         zombies.append(demiseWTime[day][1])
         alive.append(demiseWTime[day][2])
     
-    plt.plot(burried, color='b', linewidth=2.0)
-    plt.ylabel('# people burried')
-    plt.show()
+    plt.plot(burried, color='b', linewidth=2.0, label = 'Bodies Buried')
     
-    plt.plot(zombies, color='r', linewidth=2.0)
-    plt.ylabel('# zombie bodies')
-    plt.show()
+    plt.plot(zombies, color='r', linewidth=2.0, label = 'Unburied Bodies')
     
-    plt.plot(alive, color='g', linewidth=2.0)
-    plt.ylabel('# people alive')
+    plt.plot(alive, color='g', linewidth=2.0, label='People Alive')
+
+    plt.legend()
+    plt.xlabel('Days')
+    plt.ylabel('People')
+    plt.title ('Population Changes over '+ str(daysToRunModel) + ' Days')
+
     plt.show()
     
     
