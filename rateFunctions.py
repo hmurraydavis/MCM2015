@@ -18,7 +18,6 @@ effect_resistance_on_inoculation = 20
 MAX_WORKERS_PER_PERSON = .01
 MIN_WORKERS_PER_PERSON = .001
 
-DOSES_PER_WORKER_PER_DAY = 50
 
 keys=('10-0','20-10','30-20','40-30','50-40','60-50','70-60','80-70','90-80','100-90')
 
@@ -37,7 +36,7 @@ def supply(districts, doses):
     Supply is calculated in # of doses'''
     for district in districts:
         place = districts[district]
-        place['supply'] = place['supply']- place['workers']*DOSES_PER_WORKER_PER_DAY+doses
+        place['supply'] = place['supply']- place['workers']*effect_worker_on_inoculation+doses
         
 def inoculation(districts):
     '''Calculate the effect of inoculation on:
@@ -158,12 +157,6 @@ def plotData():
     plt.xlabel('Days')
     plt.ylabel('% of district population')
     plt.show()
-
-
-
-
-
-    
 
 if __name__ == '__main__':
     for _cycle in range(numberOfTimeCycles):
