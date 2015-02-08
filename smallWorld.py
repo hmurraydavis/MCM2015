@@ -16,6 +16,7 @@ graph = [ {'gender':0, #0 is female, 1 is male
 
 import pprint
 import random
+import matplotlib.pyplot as plt
 
 ####################################
 #####INITALIZE AND SETUP GRAPH:#####
@@ -249,7 +250,7 @@ def updateGraph():
     the graph. Does these for all verticies in graph with each time 
     step. Stores data from these iterations in data structures for 
     plotting'''
-    daysToRunModel = 100
+    daysToRunModel = 400
     #start a few people with ebola for testing purposes, TODO: remove:
     for person in range(5):
         graph[random.randint(1,120)]['ebola']=1
@@ -261,7 +262,25 @@ def updateGraph():
             contactEbola(personNum)
             vertexDemise(personNum)
             
-    pprint.pprint(demiseWTime)
+    burried=[]; zombies=[]; alive=[]      
+    for day, _data in enumerate(demiseWTime):
+        burried.append(demiseWTime[day][0])
+        zombies.append(demiseWTime[day][1])
+        alive.append(demiseWTime[day][2])
+    
+    plt.plot(burried)
+    plt.ylabel('# people burried')
+    plt.show()
+    
+    plt.plot(zombies)
+    plt.ylabel('# zombie bodies')
+    plt.show()
+    
+    plt.plot(alive)
+    plt.ylabel('# people alive')
+    plt.show()
+    
+    
         
 #    for personNum, personRepDict in enumerate(graph):
 #        print 'demise state: ', graph[personNum]['demise']
