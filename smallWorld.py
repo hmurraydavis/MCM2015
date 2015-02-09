@@ -563,8 +563,8 @@ def iterateThroughProbBurialThatDay():
     plt.clf()
     
 def iterateThroughFamilyEdgeWeight():
-    '''Computes the effect of probability of a persone being burried on a given day 
-    on the net outcome of ebola on a population '''
+    '''Computes the effect of family edge weights 
+    on the net outcome of ebola on a population  '''
     global lowFamilyEdgeWeight
     global highFamilyEdgeWeight
     global buried; global alive; global zombies; global demiseWTime
@@ -592,8 +592,8 @@ def iterateThroughFamilyEdgeWeight():
         demiseWTime[:]=[]
         
         print 'this was trial ',value,' of ', numberTimesTry
-    pickle.dump( evaluatedValues, open( "8xFamEdgeWt.p", "wb" ) )
-    pickle.dump( dataStore, open( "8yFamEdgeWt.p", "wb" ) )
+    pickle.dump( evaluatedValues, open( "9xFamEdgeWt.p", "wb" ) )
+    pickle.dump( dataStore, open( "9yFamEdgeWt.p", "wb" ) )
     x=evaluatedValues; y=dataStore
     plt.plot(x,y,'ko')
     x=np.array(evaluatedValues); y=np.array(dataStore)
@@ -603,10 +603,54 @@ def iterateThroughFamilyEdgeWeight():
     plt.ylabel('Living at Model End (People)', fontsize=17)
     plt.xlabel('Clique Edge Weight, Low Bound (%)', fontsize=17)
     plt.title('Effect of Clique Edge Weight on Outcome', fontsize=25)
-    plt.savefig('8FamEdgeWtScatPlt.png')
+    plt.savefig('9FamEdgeWtScatPlt.png')
     plt.clf()
 
+
+def iterateThroughRandomEdgeWeight():
+    '''Computes the effect of random edge weights 
+    on the net outcome of ebola on a population '''
+    global lowWeightRandomEdges
+    global highWeightRandomEdges
+    global buried; global alive; global zombies; global demiseWTime
+    
+    speBtwnHigAndLowBounds = 1
+    topIterableVariableBound=99
+    bottomIterableVariableBound=1.0
+    numberTimesTry = 500
+    dataStore = []
+    evaluatedValues = []
+    for value in range(numberTimesTry):
+        assesValue=random.randint(bottomIterableVariableBound,topIterableVariableBound)
+        lowWeightRandomEdges=assesValue
+        highWeightRandomEdges = assesValue + speBtwnHigAndLowBounds
+#        print 'LEW: ', lowFamilyEdgeWeight, ' HFEW: ', highFamilyEdgeWeight
+        
+        initializeGraph() 
+        updateGraph()
+        demiseWTime=grabModelDataRT()
+        B,Z,A = processBZAdata(demiseWTime)
+        dataStore.append(A[-1])
+        evaluatedValues.append(assesValue)
+            
+        buried[:]=[]; alive[:]=[]; zombies[:]=[]
+        demiseWTime[:]=[]
+        
+        print 'this was trial ',value,' of ', numberTimesTry
+    pickle.dump( evaluatedValues, open( "9xRandEdgeWt.p", "wb" ) )
+    pickle.dump( dataStore, open( "9yRandEdgeWt.p", "wb" ) )
+    x=evaluatedValues; y=dataStore
+    plt.plot(x,y,'co')
+    x=np.array(evaluatedValues); y=np.array(dataStore)
+    m,b = np.polyfit(x, y, 1) 
+    plt.plot(x, m*x+b, 'b',linewidth=3.0) 
+    
+    plt.ylabel('Living at Model End (People)', fontsize=17)
+    plt.xlabel('Random Edge Weight, (%)', fontsize=17)
+    plt.title('Effect of Random Edge Weight on Outcome', fontsize=25)
+    plt.savefig('9RandomEdgeWtScatPlt.png')
+    plt.clf()
 if __name__=='__main__':
 #    iterateThroughValuesVacSplyOnPop()
-    iterateThroughFamilyEdgeWeight()
+    iterateThroughRandomEdgeWeight()
 
