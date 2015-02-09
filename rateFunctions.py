@@ -183,7 +183,7 @@ def IterateThroughWorkerThresholds():
 
         for i in range(0,100):
             ProceedOneTimeStep()
-        pickle.dump( dataOut, open( "ebola_workerthresh.p", "wb" ))
+        pickle.dump( dataOut, open( "ebola_workerfull.p", "wb" ))
         risk_avg = 0
         inf_avg = 0
         for i in range(0,len(keys)):
@@ -192,9 +192,12 @@ def IterateThroughWorkerThresholds():
 
         final_infection.append(inf_avg)
         final_vaccination.append(risk_avg)
+	pickle.dump( thresholds, open("ebola_workerthresh.p", "wb"))
+	pickle.dump( final_vaccination, open("worker_vacc.p", "wb"))
+	pickle.dump( final_infection, open("worker_inf.p","wb"))
 
-    plt.plot(thresholds,final_infection, 'bo', label = 'Kailahun Death Risk Rates')
-    plt.plot(thresholds, final_vaccination, 'ro', label = 'Kailahun Risk Rates')
+    #plt.plot(thresholds,final_infection, 'bo', label = 'Kailahun Death Risk Rates')
+    #plt.plot(thresholds, final_vaccination, 'ro', label = 'Kailahun Risk Rates')
    #m,b = numpy.polyfit(thresholds, final_infection, 1) 
     #plt.plot(thresholds, m*thresholds+b, 'k',linewidth=3.0) 
 
@@ -205,9 +208,9 @@ def IterateThroughWorkerThresholds():
     plt.show()
 
 if __name__ == '__main__':
-    for _cycle in range(numberOfTimeCycles):
-        ProceedOneTimeStep()
-    plotData()
+    #for _cycle in range(numberOfTimeCycles):
+        #ProceedOneTimeStep()
+    #plotData()
     IterateThroughWorkerThresholds()
 
    
