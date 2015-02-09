@@ -13,89 +13,68 @@ districts = data.returnDistricsDictionary()
 dataOut = [] #array to store the data about the system
 
 #Global variables that aren't really global:
-effect_worker_on_inoculation = 35 #number of people a worker can vacinate in one time step
-effect_resistance_on_inoculation = 20
+effect_worker_on_inoculation = 350000 #number of people a worker can vacinate in one time step
 MAX_WORKERS_PER_PERSON = .01
-MIN_WORKERS_PER_PERSON = .001
-
+DAILY_SUPPLY_PER_DISTRICT = 600000
 
 keys=('10-0','20-10','30-20','40-30','50-40','60-50','70-60','80-70','90-80','100-90')
+rev_keys = tuple(reversed(keys))
 
-def getInfected(district):
-    return districts[district]['infected']
-
-def getVaccinated(district):
-    return districts[district]['vaccinated']
-
-def getNeighbors(district):
-    return districts[district]['neighbors']
-
-def supply(districts, doses):
+def supply(districts, doses=DAILY_SUPPLY_PER_DISTRICT):
     '''Calculate the effect of vaccination supply on:
         1. inoculation
     Supply is calculated in # of doses'''
     for district in districts:
         place = districts[district]
-        place['supply'] = place['supply']- place['workers']*effect_worker_on_inoculation+doses
+        place['supply'] = place['supply']- (place['workers']*effect_worker_on_inoculation) +doses
+        if place['supply'] < 0:
+            place['supply'] = 0
+        # print 'supply is:', place['supply']
+    #TODO: Check that supply is actually correct. Changes but is more or less uniform across districts. 
         
 def inoculation(districts):
     '''Calculate the effect of inoculation on:
-        1. # of workers
         2. infection'''
     for district in districts:
         place = districts[district]
+        av_vac = 0
+        for i in range(0, len(keys)):
+            av_vac = av_vac + ((i+1)/10)*place['vaccinated'][keys[i]]
 
-        #'''increase the number of workers'''
-        if (place['workers']< MAX_WORKERS_PER_PERSON* place['population']):
-            sumrisk=place['vaccinated']['10-0']+place['vaccinated']['20-10']+place['vaccinated']['30-20']
-            if (sumrisk > .2):
-                place['workers'] = place['workers']+1
-
-        if(place['workers'] > MIN_WORKERS_PER_PERSON *place['population']):
-            place['workers'] = place['workers']-1
-          
-        for i in range(len(keys)):
-            for j in range(1,len(keys)-1):
-                jinf=place['infected'][keys[j]]
-                ivac=place['vaccinated'][keys[i]]
-                place['infected'][keys[j+1]]=place['infected'][keys[j-1]]+ivac*jinf
-                jinf=jinf*(1-ivac)
+        for i in range(1, len(keys)):
+            percent_change = place['infected'][keys[i]]*(1-av_vac)
+            place['infected'][keys[i-1]] = place['infected'][keys[i-1]]+percent_change
+            place['infected'][keys[i]]= place['infected'][keys[i]]-percent_change
 
 def workers(districts):
     '''Calculate the effect of the number of workers on: 
-        1. inoculation
-        2. Education'''
+        1. inoculation'''
     for district in districts:
         place = districts[district]
-        num_doses = place['workers']*DOSES_PER_WORKER_PER_DAY
-        for i in range(len(keys)-1):
-            if (place['population']*place['vaccinated'][keys[i]] < num_doses):
-                num_doses = num_doses - place['population']*place['vaccinated'][keys[i]]
-                place['vaccinated'][keys[i+1]] = place['vaccinated'][keys[i]]
 
-        place['education'] = place['education'] + (75/place['population'])*place['workers']
-    
-def resistance(districts):
-    '''Calculate the effect of resistance of people to 
-    receiving the drug on:
-        1. infection
-        2. inoculation
-        3. Workers (???)'''
-    for district in districts:
-        place = districts[district]
-        #Effect of human resistance to vacination on inoculation:
-        for risk_level in place['vaccinated']:
-            place['vaccinated'][risk_level] = place['vaccinated'][risk_level]*(1-place['resistance'])
+        num_doses = supply
+        if num_doses > place['workers']*effect_worker_on_inoculation:
+            num_doses = place['workers']*effect_worker_on_inoculation
 
-    
-def education(districts):
-    '''Calculate the effect of education on:
-        1. RESISTANCE to being vacinated (less resistance)'''
-    for district in districts:
-        place = districts[district]
-        place['resistance'] = place['resistance']*(place['education'])
-    
-    
+        change = [0,0,0,0,0,0,0,0,0,0]
+
+        for i in range(0,len(keys)-1):
+            if (place['population']*place['vaccinated'][rev_keys[i]] < num_doses):
+                num_doses = num_doses - place['population']*place['vaccinated'][rev_keys[i]]
+
+                change[i] = change[i]-(place['vaccinated'][rev_keys[i]])
+                change[i+1] = place['vaccinated'][rev_keys[i]]
+            else:
+                change[i] = change[i]-(num_doses/(place['population']*place['vaccinated'][rev_keys[i]]))
+                print (num_doses/(place['population']*place['vaccinated'][rev_keys[i]]))
+                change[i+1] = ((num_doses/(place['population']*place['vaccinated'][rev_keys[i]]))*place['vaccinated'][rev_keys[i]])
+
+
+        for i in range(0, len(keys)):
+            place['vaccinated'][rev_keys[i]] = place['vaccinated'][rev_keys[i]]+change[i]
+
+        print place['vaccinated']
+         
 def infection(districts): 
     '''Calculates the effect of infection on:
         1. Population
@@ -110,6 +89,7 @@ def infection(districts):
 
         place['infected']['20-10'] = place['infected']['10-0'] * ((percent_infected)-(place['vaccinated']['100-90']))
         percent_infected = percent_infected + place['infected']['20-10']
+        print percent_infected
 
         place['infected']['10-0'] = 1 - percent_infected
 
@@ -121,14 +101,13 @@ def ProceedOneTimeStep():
 
     
     #Call all the model functions!!!
-    supply(districts, 100)
+    supply(districts, DAILY_SUPPLY_PER_DISTRICT)
     inoculation(districts)
     workers(districts)
-    resistance(districts)
-    education(districts)
-    infection(districts)
+    # infection(districts)
     dataOut.append(districts)
 #    pprint.pprint(dataOut)
+    print 'New Cycle!!!'
 
 def plotData():
     '''Plots the infection and vaccination rates for all districts over the time the model has been running'''
@@ -136,22 +115,31 @@ def plotData():
     toPlot = ('kai', 'western_urban','koinadugu')
     for district in toPlot:
 
-        vaccination_list = []
+        #vaccination_list = []
         infection_list = []
+        #population_list = []
+        l = []
         risk = 0
         pDeath = 0
+        pop = 0
 
         for day in dataOut:
 
             for i in range(0, len(keys)-1):
                 risk = risk + (1-i/10)*districts[district]['vaccinated'][keys[i]]
                 pDeath = pDeath + i/10*districts[district]['infected'][keys[i]]
-            
-            vaccination_list.append(risk)
-            infection_list.append(pDeath)
 
-        plt.plot(vaccination_list, label = 'Infection risk in ' + district)
+            #population_list.append(districts[district]['population'])
+            #vaccination_list.append(risk)
+            infection_list.append(pDeath)
+            #l.append(districts[district]['workers'])
+
+
+        #plt.plot(vaccination_list, label = 'Infection risk in ' + district)
         plt.plot(infection_list, label = 'Infection rate in ' + district)
+        print(infection_list)
+        #plt.plot(population_list)
+        #plt.plot(l)
 
     plt.legend()
     plt.xlabel('Days')
@@ -161,4 +149,7 @@ def plotData():
 if __name__ == '__main__':
     for _cycle in range(numberOfTimeCycles):
         ProceedOneTimeStep()
+    #plotData()
+
+   
     
