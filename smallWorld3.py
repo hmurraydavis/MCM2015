@@ -330,45 +330,6 @@ def makePoincarePlotAlive(alive) :
     plt.title('Population Poincare Plot', fontsize=30)
     plt.show()
     return x,y
-    
-def iterateThroughValuesVacSplyOnPop():
-    global supplyVaccine
-    global buried
-    global alive
-    global zombies
-    global demiseWTime
-    
-    numberTimesTryEachIteration = 200
-    dataStore = []
-    step = 20
-    numValuesToTry = 40
-    supplyVaccineList = [x*step for x in range(numValuesToTry)]
-    for value in supplyVaccineList:
-        supplyVaccine=value
-        dataStoreTrial=[0]*numberTimesTryEachIteration
-        for i in range(numberTimesTryEachIteration):
-            initializeGraph() 
-            updateGraph()
-            demiseWTime=grabModelDataRT()
-            B,Z,A = processBZAdata(demiseWTime)
-            dataStoreTrial[i]=A[-1]
-#            print len(B)
-#            makeBZAplot(B,Z,A)
-            buried[:]=[]; alive[:]=[]; zombies[:]=[]
-            demiseWTime[:]=[]
-        dataStoreTrial=sum(dataStoreTrial)
-        dataStore.append(dataStoreTrial/numberTimesTryEachIteration)
-        print 'DS-1: ',dataStore[-1]
-    print dataStore
-    x=supplyVaccineList; y=dataStore
-    plt.plot(supplyVaccineList,dataStore,'go')
-    m,b = numpy.polyfit(x, y, 1) 
-    plt.plot(x, m*x+b, 'k',linewidth=3.0) 
-    plt.ylabel('Average Living at Model End (People)', fontsize=20)
-    plt.xlabel('Vaccine Supply (Doses)', fontsize=20)
-    plt.title('Effect of Vaccine Supply on Population ', fontsize=30)
-    plt.savefig('VacSplyEffectOnPop3.png')
-#    plt.show()
 
 def iterateThroughValuesnumConnStrtEbola():
     global numConnStrtEbola
