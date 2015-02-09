@@ -32,10 +32,10 @@ supplyVaccine = 230 #doses per day (or time step) **varry
 numConnStrtEbola = 50 #number of people in the vilage who start with ebola
 lowFamilyEdgeWeight = 50.0 #1-100%
 highFamilyEdgeWeight = 90.0 #1-100%
-lowWeightRandomEdges = 30.0 #1-100%
-highWeightRandomEdges = 50.0 #1-100
+lowWeightRandomEdges = 10.0 #1-100%
+highWeightRandomEdges = 20.0 #1-100
 natImmunityInit = .1
-numRandomEdges = 60
+numRandomEdges = 30
 daysToRunModel = 400
 
 ####################################
@@ -569,17 +569,17 @@ def iterateThroughFamilyEdgeWeight():
     global highFamilyEdgeWeight
     global buried; global alive; global zombies; global demiseWTime
     
-    speBtwnHigAndLowBounds = 40
-    topIterableVariableBound=60
+    speBtwnHigAndLowBounds = 1
+    topIterableVariableBound=99
     bottomIterableVariableBound=1.0
-    numberTimesTry = 15
+    numberTimesTry = 300
     dataStore = []
     evaluatedValues = []
     for value in range(numberTimesTry):
         assesValue=random.randint(bottomIterableVariableBound,topIterableVariableBound)
         lowFamilyEdgeWeight=assesValue
         highFamilyEdgeWeight = assesValue + speBtwnHigAndLowBounds
-        print 'LEW: ', lowFamilyEdgeWeight, ' HFEW: ', highFamilyEdgeWeight
+#        print 'LEW: ', lowFamilyEdgeWeight, ' HFEW: ', highFamilyEdgeWeight
         
         initializeGraph() 
         updateGraph()
