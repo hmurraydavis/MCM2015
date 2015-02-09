@@ -139,12 +139,12 @@ def computeVaccineImmunity(personNumber):
             inocProb = inocProb + .17
     return inocProb
 
-def vaccinatePpl():
+def vaccinatePpl(availableVaciene):
     '''Performs triage on the population and administers vaciene to 
     those at greatest risk before others. 
     
     Called in updateGraph()'''
-    sup = supplyVaccine
+    sup = availableVaciene
     ill = []
     two0_inoc = []
     one0_inoc = []
@@ -281,13 +281,15 @@ def updateGraph():
     step. Stores data from these iterations in data structures for 
     plotting'''
     #start a few people with ebola for testing purposes
+    availableVaciene = 200
     for person in range(numConnStrtEbola):
         unluckyPerson = random.randint(0,peopleInModel-1)
         graph[unluckyPerson]['ebola']=1
         graph[unluckyPerson]['pDeath']=.1*random.randint(3,9)
     
-    vaccinatePpl() #vacinate the graph against ebola with available vaciene
+    
     for day in range(daysToRunModel):
+        vaccinatePpl(availableVaciene) #vacinate the graph against ebola with available vaciene
         grabModelDataRT()
         for personNum, personRepDict in enumerate(graph):
             contactEbola(personNum)
