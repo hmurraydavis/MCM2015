@@ -471,7 +471,7 @@ weu_neigh = {
 #########################################
 ####Dictionary of ALL Dictionaries!!!####
 #########################################	                
-districts = {'kai': {'abbrev':'kai',
+districts = {'kailahun': {'abbrev':'kai',
 	            'population':358190,	
 	            'infected':kai_inf,
 	            'vaccinated':kai_vac,
@@ -481,7 +481,7 @@ districts = {'kai': {'abbrev':'kai',
 	            'neighbors':kai_neigh,
                 },
                 
-            'ken': {'abbrev':'ken',
+            'kenema': {'abbrev':'ken',
 	                'population':497948,
 	                'infected': ken_inf,
 	                'vaccinated':ken_vac,
