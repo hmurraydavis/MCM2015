@@ -486,7 +486,7 @@ def iterateThroughNatImmunity():
     
     topIterableVariableBound=100.0
     bottomIterableVariableBound=1.0
-    numberTimesTry = 3
+    numberTimesTry = 1000
     dataStore = []
     evaluatedValues = []
     for value in range(numberTimesTry):
