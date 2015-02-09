@@ -30,10 +30,10 @@ femalesPerClique = 4
 probBurialThatDay = .35 #probability of a zombie being buried that day, less than 1
 supplyVaccine = 230 #doses per day (or time step) **varry
 numConnStrtEbola = 50 #number of people in the vilage who start with ebola
-lowFamilyEdgeWeight = 39.0 #1-100%
+lowFamilyEdgeWeight = 50.0 #1-100%
 highFamilyEdgeWeight = 40.0 #1-100%
-lowWeightRandomEdges = 19.0 #1-100%
-highWeightRandomEdges = 20.0 #1-100
+lowWeightRandomEdges = 2.0 #1-100%
+highWeightRandomEdges = 30.0 #1-100
 natImmunityInit = .1
 numRandomEdges = 30
 daysToRunModel = 400
@@ -148,7 +148,7 @@ def vaccinatePpl():
     one0_inoc = []
     yest_inoc = []
     for person,perDict in enumerate(graph):
-        print 'inocFac: ', graph[person], '\n'
+#        print 'inocFac: ', graph[person], '\n'
 #        print 'person is: ', person
         if graph[person]['pDeath']<0.4:
             if graph[person]['ebola']==1:
@@ -665,9 +665,9 @@ def iterateThroughVacieneSupply():
     global zombies
     global demiseWTime
     
-    topIterableVariableBound=800.0
+    topIterableVariableBound=900.0
     bottomIterableVariableBound=1.0
-    numberTimesTry = 2500
+    numberTimesTry = 2100
     dataStore = []
     evaluatedValues = []
     for value in range(numberTimesTry):
@@ -683,8 +683,16 @@ def iterateThroughVacieneSupply():
             
         buried[:]=[]; alive[:]=[]; zombies[:]=[]
         demiseWTime[:]=[]
-        pickle.dump( evaluatedValues, open( "12xVacieneSuply.p", "wb" ) )
-        pickle.dump( dataStore, open( "12yVacieneSuply.p", "wb" ) )
+        print 'this was trial ',value,' of ', numberTimesTry
+    pickle.dump( evaluatedValues, open( "12xVacieneSuply.p", "wb" ) )
+    pickle.dump( dataStore, open( "12yVacieneSuply.p", "wb" ) )
+#    x=evaluatedValues; y=dataStore
+#    plt.plot(x,y,'ro')
+#    plt.ylabel('Living at Model End (People)', fontsize=17)
+#    plt.xlabel('Vials of Increased Risk of Female Death', fontsize=17)
+#    plt.title('Effect of Increased Female Risk on Overall Outcome', fontsize=22)
+#    plt.savefig('12FemalePDeath.png')
+#    plt.clf()
         
 def iterateThroughIncreasedFemaleRisk():
     '''Computes the effect of probability of a persone being burried on a given day 
@@ -731,11 +739,12 @@ def iterateThroughIncreasedFemaleRisk():
     
 if __name__=='__main__':
 #    iterateThroughValuesVacSplyOnPop()
-#    iterateThroughVacieneSupply()
+    iterateThroughVacieneSupply()
 #    iterateThroughRandomEdgeWeight()
-        initializeGraph() 
-        updateGraph()
-        demiseWTime=grabModelDataRT()
-        B,Z,A = processBZAdata(demiseWTime)
-        makeBZAplot(B,Z,A)
+
+#        initializeGraph() 
+#        updateGraph()
+#        demiseWTime=grabModelDataRT()
+#        B,Z,A = processBZAdata(demiseWTime)
+#        makeBZAplot(B,Z,A)
 
