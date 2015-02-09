@@ -30,13 +30,14 @@ femalesPerClique = 4
 probBurialThatDay = .35 #probability of a zombie being buried that day, less than 1
 supplyVaccine = 230 #doses per day (or time step) **varry
 numConnStrtEbola = 50 #number of people in the vilage who start with ebola
-lowFamilyEdgeWeight = 50.0 #1-100%
-highFamilyEdgeWeight = 90.0 #1-100%
-lowWeightRandomEdges = 10.0 #1-100%
-highWeightRandomEdges = 20.0 #1-100
+lowFamilyEdgeWeight = 40.0 #1-100%
+highFamilyEdgeWeight = 55.0 #1-100%
+lowWeightRandomEdges = 2.0 #1-100%
+highWeightRandomEdges = 30.0 #1-100
 natImmunityInit = .1
 numRandomEdges = 30
 daysToRunModel = 400
+effectofFemaleonPDeath = .15
 
 ####################################
 #####Not-Variable Variables:#####
@@ -59,16 +60,7 @@ def initializeGraph():
             'inocFac':[0],
             'pDeath':0.0}
         
-        #set gender distrabution:
-        if cycle<femalesPerClique+1:
-            personRepDict['gender']=0
-            cycle=cycle+1
-        elif (cycle<sizeClique):
-            personRepDict['gender']=1
-            cycle=cycle+1
-        else:
-            personRepDict['gender']=1
-            cycle = 1
+
             
         #Set ages of the population!!!
         percentAge=random.randint(0,100)
@@ -101,6 +93,18 @@ def initializeGraph():
                     writeList.append([v,random.randint(lowFamilyEdgeWeight,highFamilyEdgeWeight)/100.0])      
                 graph[nVtxActl+n]['inContact']=writeList
 
+
+        #set gender distrabution:
+        if cycle<femalesPerClique+1:
+            personRepDict['gender']=0
+            personRepDict['pDeath']=personRepDict['pDeath']+effectofFemaleonPDeath
+            cycle=cycle+1
+        elif (cycle<sizeClique):
+            personRepDict['gender']=1
+            cycle=cycle+1
+        else:
+            personRepDict['gender']=1
+            cycle = 1
 
     #Add in some random graph edges to connect the cliques:
     for _i in range(numRandomEdges):
@@ -143,39 +147,40 @@ def vaccinatePpl():
     two0_inoc = []
     one0_inoc = []
     yest_inoc = []
-    for person,_perDict in enumerate(graph):
-        print 'person is: ', person
-        if graph[person]['pdeath']<0.4:
-            if graph[person][ebola]==1:
+    for person,perDict in enumerate(graph):
+#        print 'inocFac: ', graph[person], '\n'
+#        print 'person is: ', person
+        if graph[person]['pDeath']<0.4:
+            if graph[person]['ebola']==1:
                 ill.append(graph[person])
-            elif graph[person][inocFac][-1]==0:
-                if len(graph[person]['inocFac']) > 2 and inocFacgraph[person][inocFac][-2]==0:
+            elif graph[person]['inocFac'][-1]==0:
+                if len(graph[person]['inocFac']) > 2 and inocFacgraph[person]['inocFac'][-2]==0:
                     two0_inoc.append(graph[person])
                 else:
                     one0_inoc.append(graph[person])
             else: 
                 yest_inoc.append(graph[person])
-    for person in ill:
+    for personNum, person in enumerate(ill):
         if sup>0:
-            graph[person][inocFac].append(1)
+            graph[personNum]['inocFac'].append(1)
             sup=sup-1
         else:
             break
     for person in two0_inoc:
         if sup>0:
-            graph[person][inocFac].append(1)
+            graph[personNum]['inocFac'].append(1)
             sup=sup-1
         else:
             break
     for person in one0_inoc:
         if sup>0:
-            graph[person][inocFac].append(1)
+            graph[personNum]['inocFac'].append(1)
             sup=sup-1
         else:
             break
     for person in yest_inoc:
         if sup>0:
-            graph[person][inocFac].append(1)
+            graph[personNum]['inocFac'].append(1)
             sup=sup-1
         else:
             break
@@ -240,8 +245,8 @@ def contactEbola(personNumber):
     randEbolaNum = random.randint(1.0,100.0)/100.0
     for connection in graph[personNumber]['inContact']:
         #Sum the probability of them getting ebola
-        if graph[connection[0]]['ebola']==1:
-            ebolaRisk = ebolaRisk + connection[1]
+        if graph[connection[0]]['ebola']==1: #If their connection has ebola:
+            ebolaRisk = ebolaRisk + connection[1] #
             numConnectionsWEbola = numConnectionsWEbola+1
     if (numConnectionsWEbola>0) and (randEbolaNum<=(ebolaRisk/numConnectionsWEbola)):
         #set node's ebola boolean high if generated probability was high enough.
@@ -279,7 +284,7 @@ def updateGraph():
         graph[unluckyPerson]['ebola']=1
         graph[unluckyPerson]['pDeath']=.1*random.randint(3,9)
     
-#    vaccinatePpl() #vacinate the graph against ebola with available vaciene
+    vaccinatePpl() #vacinate the graph against ebola with available vaciene
     for day in range(daysToRunModel):
         grabModelDataRT()
         for personNum, personRepDict in enumerate(graph):
@@ -563,8 +568,8 @@ def iterateThroughProbBurialThatDay():
     plt.clf()
     
 def iterateThroughFamilyEdgeWeight():
-    '''Computes the effect of probability of a persone being burried on a given day 
-    on the net outcome of ebola on a population '''
+    '''Computes the effect of family edge weights 
+    on the net outcome of ebola on a population  '''
     global lowFamilyEdgeWeight
     global highFamilyEdgeWeight
     global buried; global alive; global zombies; global demiseWTime
@@ -592,8 +597,8 @@ def iterateThroughFamilyEdgeWeight():
         demiseWTime[:]=[]
         
         print 'this was trial ',value,' of ', numberTimesTry
-    pickle.dump( evaluatedValues, open( "8xFamEdgeWt.p", "wb" ) )
-    pickle.dump( dataStore, open( "8yFamEdgeWt.p", "wb" ) )
+    pickle.dump( evaluatedValues, open( "9xFamEdgeWt.p", "wb" ) )
+    pickle.dump( dataStore, open( "9yFamEdgeWt.p", "wb" ) )
     x=evaluatedValues; y=dataStore
     plt.plot(x,y,'ko')
     x=np.array(evaluatedValues); y=np.array(dataStore)
@@ -603,10 +608,143 @@ def iterateThroughFamilyEdgeWeight():
     plt.ylabel('Living at Model End (People)', fontsize=17)
     plt.xlabel('Clique Edge Weight, Low Bound (%)', fontsize=17)
     plt.title('Effect of Clique Edge Weight on Outcome', fontsize=25)
-    plt.savefig('8FamEdgeWtScatPlt.png')
+    plt.savefig('9FamEdgeWtScatPlt.png')
     plt.clf()
 
+
+def iterateThroughRandomEdgeWeight():
+    '''Computes the effect of random edge weights 
+    on the net outcome of ebola on a population '''
+    global lowWeightRandomEdges
+    global highWeightRandomEdges
+    global buried; global alive; global zombies; global demiseWTime
+    
+    speBtwnHigAndLowBounds = 1
+    topIterableVariableBound=99
+    bottomIterableVariableBound=1.0
+    numberTimesTry = 500
+    dataStore = []
+    evaluatedValues = []
+    for value in range(numberTimesTry):
+        assesValue=random.randint(bottomIterableVariableBound,topIterableVariableBound)
+        lowWeightRandomEdges=assesValue
+        highWeightRandomEdges = assesValue + speBtwnHigAndLowBounds
+#        print 'LEW: ', lowFamilyEdgeWeight, ' HFEW: ', highFamilyEdgeWeight
+        
+        initializeGraph() 
+        updateGraph()
+        demiseWTime=grabModelDataRT()
+        B,Z,A = processBZAdata(demiseWTime)
+        dataStore.append(A[-1])
+        evaluatedValues.append(assesValue)
+            
+        buried[:]=[]; alive[:]=[]; zombies[:]=[]
+        demiseWTime[:]=[]
+        
+        print 'this was trial ',value,' of ', numberTimesTry
+    pickle.dump( evaluatedValues, open( "9xRandEdgeWt.p", "wb" ) )
+    pickle.dump( dataStore, open( "9yRandEdgeWt.p", "wb" ) )
+    x=evaluatedValues; y=dataStore
+    plt.plot(x,y,'co')
+    x=np.array(evaluatedValues); y=np.array(dataStore)
+    m,b = np.polyfit(x, y, 1) 
+    plt.plot(x, m*x+b, 'b',linewidth=3.0) 
+    
+    plt.ylabel('Living at Model End (People)', fontsize=17)
+    plt.xlabel('Random Edge Weight, (%)', fontsize=17)
+    plt.title('Effect of Random Edge Weight on Outcome', fontsize=25)
+    plt.savefig('9RandomEdgeWtScatPlt.png')
+    plt.clf()
+    
+def iterateThroughVacieneSupply():
+    '''Computes the effect of probability of a persone being burried on a given day 
+    on the net outcome of ebola on a population '''
+    global supplyVaccine
+    global buried
+    global alive
+    global zombies
+    global demiseWTime
+    
+    topIterableVariableBound=900.0
+    bottomIterableVariableBound=1.0
+    numberTimesTry = 2100
+    dataStore = []
+    evaluatedValues = []
+    for value in range(numberTimesTry):
+        assesValue=random.randint(bottomIterableVariableBound,topIterableVariableBound)
+        supplyVaccine=assesValue
+        
+        initializeGraph() 
+        updateGraph()
+        demiseWTime=grabModelDataRT()
+        B,Z,A = processBZAdata(demiseWTime)
+        dataStore.append(A[-1])
+        evaluatedValues.append(assesValue)
+            
+        buried[:]=[]; alive[:]=[]; zombies[:]=[]
+        demiseWTime[:]=[]
+        print 'this was trial ',value,' of ', numberTimesTry
+    pickle.dump( evaluatedValues, open( "12xVacieneSuply.p", "wb" ) )
+    pickle.dump( dataStore, open( "12yVacieneSuply.p", "wb" ) )
+#    x=evaluatedValues; y=dataStore
+#    plt.plot(x,y,'ro')
+#    plt.ylabel('Living at Model End (People)', fontsize=17)
+#    plt.xlabel('Vials of Increased Risk of Female Death', fontsize=17)
+#    plt.title('Effect of Increased Female Risk on Overall Outcome', fontsize=22)
+#    plt.savefig('12FemalePDeath.png')
+#    plt.clf()
+        
+def iterateThroughIncreasedFemaleRisk():
+    '''Computes the effect of probability of a persone being burried on a given day 
+    on the net outcome of ebola on a population '''
+    global effectofFemaleonPDeath
+    global buried
+    global alive
+    global zombies
+    global demiseWTime
+    
+    topIterableVariableBound=60.0
+    bottomIterableVariableBound=1.0
+    numberTimesTry = 300
+    dataStore = []
+    evaluatedValues = []
+    for value in range(numberTimesTry):
+        assesValue=random.randint(bottomIterableVariableBound,topIterableVariableBound)/100.0
+        effectofFemaleonPDeath=assesValue
+        
+        initializeGraph() 
+        updateGraph()
+        demiseWTime=grabModelDataRT()
+        B,Z,A = processBZAdata(demiseWTime)
+        dataStore.append(A[-1])
+        evaluatedValues.append(assesValue)
+            
+        buried[:]=[]; alive[:]=[]; zombies[:]=[]
+        demiseWTime[:]=[]
+        
+        print 'this was trial ',value,' of ', numberTimesTry
+    pickle.dump( evaluatedValues, open( "11xFemalePDeath.p", "wb" ) )
+    pickle.dump( dataStore, open( "11yFemalePDeath.p", "wb" ) )
+    x=evaluatedValues; y=dataStore
+    plt.plot(x,y,'ro')
+    x=np.array(evaluatedValues); y=np.array(dataStore)
+    m,b = np.polyfit(x, y, 1) 
+    plt.plot(x, m*x+b, 'c',linewidth=3.0) 
+    
+    plt.ylabel('Living at Model End (People)', fontsize=17)
+    plt.xlabel('Vials of Increased Risk of Female Death', fontsize=17)
+    plt.title('Effect of Increased Female Risk on Overall Outcome', fontsize=22)
+    plt.savefig('11FemalePDeath.png')
+    plt.clf()
+    
 if __name__=='__main__':
 #    iterateThroughValuesVacSplyOnPop()
-    iterateThroughFamilyEdgeWeight()
+    iterateThroughVacieneSupply()
+#    iterateThroughRandomEdgeWeight()
+
+#        initializeGraph() 
+#        updateGraph()
+#        demiseWTime=grabModelDataRT()
+#        B,Z,A = processBZAdata(demiseWTime)
+#        makeBZAplot(B,Z,A)
 
