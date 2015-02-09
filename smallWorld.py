@@ -729,7 +729,7 @@ def iterateThroughIncreasedFemaleRisk():
 if __name__=='__main__':
 #    iterateThroughValuesVacSplyOnPop()
 #    iterateThroughVacieneSupply()
-    iterateThroughIncreasedFemaleRisk()
+    iterateThroughRandomEdgeWeight()
 #        initializeGraph() 
 #        updateGraph()
 #        demiseWTime=grabModelDataRT()
