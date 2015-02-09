@@ -79,10 +79,10 @@ def initializeGraph():
 
     #add a vertex's clique pals (family) as edges:
     n=0
-    for vertex in graph:
-        nVtxActl = graph.index(vertex)
-        if (nVtxActl%7)==0:
+    for nVtxActl, vertex in enumerate(graph):
+        if (nVtxActl%sizeClique)==0:
             for n in range(0,sizeClique):
+                #construct the list of the verticies a vertex in a click is connected with:
                 s1 = []; s2=[]
                 s1 = range(0,n)
                 s2 = range(n+1,sizeClique)             
@@ -90,8 +90,10 @@ def initializeGraph():
                 actualConnectedVertices = [x+nVtxActl for x in setS]
                 writeList = []
                 for v in actualConnectedVertices:
+                    #make a list of lists where v is the connected vertex and the next argument is the weight of that vertex
                     writeList.append([v,random.randint(lowFamilyEdgeWeight,highFamilyEdgeWeight)/100.0])      
-                graph[nVtxActl+n]['inContact']=writeList
+#                print 'nVtxActl: ', nVtxActl
+                graph[nVtxActl+n]['inContact']=writeList #TODO: This used to be +n. I might have broken it.
 
 
         #set gender distrabution:
@@ -698,14 +700,58 @@ def iterateThroughIncreasedFemaleRisk():
     plt.savefig('11FemalePDeath.png')
     plt.clf()
     
+    
+def iterateThroughCliqueSize():
+    '''Computes the effect of probability of a persone being burried on a given day 
+    on the net outcome of ebola on a population '''
+    global sizeClique
+    global buried
+    global alive
+    global zombies
+    global demiseWTime
+    
+    topIterableVariableBound=20
+    bottomIterableVariableBound=3
+    numberTimesTry = 3
+    dataStore = []
+    evaluatedValues = []
+    for value in range(numberTimesTry):
+        assesValue=random.randint(bottomIterableVariableBound,topIterableVariableBound)
+        sizeClique=assesValue
+        print 'Size Clique: ', sizeClique
+        
+        initializeGraph() 
+        updateGraph()
+        demiseWTime=grabModelDataRT()
+        B,Z,A = processBZAdata(demiseWTime)
+        dataStore.append(A[-1])
+        evaluatedValues.append(assesValue)
+            
+        buried[:]=[]; alive[:]=[]; zombies[:]=[]
+        demiseWTime[:]=[]
+        
+        print 'this was trial ',value,' of ', numberTimesTry
+    pickle.dump( evaluatedValues, open( "13xCliqueSize.p", "wb" ) )
+    pickle.dump( dataStore, open( "13yCliqueSize.p", "wb" ) )
+    x=evaluatedValues; y=dataStore
+    plt.plot(x,y,'ro')
+    x=np.array(evaluatedValues); y=np.array(dataStore)
+    m,b = np.polyfit(x, y, 1) 
+    plt.plot(x, m*x+b, 'c',linewidth=3.0) 
+    
+    plt.ylabel('Living at Model End (People)', fontsize=17)
+    plt.xlabel('Vials of Increased Risk of Female Death', fontsize=17)
+    plt.title('Effect of Increased Female Risk on Overall Outcome', fontsize=22)
+    plt.show()
+    plt.clf()
+    
 if __name__=='__main__':
-#    iterateThroughValuesVacSplyOnPop()
-    iterateThroughVacieneSupply()
+#    iterateThroughCliqueSize()
 #    iterateThroughRandomEdgeWeight()
 
-#        initializeGraph() 
-#        updateGraph()
-#        demiseWTime=grabModelDataRT()
-#        B,Z,A = processBZAdata(demiseWTime)
-#        makeBZAplot(B,Z,A)
+        initializeGraph() 
+        updateGraph()
+        demiseWTime=grabModelDataRT()
+        B,Z,A = processBZAdata(demiseWTime)
+        makeBZAplot(B,Z,A)
 
