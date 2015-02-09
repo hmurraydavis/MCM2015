@@ -147,39 +147,40 @@ def vaccinatePpl():
     two0_inoc = []
     one0_inoc = []
     yest_inoc = []
-    for person,_perDict in enumerate(graph):
-        print 'person is: ', person
-        if graph[person]['pdeath']<0.4:
-            if graph[person][ebola]==1:
+    for person,perDict in enumerate(graph):
+        print 'inocFac: ', graph[person], '\n'
+#        print 'person is: ', person
+        if graph[person]['pDeath']<0.4:
+            if graph[person]['ebola']==1:
                 ill.append(graph[person])
-            elif graph[person][inocFac][-1]==0:
-                if len(graph[person]['inocFac']) > 2 and inocFacgraph[person][inocFac][-2]==0:
+            elif graph[person]['inocFac'][-1]==0:
+                if len(graph[person]['inocFac']) > 2 and inocFacgraph[person]['inocFac'][-2]==0:
                     two0_inoc.append(graph[person])
                 else:
                     one0_inoc.append(graph[person])
             else: 
                 yest_inoc.append(graph[person])
-    for person in ill:
+    for personNum, person in enumerate(ill):
         if sup>0:
-            graph[person][inocFac].append(1)
+            graph[personNum]['inocFac'].append(1)
             sup=sup-1
         else:
             break
     for person in two0_inoc:
         if sup>0:
-            graph[person][inocFac].append(1)
+            graph[personNum]['inocFac'].append(1)
             sup=sup-1
         else:
             break
     for person in one0_inoc:
         if sup>0:
-            graph[person][inocFac].append(1)
+            graph[personNum]['inocFac'].append(1)
             sup=sup-1
         else:
             break
     for person in yest_inoc:
         if sup>0:
-            graph[person][inocFac].append(1)
+            graph[personNum]['inocFac'].append(1)
             sup=sup-1
         else:
             break
@@ -283,7 +284,7 @@ def updateGraph():
         graph[unluckyPerson]['ebola']=1
         graph[unluckyPerson]['pDeath']=.1*random.randint(3,9)
     
-#    vaccinatePpl() #vacinate the graph against ebola with available vaciene
+    vaccinatePpl() #vacinate the graph against ebola with available vaciene
     for day in range(daysToRunModel):
         grabModelDataRT()
         for personNum, personRepDict in enumerate(graph):
@@ -682,6 +683,8 @@ def iterateThroughVacieneSupply():
             
         buried[:]=[]; alive[:]=[]; zombies[:]=[]
         demiseWTime[:]=[]
+        pickle.dump( evaluatedValues, open( "12xVacieneSuply.p", "wb" ) )
+        pickle.dump( dataStore, open( "12yVacieneSuply.p", "wb" ) )
         
 def iterateThroughIncreasedFemaleRisk():
     '''Computes the effect of probability of a persone being burried on a given day 
@@ -729,10 +732,10 @@ def iterateThroughIncreasedFemaleRisk():
 if __name__=='__main__':
 #    iterateThroughValuesVacSplyOnPop()
 #    iterateThroughVacieneSupply()
-    iterateThroughRandomEdgeWeight()
-#        initializeGraph() 
-#        updateGraph()
-#        demiseWTime=grabModelDataRT()
-#        B,Z,A = processBZAdata(demiseWTime)
-#        makeBZAplot(B,Z,A)
+#    iterateThroughRandomEdgeWeight()
+        initializeGraph() 
+        updateGraph()
+        demiseWTime=grabModelDataRT()
+        B,Z,A = processBZAdata(demiseWTime)
+        makeBZAplot(B,Z,A)
 
