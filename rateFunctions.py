@@ -122,7 +122,7 @@ def ProceedOneTimeStep():
     infection(districts)
     dataOut.append(copy.deepcopy(districts))
 #    pprint.pprint(dataOut)
-    print 'New Cycle!!!'
+#    print 'New Cycle!!!'
 
 def plotData():
     '''Plots the infection and vaccination rates for all districts over the time the model has been running'''
