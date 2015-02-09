@@ -9,7 +9,7 @@ import copy
 import pickle
 
 #import the massive district dictionary from Emily's Magick
-numberOfTimeCycles = 360
+numberOfTimeCycles = 100
 
 global districts
 #global dataOut
@@ -20,9 +20,10 @@ dataOut = [] #array to store the data about the system
 
 #Global variables that aren't really global:
 effect_worker_on_inoculation = 400 #number of people a worker can vacinate in one time step
-MAX_WORKERS_PER_PERSON = .01
+#MAX_WORKERS_PER_PERSON = .01
 DAILY_SUPPLY_PER_DISTRICT = 600000
 THRESHOLD_FOR_MORE_WORKERS = .5
+WORKERS_SENT = 4
 
 keys=('10-0','20-10','30-20','40-30','50-40','60-50','70-60','80-70','90-80','100-90')
 rev_keys = tuple(reversed(keys))
@@ -65,7 +66,7 @@ def workers(districts):
 
         change = [0,0,0,0,0,0,0,0,0,0]
 
-        for i in range(0,len(keys)-1):
+        for i in range(6,len(keys)-1):
             if (place['population']*place['vaccinated'][rev_keys[i]] <= num_doses):
                 num_doses = num_doses - place['population']*place['vaccinated'][rev_keys[i]]
 
@@ -77,7 +78,7 @@ def workers(districts):
                 change[i+1] = ((num_doses/(place['population']*place['vaccinated'][rev_keys[i]]))*place['vaccinated'][rev_keys[i]])
                 num_doses = 0
 
-        for i in range(0, len(keys)):
+        for i in range(6, len(keys)):
             place['vaccinated'][rev_keys[i]] = place['vaccinated'][rev_keys[i]]+change[i]
             if place['vaccinated'][rev_keys[i]] < 0:
                 place['vaccinated'][rev_keys[i]] = 0
@@ -110,7 +111,7 @@ def infection(districts):
                 avg_inf = avg_inf + (i+1)*place['infected'][keys[i]]
           
             if (avg_inf > THRESHOLD_FOR_MORE_WORKERS):
-                place['workers'] = place['workers']+1
+                place['workers'] = place['workers']+WORKERS_SENT
 
   
 def ProceedOneTimeStep():
@@ -168,10 +169,46 @@ def plotData():
     plt.xlabel('Days')
     plt.ylabel('Number of Workers')
     plt.show()
+
+def IterateThroughWorkerThresholds():
+    thresholds = []
+    final_infection = []
+    final_vaccination = []
+
+    for i in range(0, 500):
+        THRESHOLD_FOR_MORE_WORKERS = float(numpy.random.randint(0,100))/100
+        thresholds.append(THRESHOLD_FOR_MORE_WORKERS)
+
+        districts = data.returnDistricsDictionary()
+
+        for i in range(0,100):
+            ProceedOneTimeStep()
+        pickle.dump( dataOut, open( "ebola_workerthresh.p", "wb" ))
+        risk_avg = 0
+        inf_avg = 0
+        for i in range(0,len(keys)):
+            risk_avg = risk_avg + districts['kai']['vaccinated'][keys[i]]*(float(i+1)/10) 
+            inf_avg = inf_avg + districts['kai']['infected'][keys[i]]*(float(i+1)/10)
+
+        final_infection.append(inf_avg)
+        final_vaccination.append(risk_avg)
+
+    plt.plot(thresholds,final_infection, 'bo', label = 'Kailahun Death Risk Rates')
+    plt.plot(thresholds, final_vaccination, 'ro', label = 'Kailahun Risk Rates')
+   #m,b = numpy.polyfit(thresholds, final_infection, 1) 
+    #plt.plot(thresholds, m*thresholds+b, 'k',linewidth=3.0) 
+
+    plt.legend()
+    plt.title('Effect of Worker Threshold on Vaccination and Infection')
+    plt.xlabel('Worker Threshold')
+    plt.ylabel('Infection/Death Risk')
+    plt.show()
+
 if __name__ == '__main__':
     for _cycle in range(numberOfTimeCycles):
         ProceedOneTimeStep()
     plotData()
+    IterateThroughWorkerThresholds()
 
    
     
