@@ -392,8 +392,8 @@ def iterateThroughValuesnumConnStrtEbola():
         demiseWTime[:]=[]
         
         print 'this was trial ',value,' of ', numberTimesTry
-    pickle.dump( evaluatedValues, open( "4xConnStrtEbola.p", "wb" ) )
-    pickle.dump( dataStore, open( "4yConnStrtEbola.p", "wb" ) )
+    pickle.dump( evaluatedValues, open( "5xConnStrtEbola.p", "wb" ) )
+    pickle.dump( dataStore, open( "5yConnStrtEbola.p", "wb" ) )
     x=evaluatedValues; y=dataStore
     plt.plot(x,y,'bo')
     x=np.array(evaluatedValues); y=np.array(dataStore)
@@ -407,7 +407,7 @@ def iterateThroughValuesnumConnStrtEbola():
     plt.ylabel('Average Living at Model End (People)', fontsize=20)
     plt.xlabel('Initial Infection (People)', fontsize=20)
     plt.title('Effect of Initial Infection on Outcome ', fontsize=30)
-    plt.savefig('ConnStrtEblaEffectOnPop4.png')
+    plt.savefig('ConnStrtEblaEffectOnPop5.png')
     plt.clf()
     
     y2STD = np.array(y)
@@ -423,13 +423,74 @@ def iterateThroughValuesnumConnStrtEbola():
     
     plt.plot(y, stats.norm.pdf(y), 'm-', lw=5, alpha=0.6, label='pdf')
     plt.title('PDF ', fontsize=30)
-    plt.savefig('ConnStrtEblaPDF4.png')
+    plt.savefig('ConnStrtEblaPDF5.png')
     plt.clf()
+    
+def iterateThroughValuesRandEdges():
+    global numRandomEdges
+    global buried
+    global alive
+    global zombies
+    global demiseWTime
+    
+    topIterableVariableBound=700
+    bottomIterableVariableBound=1
+    numberTimesTry = 3500
+    dataStore = []
+    evaluatedValues = []
+    for value in range(numberTimesTry):
+        assesValue=random.randint(bottomIterableVariableBound,topIterableVariableBound)
+        numRandomEdges=assesValue
+        
+        initializeGraph() 
+        updateGraph()
+        demiseWTime=grabModelDataRT()
+        B,Z,A = processBZAdata(demiseWTime)
+        dataStore.append(A[-1])
+        evaluatedValues.append(assesValue)
+            
+        buried[:]=[]; alive[:]=[]; zombies[:]=[]
+        demiseWTime[:]=[]
+        
+        print 'this was trial ',value,' of ', numberTimesTry
+    pickle.dump( evaluatedValues, open( "5xRandEdges.p", "wb" ) )
+    pickle.dump( dataStore, open( "5yRandEdges.p", "wb" ) )
+    x=evaluatedValues; y=dataStore
+    plt.plot(x,y,'mo')
+    x=np.array(evaluatedValues); y=np.array(dataStore)
+    m,b = np.polyfit(x, y, 1) 
+#    print 'len x: ', len(x), ' len y: ', len(y)
+#    print 'fds: ', x[0], 'hhhhh ', y[0]
+#    print 'x: ', x
+#    print 'y: ', y
+    plt.plot(x, m*x+b, 'g',linewidth=3.0) 
+    
+    plt.ylabel('Average Living at Model End (People)', fontsize=17)
+    plt.xlabel('Number Extra Familial (Edges)', fontsize=17)
+    plt.title('Effect of Extra Familial Edges', fontsize=30)
+    plt.savefig('5extraFamilialEdgesSktrPlt.png')
+    plt.clf()
+    
+    y2STD = np.array(y)
+    n, min_max, mean, var, skew, kurt = stats.describe(y)
+    print 'Mean is: ', np.mean(y2STD)
+    print 'Standard deviation is: ', np.std(y2STD)
+    print("Number of elements: {0:d}".format(n))
+    print("Minimum: {0:8.6f} Maximum: {1:8.6f}".format(min_max[0], min_max[1]))
+    print("Mean: {0:8.6f}".format(mean))
+    print("Variance: {0:8.6f}".format(var))
+    print("Skew : {0:8.6f}".format(skew))
+    print("Kurtosis: {0:8.6f}".format(kurt))
+    
+#    plt.plot(y, stats.norm.pdf(y), 'm-', lw=5, alpha=0.6, label='pdf')
+#    plt.title('PDF ', fontsize=30)
+#    plt.savefig('ConnStrtEblaPDF5.png')
+#    plt.clf()
     
     
         
 
 if __name__=='__main__':
 #    iterateThroughValuesVacSplyOnPop()
-    iterateThroughValuesnumConnStrtEbola()
+    iterateThroughValuesRandEdges()
 
