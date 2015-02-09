@@ -504,8 +504,8 @@ def iterateThroughNatImmunity():
         demiseWTime[:]=[]
         
         print 'this was trial ',value,' of ', numberTimesTry
-    pickle.dump( evaluatedValues, open( "6xNatImmunity.p", "wb" ) )
-    pickle.dump( dataStore, open( "6yNatImmunity.p", "wb" ) )
+    pickle.dump( evaluatedValues, open( "7xNatImmunity.p", "wb" ) )
+    pickle.dump( dataStore, open( "7yNatImmunity.p", "wb" ) )
     x=evaluatedValues; y=dataStore
     plt.plot(x,y,'mo')
     x=np.array(evaluatedValues); y=np.array(dataStore)
@@ -515,11 +515,54 @@ def iterateThroughNatImmunity():
     plt.ylabel('Average Living at Model End (People)', fontsize=17)
     plt.xlabel('Number Extra Familial (Edges)', fontsize=17)
     plt.title('Effect of Extra Familial Edges', fontsize=30)
-    plt.savefig('6NatImmunityScatPlt.png')
+    plt.savefig('7NatImmunityScatPlt.png')
     plt.clf()     
 #    makeStats(y)  
 
+def iterateThroughProbBurialThatDay():
+    '''Computes the effect of probability of a persone being burried on a given day 
+    on the net outcome of ebola on a population '''
+    global probBurialThatDay
+    global buried
+    global alive
+    global zombies
+    global demiseWTime
+    
+    topIterableVariableBound=100.0
+    bottomIterableVariableBound=1.0
+    numberTimesTry = 1000
+    dataStore = []
+    evaluatedValues = []
+    for value in range(numberTimesTry):
+        assesValue=random.randint(bottomIterableVariableBound,topIterableVariableBound)/100.0
+        probBurialThatDay=assesValue
+        
+        initializeGraph() 
+        updateGraph()
+        demiseWTime=grabModelDataRT()
+        B,Z,A = processBZAdata(demiseWTime)
+        dataStore.append(A[-1])
+        evaluatedValues.append(assesValue)
+            
+        buried[:]=[]; alive[:]=[]; zombies[:]=[]
+        demiseWTime[:]=[]
+        
+        print 'this was trial ',value,' of ', numberTimesTry
+    pickle.dump( evaluatedValues, open( "7xProbBurial.p", "wb" ) )
+    pickle.dump( dataStore, open( "7yProbBurial.p", "wb" ) )
+    x=evaluatedValues; y=dataStore
+    plt.plot(x,y,'ko')
+    x=np.array(evaluatedValues); y=np.array(dataStore)
+    m,b = np.polyfit(x, y, 1) 
+    plt.plot(x, m*x+b, 'y',linewidth=3.0) 
+    
+    plt.ylabel('Living at Model End (People)', fontsize=17)
+    plt.xlabel('Probability Of Burial on a Given Day (%)', fontsize=17)
+    plt.title('Effect of Time Until Burial on Outcome', fontsize=30)
+    plt.savefig('7ProbBurialScatPlt.png')
+    plt.clf()  
+
 if __name__=='__main__':
 #    iterateThroughValuesVacSplyOnPop()
-    iterateThroughNatImmunity()
+    iterateThroughProbBurialThatDay()
 

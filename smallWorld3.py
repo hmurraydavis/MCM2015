@@ -32,10 +32,10 @@ supplyVaccine = 230 #doses per day (or time step) **varry
 numConnStrtEbola = 50 #number of people in the vilage who start with ebola
 lowFamilyEdgeWeight = 50.0 #1-100%
 highFamilyEdgeWeight = 90.0 #1-100%
-lowWeightRandomEdges = 30.0 #1-100%
-highWeightRandomEdges = 50.0 #1-100
+lowWeightRandomEdges = 10.0 #1-100%
+highWeightRandomEdges = 20.0 #1-100
 natImmunityInit = .1
-numRandomEdges = 60
+numRandomEdges = 30
 daysToRunModel = 400
 
 ####################################
@@ -504,8 +504,8 @@ def iterateThroughNatImmunity():
         demiseWTime[:]=[]
         
         print 'this was trial ',value,' of ', numberTimesTry
-    pickle.dump( evaluatedValues, open( "6xNatImmunity.p", "wb" ) )
-    pickle.dump( dataStore, open( "6yNatImmunity.p", "wb" ) )
+    pickle.dump( evaluatedValues, open( "7xNatImmunity.p", "wb" ) )
+    pickle.dump( dataStore, open( "7yNatImmunity.p", "wb" ) )
     x=evaluatedValues; y=dataStore
     plt.plot(x,y,'mo')
     x=np.array(evaluatedValues); y=np.array(dataStore)
@@ -515,11 +515,98 @@ def iterateThroughNatImmunity():
     plt.ylabel('Average Living at Model End (People)', fontsize=17)
     plt.xlabel('Number Extra Familial (Edges)', fontsize=17)
     plt.title('Effect of Extra Familial Edges', fontsize=30)
-    plt.savefig('6NatImmunityScatPlt.png')
+    plt.savefig('7NatImmunityScatPlt.png')
     plt.clf()     
 #    makeStats(y)  
 
+def iterateThroughProbBurialThatDay():
+    '''Computes the effect of probability of a persone being burried on a given day 
+    on the net outcome of ebola on a population '''
+    global probBurialThatDay
+    global buried
+    global alive
+    global zombies
+    global demiseWTime
+    
+    topIterableVariableBound=100.0
+    bottomIterableVariableBound=1.0
+    numberTimesTry = 1000
+    dataStore = []
+    evaluatedValues = []
+    for value in range(numberTimesTry):
+        assesValue=random.randint(bottomIterableVariableBound,topIterableVariableBound)/100.0
+        probBurialThatDay=assesValue
+        
+        initializeGraph() 
+        updateGraph()
+        demiseWTime=grabModelDataRT()
+        B,Z,A = processBZAdata(demiseWTime)
+        dataStore.append(A[-1])
+        evaluatedValues.append(assesValue)
+            
+        buried[:]=[]; alive[:]=[]; zombies[:]=[]
+        demiseWTime[:]=[]
+        
+        print 'this was trial ',value,' of ', numberTimesTry
+    pickle.dump( evaluatedValues, open( "8xProbBurial.p", "wb" ) )
+    pickle.dump( dataStore, open( "8yProbBurial.p", "wb" ) )
+    x=evaluatedValues; y=dataStore
+    plt.plot(x,y,'ko')
+    x=np.array(evaluatedValues); y=np.array(dataStore)
+    m,b = np.polyfit(x, y, 1) 
+    plt.plot(x, m*x+b, 'y',linewidth=3.0) 
+    
+    plt.ylabel('Living at Model End (People)', fontsize=17)
+    plt.xlabel('Probability Of Burial on a Given Day (%)', fontsize=17)
+    plt.title('Effect of Time Until Burial on Outcome', fontsize=30)
+    plt.savefig('8ProbBurialScatPlt.png')
+    plt.clf()
+    
+def iterateThroughFamilyEdgeWeight():
+    '''Computes the effect of probability of a persone being burried on a given day 
+    on the net outcome of ebola on a population '''
+    global lowFamilyEdgeWeight
+    global highFamilyEdgeWeight
+    global buried; global alive; global zombies; global demiseWTime
+    
+    speBtwnHigAndLowBounds = 1
+    topIterableVariableBound=99
+    bottomIterableVariableBound=1.0
+    numberTimesTry = 300
+    dataStore = []
+    evaluatedValues = []
+    for value in range(numberTimesTry):
+        assesValue=random.randint(bottomIterableVariableBound,topIterableVariableBound)
+        lowFamilyEdgeWeight=assesValue
+        highFamilyEdgeWeight = assesValue + speBtwnHigAndLowBounds
+#        print 'LEW: ', lowFamilyEdgeWeight, ' HFEW: ', highFamilyEdgeWeight
+        
+        initializeGraph() 
+        updateGraph()
+        demiseWTime=grabModelDataRT()
+        B,Z,A = processBZAdata(demiseWTime)
+        dataStore.append(A[-1])
+        evaluatedValues.append(assesValue)
+            
+        buried[:]=[]; alive[:]=[]; zombies[:]=[]
+        demiseWTime[:]=[]
+        
+        print 'this was trial ',value,' of ', numberTimesTry
+    pickle.dump( evaluatedValues, open( "8xFamEdgeWt.p", "wb" ) )
+    pickle.dump( dataStore, open( "8yFamEdgeWt.p", "wb" ) )
+    x=evaluatedValues; y=dataStore
+    plt.plot(x,y,'ko')
+    x=np.array(evaluatedValues); y=np.array(dataStore)
+    m,b = np.polyfit(x, y, 1) 
+    plt.plot(x, m*x+b, 'y',linewidth=3.0) 
+    
+    plt.ylabel('Living at Model End (People)', fontsize=17)
+    plt.xlabel('Clique Edge Weight, Low Bound (%)', fontsize=17)
+    plt.title('Effect of Clique Edge Weight on Outcome', fontsize=25)
+    plt.savefig('8FamEdgeWtScatPlt.png')
+    plt.clf()
+
 if __name__=='__main__':
 #    iterateThroughValuesVacSplyOnPop()
-    iterateThroughNatImmunity()
+    iterateThroughFamilyEdgeWeight()
 
