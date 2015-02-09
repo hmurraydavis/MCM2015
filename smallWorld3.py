@@ -281,7 +281,7 @@ def updateGraph():
     step. Stores data from these iterations in data structures for 
     plotting'''
     #start a few people with ebola for testing purposes
-    availableVaciene = 200
+    availableVaciene = supplyVaccine
     for person in range(numConnStrtEbola):
         unluckyPerson = random.randint(0,peopleInModel-1)
         graph[unluckyPerson]['ebola']=1
@@ -632,7 +632,7 @@ def iterateThroughVacieneSupply():
     
     topIterableVariableBound=900.0
     bottomIterableVariableBound=1.0
-    numberTimesTry = 2100
+    numberTimesTry = 2500
     dataStore = []
     evaluatedValues = []
     for value in range(numberTimesTry):
@@ -649,8 +649,9 @@ def iterateThroughVacieneSupply():
         buried[:]=[]; alive[:]=[]; zombies[:]=[]
         demiseWTime[:]=[]
         print 'this was trial ',value,' of ', numberTimesTry
-    pickle.dump( evaluatedValues, open( "12xVacieneSuply.p", "wb" ) )
-    pickle.dump( dataStore, open( "12yVacieneSuply.p", "wb" ) )
+    pickle.dump( evaluatedValues, open( "13xVacieneSuply.p", "wb" ) )
+    pickle.dump( dataStore, open( "13yVacieneSuply.p", "wb" ) )
+
 #    x=evaluatedValues; y=dataStore
 #    plt.plot(x,y,'ro')
 #    plt.ylabel('Living at Model End (People)', fontsize=17)
@@ -751,9 +752,10 @@ if __name__=='__main__':
 #    iterateThroughCliqueSize()
 #    iterateThroughRandomEdgeWeight()
 
-        initializeGraph() 
-        updateGraph()
-        demiseWTime=grabModelDataRT()
-        B,Z,A = processBZAdata(demiseWTime)
-        makeBZAplot(B,Z,A)
+    iterateThroughVacieneSupply()
+#        initializeGraph() 
+#        updateGraph()
+#        demiseWTime=grabModelDataRT()
+#        B,Z,A = processBZAdata(demiseWTime)
+#        makeBZAplot(B,Z,A)
 
