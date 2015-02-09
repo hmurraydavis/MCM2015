@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import matplotlib.lines as lines
 import random
 import copy
+import pickle
 
 #import the massive district dictionary from Emily's Magick
 numberOfTimeCycles = 360
@@ -17,13 +18,11 @@ global districts
 districts = data.returnDistricsDictionary()
 dataOut = [] #array to store the data about the system
 
-
-
 #Global variables that aren't really global:
 effect_worker_on_inoculation = 400 #number of people a worker can vacinate in one time step
 MAX_WORKERS_PER_PERSON = .01
 DAILY_SUPPLY_PER_DISTRICT = 600000
-THRESHOLD_FOR_MORE_WORKERS = .75
+THRESHOLD_FOR_MORE_WORKERS = .5
 
 keys=('10-0','20-10','30-20','40-30','50-40','60-50','70-60','80-70','90-80','100-90')
 rev_keys = tuple(reversed(keys))
@@ -108,10 +107,11 @@ def infection(districts):
         if place['population'] > 0:
             for i in range(0,len(keys)):
                 place['infected'][keys[i]] = place['infected'][keys[i]]*prev_pop/place['population']
-                avg_inf = avg_inf + (i+1)/10*place['infected'][keys[i]]
-
+                avg_inf = avg_inf + (i+1)*place['infected'][keys[i]]
+          
             if (avg_inf > THRESHOLD_FOR_MORE_WORKERS):
                 place['workers'] = place['workers']+1
+
   
 def ProceedOneTimeStep():
     #Call all the model functions!!!
@@ -127,10 +127,13 @@ def plotData():
     '''Plots the infection and vaccination rates for all districts over the time the model has been running'''
 
     toPlot = ('kai', 'western_urban','koinadugu')
+
+    worker_masterlist = []
     for district in toPlot:
 
         vaccination_list = []
         infection_list = []
+        worker_list = []
 
         
         for i in range(0, len(dataOut)):
@@ -147,14 +150,24 @@ def plotData():
             vaccination_list.append(risk_avg)
             infection_list.append(inf_avg)
 
+            worker_list.append(district_list[district]['workers'])
+
         plt.plot(vaccination_list, label = 'Average infection risk in '+ district)
         plt.plot(infection_list, label = 'Average death risk in ' +district)
+        worker_masterlist.append(worker_list)
 
     plt.legend()
     plt.xlabel('Days')
     plt.ylabel('% of district population')
     plt.show()
 
+    for i in range(0, 3):
+        plt.plot(worker_masterlist[i], label = "Workers in " + toPlot[i] + " district")
+
+    plt.legend()
+    plt.xlabel('Days')
+    plt.ylabel('Number of Workers')
+    plt.show()
 if __name__ == '__main__':
     for _cycle in range(numberOfTimeCycles):
         ProceedOneTimeStep()
