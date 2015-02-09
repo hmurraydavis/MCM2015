@@ -17,6 +17,9 @@ graph = [ {'gender':0, #0 is female, 1 is male
 import pprint
 import random
 import matplotlib.pyplot as plt
+import numpy as np
+import scipy.stats as stats
+import pickle
 
 ####################################
 #####Variable Variables:############
@@ -369,39 +372,64 @@ def iterateThroughValuesnumConnStrtEbola():
     global zombies
     global demiseWTime
     
-    numberTimesTryEachIteration = 200
+    topIterableVariableBound=400
+    bottomIterableVariableBound=1
+    numberTimesTry = 2000
     dataStore = []
-    step = 7
-    numValuesToTry = 60
-    numConnStrtEbolaList = [x*step for x in range(numValuesToTry)]
-    for value in numConnStrtEbolaList:
-        numConnStrtEbola=value
-        dataStoreTrial=[0]*numberTimesTryEachIteration
-        for i in range(numberTimesTryEachIteration):
-            initializeGraph() 
-            updateGraph()
-            demiseWTime=grabModelDataRT()
-            B,Z,A = processBZAdata(demiseWTime)
-            dataStoreTrial[i]=A[-1]
-#            print len(B)
-#            makeBZAplot(B,Z,A)
-            buried[:]=[]; alive[:]=[]; zombies[:]=[]
-            demiseWTime[:]=[]
-        dataStoreTrial=sum(dataStoreTrial)
-        dataStore.append(dataStoreTrial/numberTimesTryEachIteration)
-        print 'DS-1: ',dataStore[-1]
-    print dataStore
-    x=numConnStrtEbolaList; y=dataStore
-    plt.plot(numConnStrtEbolaList,dataStore,'bo')
-    m,b = numpy.polyfit(x, y, 1) 
+    evaluatedValues = []
+    for value in range(numberTimesTry):
+        assesValue=random.randint(bottomIterableVariableBound,topIterableVariableBound)
+        numConnStrtEbola=assesValue
+        
+        initializeGraph() 
+        updateGraph()
+        demiseWTime=grabModelDataRT()
+        B,Z,A = processBZAdata(demiseWTime)
+        dataStore.append(A[-1])
+        evaluatedValues.append(assesValue)
+            
+        buried[:]=[]; alive[:]=[]; zombies[:]=[]
+        demiseWTime[:]=[]
+        
+        print 'this was trial ',value,' of ', numberTimesTry
+    pickle.dump( evaluatedValues, open( "4xConnStrtEbola.p", "wb" ) )
+    pickle.dump( dataStore, open( "4yConnStrtEbola.p", "wb" ) )
+    x=evaluatedValues; y=dataStore
+    plt.plot(x,y,'bo')
+    x=np.array(evaluatedValues); y=np.array(dataStore)
+    m,b = np.polyfit(x, y, 1) 
+#    print 'len x: ', len(x), ' len y: ', len(y)
+#    print 'fds: ', x[0], 'hhhhh ', y[0]
+#    print 'x: ', x
+#    print 'y: ', y
     plt.plot(x, m*x+b, 'm',linewidth=3.0) 
+    
     plt.ylabel('Average Living at Model End (People)', fontsize=20)
     plt.xlabel('Initial Infection (People)', fontsize=20)
     plt.title('Effect of Initial Infection on Outcome ', fontsize=30)
-    plt.savefig('ConnStrtEblaEffectOnPop3.png')
+    plt.savefig('ConnStrtEblaEffectOnPop4.png')
+    plt.clf()
+    
+    y2STD = np.array(y)
+    n, min_max, mean, var, skew, kurt = stats.describe(y)
+    print 'Mean is: ', np.mean(y2STD)
+    print 'Standard deviation is: ', np.std(y2STD)
+    print("Number of elements: {0:d}".format(n))
+    print("Minimum: {0:8.6f} Maximum: {1:8.6f}".format(min_max[0], min_max[1]))
+    print("Mean: {0:8.6f}".format(mean))
+    print("Variance: {0:8.6f}".format(var))
+    print("Skew : {0:8.6f}".format(skew))
+    print("Kurtosis: {0:8.6f}".format(kurt))
+    
+    plt.plot(y, stats.norm.pdf(y), 'm-', lw=5, alpha=0.6, label='pdf')
+    plt.title('PDF ', fontsize=30)
+    plt.savefig('ConnStrtEblaPDF4.png')
+    plt.clf()
+    
+    
         
 
 if __name__=='__main__':
-    iterateThroughValuesVacSplyOnPop()
+#    iterateThroughValuesVacSplyOnPop()
     iterateThroughValuesnumConnStrtEbola()
 
